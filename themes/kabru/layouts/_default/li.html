@@ -1,0 +1,13 @@
+<article>
+    <div class="float-container">
+        <h4 class="left">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+        </h4>
+
+        <div class="right date">
+            <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}">
+                {{ .Date.Format .Site.Params.dateformat }}
+            </time>
+        </div>
+    </div>
+</article>

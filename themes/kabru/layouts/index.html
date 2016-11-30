@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    {{ partial "head.html" . }}
+
+    <body>
+        <div id="site-wrapper">
+            {{ partial "header.html" . }}
+
+            <main role="main">
+                <section class="container bio">
+                    <img class="img-circle" src="{{ .Site.BaseURL }}img/{{ .Site.Params.bio.avatar }}" alt="{{ .Site.Params.author }}">
+
+                    <div class="info">
+                        <h3 class="intro">{{ .Site.Params.bio.intro | markdownify }}</h3>
+                        <h4 class="description">{{ .Site.Params.bio.description | markdownify }}</h4>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        {{ partial "footer.html" . }}
+        {{ template "_internal/google_analytics.html" . }}
+    </body>
+</html>

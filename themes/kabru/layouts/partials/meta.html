@@ -1,0 +1,25 @@
+<header class="article-header">
+    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+
+    <div class="float-container small">
+        <div class="left">
+            <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}">
+                {{ .Date.Format .Site.Params.dateformat }} &middot; {{ .ReadingTime }} min read
+            </time>
+        </div>
+
+        {{ with .Params.tags }}
+            <div class="right">
+                <i class="fa fa-tags"></i>
+
+                {{ range $tag := . }}
+                    <a href="/tags/{{ $tag | urlize }}/">{{ $tag }}</a>
+                {{ end }}
+            </div>
+        {{ end }}
+    </div>
+</header>
+
+<!-- Reading time: {{ .ReadingTime }} minutes
+Word count: {{ .WordCount }}
+Fuzzy word count: {{ .FuzzyWordCount }} -->

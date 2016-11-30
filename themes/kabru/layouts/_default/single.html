@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    {{ partial "head.html" . }}
+
+    <body>
+        <div id="site-wrapper">
+            {{ partial "header.html" . }}
+
+            <main role="main">
+                <div class="container">
+                    {{ .Render "article" }}
+                </div>
+            </main>
+        </div>
+
+        {{ partial "footer.html" . }}
+        {{ template "_internal/google_analytics.html" . }}
+    </body>
+</html>

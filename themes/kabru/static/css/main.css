@@ -1,0 +1,277 @@
+/* Typography
+ * --------------------------------------------*/
+
+html {
+    font-size: 1em;
+}
+
+body {
+    color: #111;
+    font-weight: 300;
+    font-family: Helvetica, Arial, sans-serif;
+    text-shadow: 0 0 1px transparent;
+}
+
+::selection {
+    color: #2a7ae2;
+    background-color: #e8e8e8;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #222;
+    font-weight: 500;
+    font-family: "Hind", sans-serif;
+    font-weight: inherit;
+    margin: 0.5em 0;
+}
+
+h1 { font-size: 3.157em; }
+h2 { font-size: 1.777em; }
+h3 { font-size: 1.333em; }
+h4 { font-size: 1.000em; }
+h5 { font-size: 1.000em; }
+h6 { font-size: 1.000em; }
+
+main p {
+    text-align: justify;
+    line-height: 1.6em;
+    margin-bottom: 1.3em;
+}
+
+main li {
+    line-height: 1.6em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+a,
+a:visited {
+    color: #2a7ae2;
+    text-decoration: none;
+    transition-property: all;
+    transition-duration: 0.15s;
+    transition-timing-function: linear;
+    transition-delay: initial;
+}
+
+a:hover {
+    color: #000;
+    text-decoration: underline;
+}
+
+.small {
+    font-size: 0.75em;
+}
+
+.date {
+    margin: .8em 0;
+    font-size: 0.75em;
+}
+
+/* General Layout
+ * --------------------------------------------*/
+
+ .container {
+     max-width: 600px;
+     margin: 0 auto;
+ }
+
+.float-container:before,
+.float-container:after {
+    content: "";
+    display: table;
+}
+
+.float-container:after {
+    clear: both;
+}
+
+.left  { float: left;  }
+.right { float: right; }
+
+/* Responsive
+ * --------------------------------------------*/
+
+img {
+    width: 100%;
+}
+
+@media (max-width: 640px) {
+    .float-container:not(.no-collapse) .left,
+    .float-container:not(.no-collapse) .right {
+        float: none !important;
+    }
+
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    main p {
+        text-align: left;
+    }
+
+    #site-header {
+        text-align: center;
+    }
+
+    #site-footer {
+        text-align: center;
+    }
+
+    #site-footer div.container {
+        padding-top: 7px !important;
+    }
+
+    .article-header {
+        text-align: center;
+    }
+}
+
+/* Header
+ * --------------------------------------------*/
+
+#site-header {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 3px solid #2a7ae2;
+    border-bottom: 1px solid #e8e8e8;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .0785);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#site-header h1 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+#site-header a {
+    color: #222;
+}
+
+#site-header a:hover,
+#site-header h1 a:hover {
+    color: #2a7ae2;
+    text-decoration: none;
+}
+
+#site-header h1 a {
+    color: #000;
+}
+
+#site-header ul {
+    list-style: none;
+    padding: 0;
+}
+
+#site-header li {
+    display: inline-block;
+}
+
+#site-header li+li:before {
+    content: "\00b7";
+    padding-left: 3px;
+    padding-right: 8px;
+}
+
+main {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* Footer
+ * --------------------------------------------*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+#site-wrapper {
+    min-height: 100%;
+    margin-bottom: -50px;
+}
+
+#site-footer {
+    height: 50px;
+}
+
+#site-wrapper:after {
+    content: "";
+    display: block;
+}
+
+#site-footer,
+#site-wrapper:after {
+    height: 50px;
+}
+
+#site-footer div.container {
+    padding-top: 15px;
+}
+
+#site-footer {
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 10px 0 rgba(0, 0, 0, .0785);
+}
+
+#site-footer .social a {
+    color: #222;
+}
+
+#site-footer a:hover {
+    color: #2a7ae2;
+    text-decoration: none;
+}
+
+/* Index
+ * --------------------------------------------*/
+
+.bio {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.img-circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.info {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.intro {
+    font-size: 24px;
+}
+
+.description {
+    color: #999;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Articles
+ * --------------------------------------------*/
+
+.article-header {
+    border-bottom: 1px solid rgba(0, 0, 0, .0785);
+    padding-bottom: .5em;
+}
+
+.pagination {
+    padding-top: 30px;
+    text-align: center;
+}

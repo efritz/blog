@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    {{ partial "head.html" . }}
+
+    <body>
+        <div id="site-wrapper">
+            {{ partial "header.html" . }}
+
+            <main role="main">
+                <div class="container">
+                    <h2>Articles</h2>
+
+                    {{ if eq .Title "Articles"}}
+                        {{ range .Paginator.Pages.GroupByDate "2006" }}
+                            <h3>{{ .Key }}</h3>
+
+                            {{ range .Pages }}
+                                {{ .Render "li" }}
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        <h3>Tag {{ .Title }}</h3>
+
+                        {{ range .Paginator.Pages }}
+                            {{ .Render "li" }}
+                        {{ end }}
+                    {{ end }}
+                </div>
+
+                {{ partial "pagination.html" . }}
+            </main>
+        </div>
+
+        {{ partial "footer.html" . }}
+        {{ template "_internal/google_analytics.html" . }}
+    </body>
+</html>
