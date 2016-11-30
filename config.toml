@@ -1,3 +1,4 @@
 languageCode = "en-us"
 baseurl = "http://eric-fritz.com/"
 title = "Eric Fritz"
+theme = "kabru"
