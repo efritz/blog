@@ -47,6 +47,11 @@ main li {
     line-height: 1.6em;
 }
 
+ul {
+    padding-left: 20px;
+    list-style-type: circle;
+}
+
 strong {
     font-weight: bold;
 }
