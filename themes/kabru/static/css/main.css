@@ -103,6 +103,17 @@ img {
     width: 100%;
 }
 
+@media (max-width: 720px) {
+    #site-header .left,
+    #site-header .right {
+        float: none !important;
+    }
+
+    #site-header {
+        text-align: center;
+    }
+}
+
 @media (max-width: 640px) {
     .float-container:not(.no-collapse) .left,
     .float-container:not(.no-collapse) .right {
@@ -116,10 +127,6 @@ img {
 
     main p {
         text-align: left;
-    }
-
-    #site-header {
-        text-align: center;
     }
 
     #site-footer {
