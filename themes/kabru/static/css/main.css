@@ -38,7 +38,6 @@ h5 { font-size: 1.000em; }
 h6 { font-size: 1.000em; }
 
 main p {
-    text-align: justify;
     line-height: 1.6em;
     margin-bottom: 1.3em;
 }
@@ -153,9 +152,7 @@ img {
 #site-header {
     padding-top: 5px;
     padding-bottom: 5px;
-    border-top: 3px solid #2a7ae2;
     border-bottom: 1px solid #e8e8e8;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, .0785);
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -232,8 +229,7 @@ html, body {
 }
 
 #site-footer {
-    border-top: 1px solid #e8e8e8;
-    box-shadow: 0 -3px 10px 0 rgba(0, 0, 0, .0785);
+    text-align: center;
 }
 
 #site-footer .social a {
@@ -243,36 +239,6 @@ html, body {
 #site-footer a:hover {
     color: #2a7ae2;
     text-decoration: none;
-}
-
-/* Index
- * --------------------------------------------*/
-
-.bio {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.img-circle {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    vertical-align: middle;
-}
-
-.info {
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-
-.intro {
-    font-size: 24px;
-}
-
-.description {
-    color: #999;
-    font-size: 18px;
-    margin-top: 20px;
 }
 
 /* Articles

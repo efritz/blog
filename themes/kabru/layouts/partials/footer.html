@@ -1,13 +1,11 @@
 <footer id="site-footer">
-    <div class="container float-container">
-        <div class="left">
-            <span class="small">
-                &copy; {{ .Now.Year }} - {{ .Site.Params.author }}.
-                <a href="https://creativecommons.org/licenses/by/3.0/">Some Rights Reserved.</a>
-            </span>
-        </div>
+    <div class="container">
+        <span class="small">
+            &copy; {{ .Now.Year }} - {{ .Site.Params.author }}.
+            <a href="https://creativecommons.org/licenses/by/3.0/">Some Rights Reserved.</a>
+        </span>
 
-        <div class="right social">
+        <div class="social">
             {{ partial "social.html" . }}
         </div>
     </div>
@@ -29,3 +27,5 @@
 {{- range .Site.Params.custom_js -}}
     <script src="{{ $.Site.BaseURL }}{{ . }}"></script>
 {{ end }}
+
+{{ template "_internal/google_analytics.html" . }}
