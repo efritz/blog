@@ -1,4 +1,41 @@
 languageCode = "en-us"
-baseurl = "http://eric-fritz.com/"
+baseurl = "http://www.eric-fritz.com/"
 title = "Eric Fritz"
 theme = "kabru"
+paginate = 20
+
+disqusShortname = "eric-fritz"
+googleAnalytics = "UA-24421005-1"
+
+[params]
+  author = "Eric Fritz"
+  dateformat = "Jan 02, 2006"
+  index_page = "/resume"
+  custom_css = ['css/overrides.css']
+  custom_js  = []
+
+[params.social]
+  email = "eric@eric-fritz.com"
+  google = ""
+  facebook = ""
+  twitter = ""
+  instagram = ""
+  linkedIn = ""
+  github = "efritz"
+  stackoverflow = ""
+
+[params.highlight]
+  style = "github"
+  languages = ["go", "dockerfile"]
+
+[[menu.main]]
+  name = "papers"
+  identifier = "papers"
+  weight = 200
+  url = "/papers/"
+
+[[menu.main]]
+  name = "resume"
+  identifier = "resume"
+  weight = 400
+  url = "/resume/"

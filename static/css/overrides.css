@@ -1,0 +1,9 @@
+.class-legend,
+.class-icon {
+    color: #2a7ae2;
+}
+
+.class-icon {
+    float: right;
+    margin-top: 5px;
+}
