@@ -37,9 +37,14 @@ h4 { font-size: 1.000em; }
 h5 { font-size: 1.000em; }
 h6 { font-size: 1.000em; }
 
+h3 {
+    border-bottom: 1px solid rgba(0, 0, 0, .0785);
+}
+
 main p {
     line-height: 1.6em;
     margin-bottom: 1.3em;
+    text-align: justify;
 }
 
 main li {
@@ -245,7 +250,6 @@ html, body {
  * --------------------------------------------*/
 
 .article-header {
-    border-bottom: 1px solid rgba(0, 0, 0, .0785);
     padding-bottom: .5em;
 }
 
