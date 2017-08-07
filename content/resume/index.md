@@ -68,12 +68,6 @@ My Master's thesis, *Optimizing the RedPrairie Distance Cache*,  was supervised 
     detail="2011 to 2016"
     >}}
 
-I shared some knowledge while in grad school.
-
-{{% icon "check-square class-legend" %}}: I have designed the syllabus, focus, coursework, and lectures for the first semester the following courses were offered.
-{{% icon "square class-legend" %}}: I have re-designed and instructed the following courses.
-{{% icon "square-o class-legend" %}}: I have assisted the remaining courses to various degrees.
-
 - {{% icon "check-square class-icon" %}} CompSci **658 / 790** -- iOS Programming
 - {{% icon "check-square class-icon" %}} CompSci **482**       -- Server-side Internet Programming
 - {{% icon "check-square class-icon" %}} CompSci **481**       -- Rich Internet Applications
@@ -86,3 +80,18 @@ I shared some knowledge while in grad school.
 - {{% icon "square-o     class-icon" %}} CompSci **315**       -- Assembly Language Programming
 - {{% icon "square-o     class-icon" %}} CompSci **201**       -- Introduction to Computer Programming
 - {{% icon "square-o     class-icon" %}} CompSci **150**       -- Survey of Computer Science
+
+{{< legend
+    icon="check-square"
+    content="*created* -- designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
+    >}}
+
+{{< legend
+    icon="square"
+    content="*instructed* -- re-designed the coursework and lectures of an existing course"
+    >}}
+
+{{< legend
+    icon="square-o"
+    content="*assisted* -- instructed labs, graded student work, prepared assignments"
+    >}}
