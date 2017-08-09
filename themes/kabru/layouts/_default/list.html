@@ -9,21 +9,27 @@
 
             <main role="main">
                 <div class="container">
-                    <h2>Articles</h2>
+                    {{ if isset .Params "index" }}
+                        <section class="article-content">
+                            {{ .Content }}
+                        </section>
+                    {{ else }}
+                        <h2>Articles</h2>
 
-                    {{ if eq .Title "Articles" }}
-                        {{ range .Paginator.Pages.GroupByDate "2006" }}
-                            <h3>{{ .Key }}</h3>
+                        {{ if eq .Title "Articles" }}
+                            {{ range .Paginator.Pages.GroupByDate "2006" }}
+                                <h3>{{ .Key }}</h3>
 
-                            {{ range .Pages }}
+                                {{ range .Pages }}
+                                    {{ .Render "li" }}
+                                {{ end }}
+                            {{ end }}
+                        {{ else }}
+                            <h3>Tag {{ .Title }}</h3>
+
+                            {{ range .Paginator.Pages }}
                                 {{ .Render "li" }}
                             {{ end }}
-                        {{ end }}
-                    {{ else }}
-                        <h3>Tag {{ .Title }}</h3>
-
-                        {{ range .Paginator.Pages }}
-                            {{ .Render "li" }}
                         {{ end }}
                     {{ end }}
                 </div>
