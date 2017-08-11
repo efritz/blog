@@ -1,6 +1,7 @@
 +++
 date = "2016-10-02T22:55:05-04:00"
 title = "Resume"
+index = true
 +++
 
 ## Resume
@@ -14,7 +15,7 @@ A [non-web version](/documents/Fritz - Resume.pdf) of this resume is also availa
     detail="2015 to Now"
     >}}
 
-I am a software developer on the [Summit](https://summit.shoretel.com/) team, which focuses on building ShoreTel's Unified Communications Platform as a Service. Externally, I am a primary author of the following client-facing features.
+I am a software developer on the [Summit](https://www.shoretel.com/products/summit-platform-overview) team, which focuses on building ShoreTel's Unified Communications Platform as a Service. Externally, I am a primary author of the following client-facing features.
 
 - Call Routing allows a tenant to configure a set of rewrite rules which will redirect incoming calls to a particular destination based on the call's source, the original destination, and arbitrary user-defined context.
 
@@ -26,7 +27,9 @@ Internally, I am a primary author the following infrastructure services written 
 
 - **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
 
-- **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version.
+- **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version. The following image is a portion of the scheduler metrics dashboard over the course of two weeks (for one datacenter). Peaks indicate heavy call traffic, and the two-day flat line periods are the weekend, where call volume does not generally exceed our elastic scaling threshold.
+
+[![Bigboss Dashboard](/images/bigboss-dashboard.png)](/images/bigboss-dashboard.png)
 
 - **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system. For the client-facing API, see the [Summit documentation](https://code.corvisacloud.com/summit/audiostream.html) and
 
@@ -35,7 +38,7 @@ Internally, I am a primary author the following infrastructure services written 
     detail="2008 to 2011"
     >}}
 
-Developed an e-commerce and supply chain web application which streamline interactions between jewelry consumers, retailers, and suppliers. Major projects include a consumer-facing jewelry collection showcase and a retail (brick-and-mortar) location management system. Primary tehcnologies include ASP.NET MVC using C# and MSSQL.
+Developed an e-commerce and supply chain web application which streamline interactions between jewelry consumers, retailers, and suppliers. Major projects include a consumer-facing jewelry collection showcase and a retail (brick-and-mortar) location management system. Primary technologies include ASP.NET MVC using C# and MSSQL.
 
 ### Education
 
