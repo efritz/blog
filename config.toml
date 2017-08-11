@@ -1,5 +1,5 @@
 languageCode = "en-us"
-baseurl = "http://www.eric-fritz.com/"
+baseurl = "https://eric-fritz.com/"
 title = "Eric Fritz"
 theme = "kabru"
 paginate = 20
