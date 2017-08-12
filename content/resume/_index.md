@@ -6,7 +6,7 @@ index = true
 
 ## Resume
 
-A [non-web version](/documents/Fritz - Resume.pdf) of this resume is also available.
+A [printable version](/documents/Fritz - Resume.pdf) of this resume is also available.
 
 ### Work History
 
@@ -62,8 +62,6 @@ My Master's thesis, *Optimizing the RedPrairie Distance Cache*,  was supervised 
 
 **Abstract**: RedPrairie's[^1] Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entires which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns.
 
-[^1]: RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
-
 ### Teaching History
 
 {{< collapsing-header
@@ -98,3 +96,5 @@ My Master's thesis, *Optimizing the RedPrairie Distance Cache*,  was supervised 
     icon="square-o"
     content="*assisted* -- instructed labs, graded student work, prepared assignments"
     >}}
+
+[^1]: RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
