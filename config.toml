@@ -10,7 +10,7 @@ googleAnalytics = "UA-24421005-1"
 [params]
   author = "Eric Fritz"
   dateformat = "Jan 02, 2006"
-  index_page = "/resume"
+  index_page = "/articles/"
   custom_css = ['css/overrides.css']
   custom_js  = []
 
@@ -27,6 +27,12 @@ googleAnalytics = "UA-24421005-1"
 [params.highlight]
   style = "github"
   languages = ["go", "dockerfile"]
+
+[[menu.main]]
+  name = "articles"
+  identifier = "articles"
+  weight = 100
+  url = "/articles/"
 
 [[menu.main]]
   name = "papers"
