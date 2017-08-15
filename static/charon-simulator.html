@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Charon Simulator</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/css/bootstrap-slider.min.css">
+    <link rel="stylesheet" href="/charon-simulator/css/simulator.css">
+</head>
+
+<body>
+    <canvas id="canvas" width="750" height="200"></canvas>
+    
+    <div>
+        <label for="weight">Requested Hits</label>
+    </div>
+    <input id="weight" type="text" />
+
+    <table id="tiers" class="table">
+        <thead>
+            <tr>
+                <th>Limit</th>
+                <th>Window</th>
+                <th>Active Time</th>
+                <th>Cooldown Time</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><span id="add" class="fa fa-plus-circle"></span></td>
+        </tfoot>
+    </table>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/16.6.6/jcanvas.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.1/bootstrap-slider.min.js"></script>
+    <script type="text/javascript" src="/charon-simulator/js/log.js"></script>
+    <script type="text/javascript" src="/charon-simulator/js/render.js"></script>
+    <script type="text/javascript" src="/charon-simulator/js/simulator.js"></script>
+</body>
+</html>
