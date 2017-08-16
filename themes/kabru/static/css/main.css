@@ -6,15 +6,16 @@ html {
 }
 
 body {
-    color: #111;
+    color: #333;
     font-weight: 300;
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     text-shadow: 0 0 1px transparent;
+    background-color: #fcfcff;
 }
 
 ::selection {
-    color: #2a7ae2;
-    background-color: #e8e8e8;
+    background-color: #333;
+    color: #fff;
 }
 
 h1,
@@ -25,7 +26,6 @@ h5,
 h6 {
     color: #222;
     font-weight: 500;
-    font-family: "Hind", sans-serif;
     font-weight: inherit;
     margin: 0.5em 0;
 }
@@ -56,6 +56,10 @@ ul {
     list-style-type: circle;
 }
 
+hr {
+    border: 0;
+}
+
 strong {
     font-weight: bold;
 }
@@ -84,13 +88,52 @@ a:hover {
     font-size: 0.75em;
 }
 
+.footnotes {
+    font-size: 0.75em;
+    margin: 0 auto;
+}
+
 /* General Layout
  * --------------------------------------------*/
 
- .container {
-     max-width: 600px;
-     margin: 0 auto;
- }
+main {
+    margin: 0 auto;
+    max-width: 720px;
+    background-color: #fff;
+    margin-top: 10px;
+    border-radius: 3px;
+}
+
+.container {
+    margin: 0 75px;
+}
+
+pre {
+    margin: 0 -75px;
+    background-color: #fcfcff;
+    border-top: 1px solid #f0f2f3;
+    border-bottom: 1px solid #f0f2f3;
+}
+
+code {
+    font-family: "Source Code Pro", monospace;
+    background-color: #fcfcff;
+    border: 1px solid #f0f2f3;
+    padding: 3px;
+    border-radius: 3px;
+    color: #000;
+    font-weight: 500;
+    font-size: .8em;
+}
+
+.hljs {
+    width: 570px;
+    padding: 0px;
+    margin: 0 auto;
+    background-color: inherit;
+    border: 0px;
+    padding: 10px;
+}
 
 .float-container:before,
 .float-container:after {
@@ -121,12 +164,24 @@ img {
     #site-header {
         text-align: center;
     }
+
+    .container {
+        margin: 0 25px;
+    }
+
+    pre {
+        margin: 0 -25px;
+    }
 }
 
 @media (max-width: 640px) {
     .float-container:not(.no-collapse) .left,
     .float-container:not(.no-collapse) .right {
         float: none !important;
+    }
+
+    article .right {
+        padding-top: 10px;
     }
 
     .container {
@@ -138,16 +193,21 @@ img {
         text-align: left;
     }
 
-    #site-footer {
-        text-align: center;
-    }
-
-    #site-footer div.container {
-        padding-top: 7px !important;
-    }
-
     .article-header {
         text-align: center;
+    }
+
+    .container {
+        margin: 0 5px;
+    }
+
+    pre {
+        margin: 0;
+        border: none;
+    }
+
+    .hljs {
+        width: inherit;
     }
 }
 
@@ -157,7 +217,6 @@ img {
 #site-header {
     padding-top: 5px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #e8e8e8;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -212,11 +271,11 @@ html, body {
 
 #site-wrapper {
     min-height: 100%;
-    margin-bottom: -50px;
+    margin-bottom: -70px;
 }
 
 #site-footer {
-    height: 50px;
+    height: 70px;
 }
 
 #site-wrapper:after {
@@ -226,7 +285,7 @@ html, body {
 
 #site-footer,
 #site-wrapper:after {
-    height: 50px;
+    height: 70px;
 }
 
 #site-footer div.container {
@@ -235,6 +294,10 @@ html, body {
 
 #site-footer {
     text-align: center;
+}
+
+#site-footer .social {
+    padding: 10px;
 }
 
 #site-footer .social a {
