@@ -1,1 +1,28 @@
-not found
+<!DOCTYPE html>
+
+<html lang="en">
+    {{ partial "head.html" . }}
+
+    <body>
+        <div id="site-wrapper">
+            {{ partial "header.html" . }}
+
+            <main role="main">
+                <div class="container">
+                    <article class="{{ .Type }}">
+                        <header class="article-header">
+                            <h2>Page not found!</h2>
+                        </header>
+                            
+                        <section class="article-content">
+                            <p>Sorry, but the page you were looking for could not be found.</p>
+                            <p>Return to our <a href="{{ .Site.Params.index_page }}">front page</a>.</p>
+                        </section>
+                    </article>
+                </div>
+            </main>
+        </div>
+
+        {{ partial "footer.html" . }}
+    </body>
+</html>
