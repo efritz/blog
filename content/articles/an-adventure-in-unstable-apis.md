@@ -11,34 +11,36 @@ When things were slow, I began to port the logic of the Lua scripts into C and w
 
 The development container build configuration looked something similar to the following. Because the API changed surprisingly little[^1] during active development and testing, I neglected to add a working hash check to the downloaded tar file (although I did apparently consider it at the time, as implied by a helpful `TODO` comment in the Dockerfile). This was still pre-production software, and I figured by the time it makes it into production we could lock it to a particular commit or host a stable version on a machine we controlled.
 
-    FROM shoretel-alpine:master-latest
+```dockerfile
+FROM shoretel-alpine:master-latest
 
-    RUN set -ex && \
-        apk add --no-cache \
-            gcc linux-headers make musl-dev git
+RUN set -ex && \
+    apk add --no-cache \
+        gcc linux-headers make musl-dev git
 
-    EXPOSE 6379
-    CMD ["redis-server", "/app/redis.conf"]
+EXPOSE 6379
+CMD ["redis-server", "/app/redis.conf"]
 
-    ENV REDIS_DOWNLOAD_URL https://github.com/antirez/redis/archive/unstable.tar.gz
+ENV DOWNLOAD_URL https://github.com/antirez/redis/archive/unstable.tar.gz
 
-    RUN wget -O redis.tar.gz "$REDIS_DOWNLOAD_URL" && \
-        mkdir /redis && \
-        tar -xzf redis.tar.gz -C /redis --strip-components=1 && \
-        rm redis.tar.gz && \
-        make -C /redis/src && \
-        make -C /redis/src install && \
-        rm -r /redis
+RUN wget -O redis.tar.gz "$DOWNLOAD_URL" && \
+    mkdir /redis && \
+    tar -xzf redis.tar.gz -C /redis --strip-components=1 && \
+    rm redis.tar.gz && \
+    make -C /redis/src && \
+    make -C /redis/src install && \
+    rm -r /redis
 
-    COPY redis.conf /app/redis.conf # Points Redis to module.so
-    COPY module.so  /app/module.so  # Build artifact
+COPY redis.conf /app/redis.conf # Points Redis to module.so
+COPY module.so  /app/module.so  # Build artifact
+```
 
 Unfortunately, after a few weeks of inactivity on the project, integration tests failed with the following when run on a freshly built container (boring details omitted).
 
     31037:M 08 Aug 09:04:04.384 # Redis 999.999.999 crashed by signal: 11
     31037:M 08 Aug 09:04:04.384 # Crashed running the instuction at: 0x43a9ec
     31037:M 08 Aug 09:04:04.384 # Accessing address: (nil)
-    31037:M 08 Aug 09:04:04.384 # Failed assertion: <no assertion failed> (<no file>:0)
+    31037:M 08 Aug 09:04:04.384 # Failed assertion: <no assertion failed>
 
     ------ STACK TRACE ------
     EIP:
@@ -48,48 +50,54 @@ The module source was untouched since the last successful build. I consider Redi
 
 After a few days of worry, I found the culprit. [Commit 71e8d15](https://github.com/antirez/redis/commit/71e8d15e493217df16e82a81fa2c587b64a74ef9) introduced a change to the method that registered a custom type to the module. The previous signature accepted a list of methods in a particular order (one of which was never called as it was, at the time, unimplemented).
 
-    RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
-        RedisModuleCtx *ctx, 
-        const char *name, 
-        int encver, 
-        RedisModuleTypeLoadFunc rdb_load, 
-        RedisModuleTypeSaveFunc rdb_save, 
-        RedisModuleTypeRewriteFunc aof_rewrite, 
-        RedisModuleTypeDigestFunc digest, 
-        edisModuleTypeFreeFunc free
-    );
+```cpp
+RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
+    RedisModuleCtx *ctx, 
+    const char *name, 
+    int encver, 
+    RedisModuleTypeLoadFunc rdb_load, 
+    RedisModuleTypeSaveFunc rdb_save, 
+    RedisModuleTypeRewriteFunc aof_rewrite, 
+    RedisModuleTypeDigestFunc digest, 
+    edisModuleTypeFreeFunc free
+);
+```
 
 The signature was changed to accept a table of function pointers instead of a list (which I consider to be a very good, incremental change to the API).
 
-    typedef struct RedisModuleTypeMethods {
-        uint64_t version;
-        RedisModuleTypeLoadFunc rdb_load;
-        RedisModuleTypeSaveFunc rdb_save;
-        RedisModuleTypeRewriteFunc aof_rewrite;
-        RedisModuleTypeMemUsageFunc mem_usage;
-        RedisModuleTypeRewriteFunc digest;
-        RedisModuleTypeFreeFunc free;
-    } RedisModuleTypeMethods;
+```cpp
+typedef struct RedisModuleTypeMethods {
+    uint64_t version;
+    RedisModuleTypeLoadFunc rdb_load;
+    RedisModuleTypeSaveFunc rdb_save;
+    RedisModuleTypeRewriteFunc aof_rewrite;
+    RedisModuleTypeMemUsageFunc mem_usage;
+    RedisModuleTypeRewriteFunc digest;
+    RedisModuleTypeFreeFunc free;
+} RedisModuleTypeMethods;
 
-    RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
-        RedisModuleCtx *ctx, 
-        const char *name, 
-        int encver, 
-        RedisModuleTypeMethods *typemethods,
-    );
+RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
+    RedisModuleCtx *ctx, 
+    const char *name, 
+    int encver, 
+    RedisModuleTypeMethods *typemethods,
+);
+```
 
 Shockingly, the linker had no problem with the module using the former version and the server accepting the later version (perhaps a less incremental change would have made the issue less subtle). The null pointer access occurred when trying to lookup the location of the free function in the method table... which happened to be a load function and not a table at all! In all honestly, I'm really surprised it blew up as little as it did. I've seen more catastrophic errors from lesser mistakes.
 
 After the eureka moment, I promptly updated the data type registration and changed the Dockerfile to lock the Redis dependency to a stable revision - at this point the module system was still a feature only in the unstable branch so it was not yet possible to use a tagged release.
 
-    ENV REDIS_CLONE_URL https://github.com/antirez/redis
-    ENV REDIS_COMMIT_HASH 6eb0c52d4c9f56561eec76db64190f720661efe6
+```dockerfile
+ENV CLONE_URL https://github.com/antirez/redis
+ENV COMMIT_HASH 6eb0c52d4c9f56561eec76db64190f720661efe6
 
-    RUN git clone "$REDIS_CLONE_URL" && \
-        git --git-dir redis/.git checkout "$REDIS_COMMIT_HASH" && \
-        make -C redis/src && \
-        make -C redis/src install && \
-        rm -r redis
+RUN git clone "$CLONE_URL" && \
+    git --git-dir redis/.git checkout "$COMMIT_HASH" && \
+    make -C redis/src && \
+    make -C redis/src install && \
+    rm -r redis
+```
 
 [^1]: He really nailed it on the first try.
 
@@ -103,11 +111,13 @@ Protect yourself from your API dependencies - even if it's for proof of concept.
 
 Once the module system was promoted into a stable release, the Dockerfile could use a tagged release as follows.
 
-    ENV REDIS_VERSION 4.0.1
-    ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz
+```dockerfile
+ENV VERSION 4.0.1
+ENV DOWNLOAD_URL http://download.redis.io/releases/redis-$VERSION.tar.gz
 
-    RUN wget "$REDIS_DOWNLOAD_URL" && \
-        tar xzf redis-$REDIS_VERSION.tar.gz && \
-        make -C redis-$REDIS_VERSION/src && \
-        make -C redis-$REDIS_VERSION/src install && \
-        rm -r redis-$REDIS_VERSION redis-$REDIS_VERSION.tar.gz
+RUN wget "$DOWNLOAD_URL" && \
+    tar xzf redis-$VERSION.tar.gz && \
+    make -C redis-$VERSION/src && \
+    make -C redis-$VERSION/src install && \
+    rm -r redis-$VERSION redis-$VERSION.tar.gz
+```
