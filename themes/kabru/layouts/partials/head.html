@@ -10,18 +10,18 @@
     <link rel="canonical" href="{{ .Site.BaseURL }}" />
     <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ .RSSLink }}">
 
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/normalize.css"/>
 
     {{ with .Site.Params.highlight.style }}
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/{{ . }}.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/{{ . }}.min.css">
     {{ else }}
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
     {{ end }}
 
     <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/main.css"/>
 
     {{ range .Site.Params.custom_css }}
-        <link rel="stylesheet" href="{{ $.Site.BaseURL}}{{ . }}">
+        <link rel="stylesheet" href="{{ . }}">
     {{ end }}
 </head>
