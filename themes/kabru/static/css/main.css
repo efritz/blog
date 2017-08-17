@@ -108,6 +108,31 @@ main {
     margin: 0 75px;
 }
 
+.float-container:before,
+.float-container:after {
+    content: "";
+    display: table;
+}
+
+.float-container:after {
+    clear: both;
+}
+
+.left  { float: left;  }
+.right { float: right; }
+
+.article-header {
+    padding-bottom: .5em;
+}
+
+.pagination {
+    padding-top: 30px;
+    text-align: center;
+}
+
+/* Code
+ * --------------------------------------------*/
+
 pre {
     margin: 0 -75px;
     background-color: #fcfcff;
@@ -133,82 +158,6 @@ code {
     background-color: inherit;
     border: 0px;
     padding: 10px;
-}
-
-.float-container:before,
-.float-container:after {
-    content: "";
-    display: table;
-}
-
-.float-container:after {
-    clear: both;
-}
-
-.left  { float: left;  }
-.right { float: right; }
-
-/* Responsive
- * --------------------------------------------*/
-
-img {
-    width: 100%;
-}
-
-@media (max-width: 720px) {
-    #site-header .left,
-    #site-header .right {
-        float: none !important;
-    }
-
-    #site-header {
-        text-align: center;
-    }
-
-    .container {
-        margin: 0 25px;
-    }
-
-    pre {
-        margin: 0 -25px;
-    }
-}
-
-@media (max-width: 640px) {
-    .float-container:not(.no-collapse) .left,
-    .float-container:not(.no-collapse) .right {
-        float: none !important;
-    }
-
-    article .right {
-        padding-top: 10px;
-    }
-
-    .container {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    main p {
-        text-align: left;
-    }
-
-    .article-header {
-        text-align: center;
-    }
-
-    .container {
-        margin: 0 5px;
-    }
-
-    pre {
-        margin: 0;
-        border: none;
-    }
-
-    .hljs {
-        width: inherit;
-    }
 }
 
 /* Header
@@ -309,14 +258,61 @@ html, body {
     text-decoration: none;
 }
 
-/* Articles
+/* Responsive Styles
  * --------------------------------------------*/
 
-.article-header {
-    padding-bottom: .5em;
+ @media (max-width: 720px) {
+    #site-header .left,
+    #site-header .right {
+        float: none !important;
+    }
+
+    #site-header {
+        text-align: center;
+    }
+
+    .container {
+        margin: 0 25px;
+    }
+
+    pre {
+        margin: 0 -25px;
+    }
 }
 
-.pagination {
-    padding-top: 30px;
-    text-align: center;
+@media (max-width: 640px) {
+    .float-container:not(.no-collapse) .left,
+    .float-container:not(.no-collapse) .right {
+        float: none !important;
+    }
+
+    article .right {
+        padding-top: 10px;
+    }
+
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    main p {
+        text-align: left;
+    }
+
+    .article-header {
+        text-align: center;
+    }
+
+    .container {
+        margin: 0 5px;
+    }
+
+    pre {
+        margin: 0;
+        border: none;
+    }
+
+    .hljs {
+        width: inherit;
+    }
 }

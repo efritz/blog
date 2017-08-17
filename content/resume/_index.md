@@ -29,7 +29,7 @@ Internally, I am a primary author the following infrastructure services written 
 
 - **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version. The following image is a portion of the scheduler metrics dashboard over the course of two weeks (for one datacenter). Peaks indicate heavy call traffic, and the two-day flat line periods are the weekend, where call volume does not generally exceed our elastic scaling threshold.
 
-[![Bigboss Dashboard](/images/bigboss-dashboard.png)](/images/bigboss-dashboard.png)
+{{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
 - **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system. For the client-facing API, see the [Summit documentation](https://code.corvisacloud.com/summit/audiostream.html) and
 
