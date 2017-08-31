@@ -29,7 +29,7 @@ googleAnalytics = "UA-24421005-1"
 
 [params.highlight]
   style = "github"
-  languages = ["go", "cpp", "dockerfile"]
+  languages = ["go", "java", "cpp", "dockerfile"]
 
 [[menu.main]]
   name = "articles"
