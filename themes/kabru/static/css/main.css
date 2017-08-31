@@ -83,6 +83,10 @@ a:hover {
     font-size: 0.75em;
 }
 
+.center {
+    text-align: center;
+}
+
 .date {
     margin: .8em 0;
     font-size: 0.75em;
