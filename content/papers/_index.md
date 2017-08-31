@@ -26,7 +26,7 @@ index = true
     anchor="charon"
     >}}
 
-{{% small %}}By Eric Fritz, Andy Brezinsky and Andy Ortlieb{{%/ small %}}
+{{% small %}}By Eric Fritz, Andy Brezinsky, and Andy Ortlieb{{%/ small %}}
 
 **Abstract**: Charon is a service designed to increase the stability of a distributed system by preventing the overcommitment of limited resources during extreme load. The service monitors the access history of resources and is used as a central authority which either grants or denies requests for resource acquisition and use. This paper describes the architecture and feature set of Charon, as well as the rationale behind design decisions.
 
