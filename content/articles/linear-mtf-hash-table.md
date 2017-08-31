@@ -151,15 +151,15 @@ We've made a few changes. First, instead of scanning the array from right-to-lef
 
 First, we stash our target pair and immediately put a `DELETED` tombstone in slot $j$. This ensures our loop condition will eventually be met if we don't happen to see any other tombstones in our probe sequence. Next, we insert our stashed pair into slot $i$ and stash the previous contents of slot $i$. This repeats with slot $i + 1$, slot $i + 2$, and so on until we write to a slot that didn't have anything useful in it.
 
-$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [k_5, v_5], [k_6, v_6] \mid\mid t = -~ ~ ~-$
+$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [k_5, v_5], [k_6, v_6] \mid\mid t = -~ ~ ~-$$
 
-$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_5, v_5$
+$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_5, v_5$$
 
-$[k_0, v_0], [k_5, v_5], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_1, v_1$
+$$[k_0, v_0], [k_5, v_5], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_1, v_1$$
 
-$[k_0, v_0], [k_5, v_5], [k_1, v_1], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_2, v_2$
+$$[k_0, v_0], [k_5, v_5], [k_1, v_1], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_2, v_2$$
 
-$[k_0, v_0], [k_5, v_5], [k_1, v_1], [k_2, v_2], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = -~ ~ ~-$
+$$[k_0, v_0], [k_5, v_5], [k_1, v_1], [k_2, v_2], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = -~ ~ ~-$$
 
 In addition to rotating only part of the cluster, this version also has the effect of pushing `DELETED` elements further down the cluster so that the elements that are actually returned during a search are compacted closer to their target slot.
 
