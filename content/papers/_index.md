@@ -37,7 +37,7 @@ index = true
     detail="[Author's Version](/documents/Fritz - Typing and Semantics of Asynchronous Arrows in JavaScript.pdf)"
     >}}
 
-{{% small %}}By Eric Fritz and [Tian Zhao](http://uwm.edu/engineering/people/zhao-ph-d-tian/) -- in The Science of Computer Programming{{%/ small %}}
+{{% small %}}By Eric Fritz and [Tian Zhao](http://uwm.edu/engineering/people/zhao-ph-d-tian/) -- in Science of Computer Programming; Volume 141 Issue C {{%/ small %}}
 
 **Abstract**: Asynchronous programs in JavaScript using callbacks and promises are difficult to write correctly. Many programs have subtle errors due to the unwanted interaction of event handlers. To fix such errors, the programmer is burdened with explicit registration and de-registration of event handlers. This produces fragile code which is difficult to read and maintain. Arrows, a generalization of monads, are an elegant solution to asynchronous program composition. In this paper, we present the semantics of an Arrow-based DSL in JavaScript which can encode asynchronous programs as a state machines where edge transitions are triggered by external events. To ensure that arrows are composed correctly, we provide an optional type-checker that reports errors before the machine begins execution.
 
