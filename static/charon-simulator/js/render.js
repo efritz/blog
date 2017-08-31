@@ -139,7 +139,7 @@ function drawStatusText(canvas, log, configs, timestamp) {
         hitsInWindow = activeTier.hitsInWindow;
     }
 
-    let lines = [`Active tier: ${activeIndex + 1}`];
+    let lines = [`Active Tier: ${activeIndex + 1}`];
 
     if (activeIndex >= 0) {
         lines.push(`Limit for Window: ${configs[activeIndex].limit} hits/${configs[activeIndex].window / 100 == 1 ? 'second' : `${configs[activeIndex].window / 100} seconds`}`);
