@@ -53,14 +53,12 @@ function onDelete(event) {
     validateConfig();
 }
 
+function applyHit() {
+    const [minWeight, maxWeight] = $('#weight').val().split(',');
+    ratelog.addHit(configs, Date.now() / 10, parseInt(minWeight), parseInt(maxWeight));
+}
+
 $(document).ready(function() {
-    $('#add').click(function() {
-        addRow(5, 5, 5, 0);
-    });
-
-    $('.delete').click(onDelete);
-    $('#tiers input').change(validateConfig);
-
     $("#weight").slider({
         min: 1,
         max: 50,
@@ -70,6 +68,15 @@ $(document).ready(function() {
         }
     });
 
+    $('#hit').click(applyHit);
+
+    $('#add').click(function() {
+        addRow(5, 5, 5, 0);
+    });
+
+    $('.delete').click(onDelete);
+    $('#tiers input').change(validateConfig);
+
     loadInitialTiers();
     validateConfig();
 });
@@ -77,9 +84,7 @@ $(document).ready(function() {
 $(document).ready(function() {
     $(document).keyup(function(event) {
         if (event.keyCode == 32) {
-            const [minWeight, maxWeight] = $('#weight').val().split(',');
-
-            ratelog.addHit(configs, Date.now() / 10, parseInt(minWeight), parseInt(maxWeight));
+            applyHit();
         }
     });
 

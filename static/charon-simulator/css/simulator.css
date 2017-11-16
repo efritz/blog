@@ -2,14 +2,19 @@ body, thead th {
     text-align: center;
 }
 
+#hit, #add, .delete {
+    cursor: pointer;
+}
+
+.container {
+    display: inline-block;
+    width: 250px;
+}
+
 #tiers {
     margin-top: 10px;
 }
 
 #tiers input {
     width: 100px;
-}
-
-#add, .delete {
-    cursor: pointer;
 }

@@ -13,10 +13,15 @@
 <body>
     <canvas id="canvas" width="750" height="200"></canvas>
 
-    <div>
-        <label for="weight">Requested Hits</label>
+    <div class="container">
+        <div><label for="weight">Requested Hits</label></div>
+        <input id="weight" type="text" />
     </div>
-    <input id="weight" type="text" />
+
+    <div class="container">
+        <div><label for="hit">Hit</label></div>
+        <span id="hit" class="fa fa-exclamation-circle"></span>
+    </div>
 
     <table id="tiers" class="table">
         <thead>
