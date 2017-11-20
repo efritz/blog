@@ -6,16 +6,17 @@ html {
 }
 
 body {
-    color: #333;
+    color: #262626;
+    font-size: 14px;
+    line-height: 1.5;
     font-weight: 300;
     font-family: 'Lato', sans-serif;
     text-shadow: 0 0 1px transparent;
-    background-color: #fcfcff;
 }
 
 ::selection {
-    background-color: #333;
     color: #fff;
+    background-color: #262626;
 }
 
 h1,
@@ -24,7 +25,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #222;
+    color: #111;
     font-weight: 500;
     font-weight: inherit;
     margin: 0.5em 0;
@@ -66,7 +67,8 @@ strong {
 
 a,
 a:visited {
-    color: #2a7ae2;
+    color: #0690fa;
+    font-weight: bold;
     text-decoration: none;
     transition-property: all;
     transition-duration: 0.15s;
@@ -103,7 +105,6 @@ a:hover {
 main {
     margin: 0 auto;
     max-width: 720px;
-    background-color: #fff;
     margin-top: 10px;
     border-radius: 3px;
 }
@@ -139,15 +140,13 @@ main {
 
 pre {
     margin: 0 -75px;
-    background-color: #fcfcff;
-    border-top: 1px solid #f0f2f3;
-    border-bottom: 1px solid #f0f2f3;
+    border-top: 2px solid #f0f2f3;
+    border-bottom: 2px solid #f0f2f3;
 }
 
 code {
     font-family: "Source Code Pro", monospace;
-    background-color: #fcfcff;
-    border: 1px solid #f0f2f3;
+    border: 2px solid #f0f2f3;
     padding: 3px;
     border-radius: 3px;
     color: #000;
@@ -159,9 +158,9 @@ code {
     width: 570px;
     padding: 0px;
     margin: 0 auto;
-    background-color: inherit;
     border: 0px;
     padding: 10px;
+    background-color: inherit;
 }
 
 /* Header
@@ -176,8 +175,12 @@ code {
 
 #site-header h1 {
     margin: 0;
-    text-transform: uppercase;
     letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+#site-header .right {
+    margin: 10px;
 }
 
 #site-header a {
@@ -186,7 +189,7 @@ code {
 
 #site-header a:hover,
 #site-header h1 a:hover {
-    color: #2a7ae2;
+    color: #0690fa;
     text-decoration: none;
 }
 
@@ -205,8 +208,8 @@ code {
 
 #site-header li+li:before {
     content: "\00b7";
-    padding-left: 3px;
-    padding-right: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 main {
@@ -258,7 +261,7 @@ html, body {
 }
 
 #site-footer a:hover {
-    color: #2a7ae2;
+    color: #0690fa;
     text-decoration: none;
 }
 
