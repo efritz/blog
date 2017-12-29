@@ -12,7 +12,7 @@ When things were slow, I began to port the logic of the Lua scripts into C and w
 The development container build configuration looked something similar to the following. Because the API changed surprisingly little[^1] during active development and testing, I neglected to add a working hash check to the downloaded tar file (although I did apparently consider it at the time, as implied by a helpful `TODO` comment in the Dockerfile). This was still pre-production software, and I figured by the time it makes it into production we could lock it to a particular commit or host a stable version on a machine we controlled.
 
 ```dockerfile
-FROM shoretel-alpine:master-latest
+FROM alpine:3.6
 
 RUN set -ex && \
     apk add --no-cache \
@@ -52,13 +52,13 @@ After a few days of worry, I found the culprit. [Commit 71e8d15](https://github.
 
 ```cpp
 RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
-    RedisModuleCtx *ctx, 
-    const char *name, 
-    int encver, 
-    RedisModuleTypeLoadFunc rdb_load, 
-    RedisModuleTypeSaveFunc rdb_save, 
-    RedisModuleTypeRewriteFunc aof_rewrite, 
-    RedisModuleTypeDigestFunc digest, 
+    RedisModuleCtx *ctx,
+    const char *name,
+    int encver,
+    RedisModuleTypeLoadFunc rdb_load,
+    RedisModuleTypeSaveFunc rdb_save,
+    RedisModuleTypeRewriteFunc aof_rewrite,
+    RedisModuleTypeDigestFunc digest,
     edisModuleTypeFreeFunc free
 );
 ```
@@ -77,9 +77,9 @@ typedef struct RedisModuleTypeMethods {
 } RedisModuleTypeMethods;
 
 RedisModuleType *REDISMODULE_API_FUNC(RedisModule_CreateDataType)(
-    RedisModuleCtx *ctx, 
-    const char *name, 
-    int encver, 
+    RedisModuleCtx *ctx,
+    const char *name,
+    int encver,
     RedisModuleTypeMethods *typemethods,
 );
 ```

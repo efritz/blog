@@ -11,11 +11,11 @@ A [printable version](/documents/Fritz - Resume.pdf) of this resume is also avai
 ### Work History
 
 {{< collapsing-header
-    title="ShoreTel"
+    title="Mitel"
     detail="2015 to Now"
     >}}
 
-I am a software developer on the [Summit](https://www.shoretel.com/products/summit-platform-overview) team, which focuses on building ShoreTel's Unified Communications Platform as a Service. Externally, I am a primary author of the following client-facing features.
+I am a software developer on the [Summit](https://www.shoretel.com/products/summit-platform-overview) team, which focuses on building Mitel's Unified Communications Platform as a Service. Externally, I am a primary author of the following client-facing features.
 
 - Call Routing allows a tenant to configure a set of rewrite rules which will redirect incoming calls to a particular destination based on the call's source, the original destination, and arbitrary user-defined context.
 
@@ -31,7 +31,7 @@ Internally, I am a primary author the following infrastructure services written 
 
 {{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
-- **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system. For the client-facing API, see the [Summit documentation](https://code.corvisacloud.com/summit/audiostream.html) and
+- **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system. For the client-facing API, see the [Summit documentation](https://code.corvisacloud.com/summit/audiostream.html).
 
 {{< collapsing-header
     title="ESDN, Inc."
