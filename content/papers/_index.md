@@ -22,7 +22,7 @@ index = true
 
 {{< collapsing-header
     title="Charon: The Design of a Limiting Microservice"
-    detail="Available Soon"
+    detail="[Author's Version](/documents/Fritz - Charon - The Design of a Limiting Microservice.pdf)"
     anchor="charon"
     >}}
 
