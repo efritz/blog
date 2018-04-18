@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    color: #262626;
+    color: #444;
     font-size: 14px;
     line-height: 1.5;
     font-weight: 300;
@@ -26,12 +26,11 @@ h4,
 h5,
 h6 {
     color: #111;
-    font-weight: 500;
     font-weight: inherit;
     margin: 0.5em 0;
 }
 
-h1 { font-size: 3.157em; }
+h1 { font-size: 1.333em; }
 h2 { font-size: 1.777em; }
 h3 { font-size: 1.333em; }
 h4 { font-size: 1.000em; }
@@ -67,7 +66,7 @@ strong {
 
 a,
 a:visited {
-    color: #0690fa;
+    color: #6cc3d5;
     font-weight: bold;
     text-decoration: none;
     transition-property: all;
@@ -123,8 +122,9 @@ main {
     clear: both;
 }
 
-.left  { float: left;  }
-.right { float: right; }
+.left   { float: left;  }
+.right  { float: right; }
+.center { text-align: center }
 
 .article-header {
     padding-bottom: .5em;
@@ -187,10 +187,22 @@ code {
     color: #222;
 }
 
-#site-header a:hover,
-#site-header h1 a:hover {
-    color: #0690fa;
+#site-header a:hover {
+    color: #6cc3d5;
     text-decoration: none;
+}
+
+#logo {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    padding: 2px 10px;
+    line-height: 1.2em;
+    background-color: #6cc3d5;
+}
+
+#logo a:hover {
+    color: #fff;
 }
 
 #site-header h1 a {
@@ -232,6 +244,7 @@ html, body {
 
 #site-footer {
     height: 70px;
+    color: #888;
 }
 
 #site-wrapper:after {
@@ -268,7 +281,7 @@ html, body {
 /* Responsive Styles
  * --------------------------------------------*/
 
- @media (max-width: 720px) {
+@media (max-width: 720px) {
     #site-header .left,
     #site-header .right {
         float: none !important;
@@ -321,5 +334,20 @@ html, body {
 
     .hljs {
         width: inherit;
+    }
+
+    #logo {
+        position: relative;
+        padding: inherit;
+        line-height: inherit;
+        background-color: inherit;
+    }
+
+    h1 {
+        font-size: 2.467em;
+    }
+
+    #logo a:hover {
+        color: inherit;
     }
 }

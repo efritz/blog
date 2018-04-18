@@ -1,9 +1,11 @@
-<header id="site-header" class="float-container">
-    <div class="left">
+
+
+<header id="site-header">
+    <div id="logo">
         <h1><a href="{{ .Site.Params.index_page }}" alt="{{ .Site.Title }}">{{ .Site.Title }}</a></h1>
     </div>
 
-    <div class="right">
+    <div class="center">
         {{ if .Site.Menus.main }}
             <ul>
                 {{ range sort .Site.Menus.main }}
