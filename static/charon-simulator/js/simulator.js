@@ -3,12 +3,13 @@ var ratelog = new RateLog();
 
 function addRow(limit, window, active, cooldown) {
     var row = $('<tr />');
-    row.append($('<td />').append($('<input type="number" min="0" value="' + limit + '">')));
-    row.append($('<td />').append($('<input type="number" min="0" value="' + window + '">')));
-    row.append($('<td />').append($('<input type="number" min="0" value="' + active + '">')));
-    row.append($('<td />').append($('<input type="number" min="0" value="' + cooldown + '">')));
+    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + limit + '">')));
+    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + window + '">')));
+    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + active + '">')));
+    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + cooldown + '">')));
 
-    var deleter = $('<span class="delete fa fa-times-circle"></span>');
+    var deleter = $('<button type="button" class="btn btn-sm btn-danger">');
+    deleter.append($('<span class="delete fa fa-trash"></span>'));
     deleter.click(onDelete);
     row.append($('<td />').append(deleter));
     $('#tiers tbody').append(row);
@@ -54,20 +55,10 @@ function onDelete(event) {
 }
 
 function applyHit() {
-    const [minWeight, maxWeight] = $('#weight').val().split(',');
-    ratelog.addHit(configs, Date.now() / 10, parseInt(minWeight), parseInt(maxWeight));
+    ratelog.addHit(configs, Date.now() / 10, parseInt($('#min-hits').val()), parseInt($('#max-hits').val()));
 }
 
 $(document).ready(function() {
-    $("#weight").slider({
-        min: 1,
-        max: 50,
-        value: [1, 1],
-        formatter: function(value) {
-            return 'Max allowable in range [' + value + ']';
-        }
-    });
-
     $('#hit').click(applyHit);
 
     $('#add').click(function() {

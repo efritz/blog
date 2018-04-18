@@ -1,20 +1,12 @@
-body, thead th {
+body {
+    font-size: .8em;
+}
+
+.table th {
+    border-top: 0px;
+}
+
+.table th,
+.table td {
     text-align: center;
-}
-
-#hit, #add, .delete {
-    cursor: pointer;
-}
-
-.container {
-    display: inline-block;
-    width: 250px;
-}
-
-#tiers {
-    margin-top: 10px;
-}
-
-#tiers input {
-    width: 100px;
 }
