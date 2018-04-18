@@ -1,5 +1,5 @@
 +++
-date = "2017-08-14T00:00:00-00:00"
+date = "2017-08-12T00:00:00-00:00"
 title = "Charon Simulator"
 showpagemeta = "true"
 tags = ["charon"]
@@ -9,7 +9,7 @@ tags = ["charon"]
 
 Charon, as described in the [whitepaper](/papers#charon), is a cooperative system to enforce limits on behalf of users. For example, an HTTP API request can immediately return an [HTTP 429](https://httpstatuses.com/429) if the limiting system has a large number of recent requests from that user in its history. Although the request has already made it to the system, it can save an expensive database operation which is most certainly a more precious resource than front-end server cycles.
 
-Charon is a service designed to *grant* or *reject* either an individual or a group of requests for a resource on behalf of a *domain*, which is just an opaque string. Generally a domain is a "user", but could also be a group of users, a system, or an abstract entity such as a conference or an event. Of course, [similar](https://github.com/lyft/ratelimit) [solutions](https://github.com/youtube/doorman) [exist](https://redis.io/commands/incr). 
+Charon is a service designed to *grant* or *reject* either an individual or a group of requests for a resource on behalf of a *domain*, which is just an opaque string. Generally a domain is a "user", but could also be a group of users, a system, or an abstract entity such as a conference or an event. Of course, [similar](https://github.com/lyft/ratelimit) [solutions](https://github.com/youtube/doorman) [exist](https://redis.io/commands/incr).
 
 Charon's method of rate limiting, especially its configuration definition, stand out as unique and tremendously flexible. The original proof-of-concept implementation was a simple [sliding window counter](https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/). Unfortunately, this solution only performs well when requests are fairly evenly distributed. If the access pattern of resources is *bursty* (which you better believe it will be in production), then many clients may hit limits spuriously.
 
@@ -27,13 +27,13 @@ I've heard that a picture is worth a thousand words.
 
 {{< lightbox src="/images/burst-tiers.png" anchor="burst-tiers" >}}
 
-I've also heard that a simulator is worth a thousand pictures[^1], so I brought one of those along too. 
+I've also heard that a simulator is worth a thousand pictures[^1], so I brought one of those along too.
 
 [^1]: This particular simulator currently works only in Chrome, so maybe more like 900 pictures.
 
 ### Sample Configurations
 
-After launching a simulator, request to use a resource by pressing (or spamming) the spacebar. White dots represent a granted request and red X's represent a rejected request. The tier configuration is completely configurable, so feel free to experiment. The configuration is very flexible, but several patterns present themselves immediately. They are described in turn below. 
+After launching a simulator, request to use a resource by pressing (or spamming) the spacebar. White dots represent a granted request and red X's represent a rejected request. The tier configuration is completely configurable, so feel free to experiment. The configuration is very flexible, but several patterns present themselves immediately. They are described in turn below.
 
 #### Simple
 
