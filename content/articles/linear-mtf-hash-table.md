@@ -7,7 +7,7 @@ tags = ["theory", "datastructures"]
 
 Vehicular routing is a very interesting real-world problem that contains two distinct but interacting combinatorial optimization problems: the [travelling salesman problem (TSP)](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the [0-1 knapsack problem (KP)](https://en.wikipedia.org/wiki/Knapsack_problem). This unison of problems, unfortunately, creates a lot of opportunity for local maxima. Finding a better route for a particular truck may decrease the optimality of the contents fo the truck, and vice versa.
 
-[RedPrairie](https://jda.com/)'s approach to this problem was to approximate *some* solution, then iteratively and stochastically apply small transformations to the solution. This may be switching the order of two stops on a route, or moving a stop from one route to another. If this invalidates the solution or leads to a higher-cost route, the transformation is thrown out. This tends to create a solution which cannot easily be tweaked by a human to create something obviously better, but was almost certainly suboptimal - this is simply a curse of the solution space space. 
+[RedPrairie](https://jda.com/)'s approach to this problem was to approximate *some* solution, then iteratively and stochastically apply small transformations to the solution. This may be switching the order of two stops on a route, or moving a stop from one route to another. If this invalidates the solution or leads to a higher-cost route, the transformation is thrown out. This tends to create a solution which cannot easily be tweaked by a human to create something obviously better, but was almost certainly suboptimal - this is simply a curse of the solution space space.
 
 In order to find the *cost* of a particular route, the distance between two stops had to be known. Queries to a [GIS](https://en.wikipedia.org/wiki/Geographic_information_system) gave the necessary data, but such queries were often slow. Fortunately, the set of queries to the GIS was highly local[^1] and the addition of a local (dumb) cache was an attractive solution to speeding up this part of the approximator. That's where I came in.
 
@@ -35,12 +35,12 @@ The cost of a lookup in such a table is less direct. Several slots in the same n
 
 Open addressing should not be dismissed, *especially for a cache* - tables using separate chaining may lead to faster lookups, but the lower memory overhead of tables using open addressing may allow **more** cache entries to sit in memory before eviction. It may be worth the trade-off if the slower table can reduce the number of external lookups, which may cost orders of magnitude more time.
 
-Let $n$ be the number of entries in the table and let $m$ be the *capacity* of the table. Note for separate chaining it is possible for $n > m$ with increasingly degraded performance. 
+Let $n$ be the number of entries in the table and let $m$ be the *capacity* of the table. Note for separate chaining it is possible for $n > m$ with increasingly degraded performance.
 
-The following is a description of a singly-linked list node used for separate chaining. This class occupies 8 bytes for each of the `key`, `value`, `next`, and `hashCode` fields. Additionally, each JVM object reserves 16 bytes for an object header storing class, garbage collection, and lock metadata. Using this object layout, separate chaining hash table occupies $8m+48n$ bytes. 
+The following is a description of a singly-linked list node used for separate chaining. This class occupies 8 bytes for each of the `key`, `value`, `next`, and `hashCode` fields. Additionally, each JVM object reserves 16 bytes for an object header storing class, garbage collection, and lock metadata. Using this object layout, separate chaining hash table occupies $8m+48n$ bytes.
 
 ```java
-class HashEntry<K, V> implements Map.Entry<K, V> { 
+class HashEntry<K, V> implements Map.Entry<K, V> {
                            //   16-byte object header
     K key;                 //  + 8-byte ref field
     V value;               //  + 8-byte ref field
@@ -58,7 +58,7 @@ Because we're designing a cache, we want the table with the lowest memory footpr
 
 ### Self-Organizing Tables
 
-We're not done yet! We can still do little heuristic tricks to decrease the cost of lookups in practice. Because keys are constantly being swapped in and out of the table, it's not possible to determine an insertion order of keys which will yield a smaller lookup cost in practice (and if we had such foresight to know exactly what our cache keys are in advance, we might as well hard-code the distance values in the solver). What we *can* do is intermittently reorganize the table so that the keys which are *more likely* to be accessed in the near future can be done so quickly. Several other data structures display similar properties. A [splay tree](https://en.wikipedia.org/wiki/Splay_tree), a type of heuristic self-balancing binary search tree, rearranges the tree so that the most recently accessed key is the root and guarantees constant-time access if it's immediately queried again (and slightly larger constant-time access for keys in the same neighborhood). 
+We're not done yet! We can still do little heuristic tricks to decrease the cost of lookups in practice. Because keys are constantly being swapped in and out of the table, it's not possible to determine an insertion order of keys which will yield a smaller lookup cost in practice (and if we had such foresight to know exactly what our cache keys are in advance, we might as well hard-code the distance values in the solver). What we *can* do is intermittently reorganize the table so that the keys which are *more likely* to be accessed in the near future can be done so quickly. Several other data structures display similar properties. A [splay tree](https://en.wikipedia.org/wiki/Splay_tree), a type of heuristic self-balancing binary search tree, rearranges the tree so that the most recently accessed key is the root and guarantees constant-time access if it's immediately queried again (and slightly larger constant-time access for keys in the same neighborhood).
 
 We can try to apply a [move to front heuristic](https://en.wikipedia.org/wiki/Self-organizing_list#Move_to_Front_Method_.28MTF.29) so that when a key is accessed it will be inserted as the *first* value in its slot. [Zobel, Heins, and Williams](http://www.mathcs.emory.edu/~whalen/Hash/Hash_Articles/In-memory hash tables for accumulating text vocabularies.pdf) have shown this heuristic perform very in practice when the set of values which are referenced are done so around the same time.
 
@@ -105,13 +105,7 @@ void promoteSlot(int i, int j) {
 
 What this ends up doing is rotating our target key/value pair *backwards* through the probe sequence, as illustrated here ($i = 1$ and $v = 4$).
 
-$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [k_3, v_3], [k_4, v_4], [k_5, v_5]$$
-
-$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [k_4, v_4], [k_3, v_3], [k_5, v_5]$$
-
-$$[k_0, v_0], [k_1, v_1], [k_4, v_4], [k_2, v_2], [k_3, v_3], [k_5, v_5]$$
-
-$$[k_0, v_0], [k_4, v_4], [k_1, v_1], [k_2, v_2], [k_3, v_3], [k_5, v_5]$$
+{{< img src="/images/table-rotation.svg" >}}
 
 We also need to be concerned that we didn't just bork our table and make keys *unreachable*. Notice that every key we moved *except* for our target key was moved exactly one slot to the right. Also notice that because our target key was found sitting at slot $j$, there must not be any empty slots in the probe sequence from $i$ to $j$. Our target key is reachable by a subsequent query, as such a query would start at slot $i$. Any moved key would be reachable by a subsequent query, albeit one that has to look at exactly one additional key (our target key).
 
@@ -151,15 +145,7 @@ We've made a few changes. First, instead of scanning the array from right-to-lef
 
 First, we stash our target pair and immediately put a `DELETED` tombstone in slot $j$. This ensures our loop condition will eventually be met if we don't happen to see any other tombstones in our probe sequence. Next, we insert our stashed pair into slot $i$ and stash the previous contents of slot $i$. This repeats with slot $i + 1$, slot $i + 2$, and so on until we write to a slot that didn't have anything useful in it.
 
-$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [k_5, v_5], [k_6, v_6] \mid\mid t = -~ ~ ~-$$
-
-$$[k_0, v_0], [k_1, v_1], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_5, v_5$$
-
-$$[k_0, v_0], [k_5, v_5], [k_2, v_2], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_1, v_1$$
-
-$$[k_0, v_0], [k_5, v_5], [k_1, v_1], [-~ ~ ~-], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = k_2, v_2$$
-
-$$[k_0, v_0], [k_5, v_5], [k_1, v_1], [k_2, v_2], [k_4, v_4], [-~ ~ ~-], [k_6, v_6] \mid\mid t = -~ ~ ~-$$
+{{< img src="/images/table-rotation-smart.svg" >}}
 
 In addition to rotating only part of the cluster, this version also has the effect of pushing `DELETED` elements further down the cluster so that the elements that are actually returned during a search are compacted closer to their target slot.
 
