@@ -2,7 +2,7 @@
 date = "2018-04-16T00:00:00-00:00"
 title = "Deposition"
 showpagemeta = "true"
-tags = ["building and deployment", "standards"]
+tags = ["building", "deployment", "standards"]
 +++
 
 ### Impetus
