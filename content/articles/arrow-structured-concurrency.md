@@ -157,7 +157,7 @@ min = any {
 Lexical blocks controlling concurrency would also be easy to nest. The following example creates an *all* block which contains an *an* block for each group of URLs. The result is an array that contains the fastest fetch from each group.
 
 ```go
-first_from_each = all {
+first_from_each_group = all {
     for urls in groups {
         go func() {
             return any {
@@ -170,7 +170,25 @@ first_from_each = all {
 }
 ```
 
-Another major divergence from Golang semantics is that all of the asynchronous operations must be cancellable deregisterable. This is not true in non- preemptive Golang -- exceptions cannot be injected into a running goroutine and goroutines only yield control on communication (reading/writing from a channel or IO). If such a concurrency construct were implemented in a language with channel-rich communication, deadlocks would superabound. However, such structured concurrency may useful as a replacement for the common uses of channels.
+Notice that if are directly transplanting the semantics described above, then the 'winner' of an any block would be the first coroutine to unblock from an async point, regardless how long it takes the remainder of the coroutine to complete. This means that we can introduce noemit blocks to enable the same spectrum of behaviors. The next example shows such a use. Notice that if we do not have the noemit block here, then the group chosen by the outer any block is the pool of coroutines which gets a response from a remote server first, which is not likely the semantics we are after. If we wrap the inner all blocks with a noemit block, then the children of the any blocks will only emit a progress event once the entire group is completed.
+
+```go
+first_group_to_complete = any {
+    for urls in groups {
+        go func() {
+            return noemit {
+                all {
+                    for url in urls {
+                        go fetch(url)
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+Another major divergence from Golang-like semantics is that all of the asynchronous operations must be cancellable deregisterable. This is not true in non- preemptive Golang -- exceptions cannot be injected into a running goroutine and goroutines only yield control on communication (reading/writing from a channel or IO). If such a concurrency construct were implemented in a language with channel-rich communication, deadlocks would superabound. However, such structured concurrency may useful as a replacement for the common uses of channels.
 
 Nathan Smith quoted ([Knuth, 1974](https://scholar.google.com/scholar?cluster=17147143327681396418&hl=en&as_sdt=0,5), p.275) when he proposes moving away from the `go` keyword, which he argues creates goto-like spaghetti flow, in favor of structured concurrency.
 
