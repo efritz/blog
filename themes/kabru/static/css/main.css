@@ -6,10 +6,11 @@ html {
 }
 
 body {
-    color: #444;
+    line-height: 1.5em;
+    color: rgba(0, 0, 0, 0.87);
     font-size: 14px;
-    line-height: 1.75;
-    font-weight: 300;
+    font-weight: 400;
+    font-style: normal;
     font-family: 'Lato', sans-serif;
     text-shadow: 0 0 1px transparent;
 }
@@ -42,13 +43,8 @@ h3 {
 }
 
 main p {
-    line-height: 1.6em;
     margin-bottom: 1.3em;
     text-align: justify;
-}
-
-main li {
-    line-height: 1.6em;
 }
 
 ul {
@@ -201,7 +197,6 @@ code {
     top: 10px;
     right: 15px;
     padding: 2px 10px;
-    line-height: 1.2em;
     background-color: #6cc3d5;
 }
 
