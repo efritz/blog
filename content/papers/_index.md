@@ -6,7 +6,7 @@ index = true
 
 ## Papers
 
-### 2018 (Expected)
+### 2018
 
 {{< collapsing-header
     title="Waddle: Always-Canonical Intermediate Representation"
@@ -14,7 +14,7 @@ index = true
     anchor="thesis"
     >}}
 
-{{% small %}}By Eric Fritz -- Doctoral Dissertation{{%/ small %}}
+{{% small %}}By Eric Fritz -- Doctoral Dissertation (Expected 2018){{%/ small %}}
 
 **Abstract**: Optimizations that are able to rely on the presence of *canonical properties* of the program under optimization can be written to be more robust and efficient than an equivalent but generalized optimization which also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier optimization, it must be rebuilt –- often from scratch. This additional necessary work can be intractable when many optimizations are applied over large programs. This dissertation introduces a methodology for constructing optimizations so that the program remains in an *always-canonical* form as the program is mutated, making only local changes to restore broken properties.
 
