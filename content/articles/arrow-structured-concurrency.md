@@ -111,7 +111,7 @@ class NoEmitCombinator {
     }
 }
 ```
-This feature turns out to be incredibly powerful. The *any* combinator tends to be too one sided. It takes action once an arrow resumes from **any** asynchronous operation. The other extreme is implemented by `Promise.race`, which requires one of its promises to resolve to completion. With the noemit combinator, we can actually achieve the entire spectrum between the two sets of semantics. In the following example, there are two halves of a game implemented as two arrows, *game1* and *game2*, the first half of which we enforce a time constraint. The progress events of the first half of the game are suppressed so that asynchronous operations do not prematurely cancel the timer created by the delay arrow. If the timer fires, the first half of the game can still be canceled. And, due to the progress event at the end of the noemit combinator, progression into the second half of the game cancels the sibling arrow -- the timer.
+This feature turns out to be incredibly powerful. The *any* combinator tends to be too one sided. It takes action once an arrow resumes from **any** asynchronous operation. The other extreme is implemented by `Promise.race`, which requires one of its promises to resolve to completion. With the *noemit* combinator, we can actually achieve the entire spectrum between the two sets of semantics. In the following example, there are two halves of a game implemented as two arrows, *game1* and *game2*, the first half of which we enforce a time constraint. The progress events of the first half of the game are suppressed so that asynchronous operations do not prematurely cancel the timer created by the delay arrow. If the timer fires, the first half of the game can still be canceled. And, due to the progress event at the end of the *noemit* combinator, progression into the second half of the game cancels the sibling arrow -- the timer.
 
 ```javascript
 new AnyCombinator([
@@ -131,7 +131,7 @@ Let's consider what a language that features these concepts as first-class citiz
 
 This proposed construct organizes pools of coroutines with *lexical blocks*. The general method is to tag a block with a name denoting combinator semantics (e.g. any and all). While executing, the block may spawn coroutines which execute concurrently. Once the block has finished executing, the semantics of the particular combinator selects the result to be yielded, depending on the state and values of the spawned coroutines. The value of this block (when used as an expression) is the yielded result.
 
-The following would create an anonymous all combinator to which a series of *fetch* coroutines are attached. The combinator yields a value only after each spawned coroutine completes. This value contains, in order, the result of each call to `fetch` int the order in which it was attach to the combinator.
+The following would create an anonymous all combinator to which a series of *fetch* coroutines are attached. The combinator yields a value only after each spawned coroutine completes. This value contains, in order, the result of each call to `fetch` in the order in which it was attach to the combinator.
 
 ```go
 responses = all {
@@ -154,7 +154,7 @@ min = any {
 }
 ```
 
-Lexical blocks controlling concurrency would also be easy to nest. The following example creates an *all* block which contains an *an* block for each group of URLs. The result is an array that contains the fastest fetch from each group.
+Lexical blocks controlling concurrency would also be easy to nest. The following example creates an *all* block which contains an *any* block for each group of URLs. The result is an array that contains the fastest fetch from each group.
 
 ```go
 first_from_each_group = all {
@@ -170,7 +170,7 @@ first_from_each_group = all {
 }
 ```
 
-Notice that if are directly transplanting the semantics described above, then the 'winner' of an any block would be the first coroutine to unblock from an async point, regardless how long it takes the remainder of the coroutine to complete. This means that we can introduce noemit blocks to enable the same spectrum of behaviors. The next example shows such a use. Notice that if we do not have the noemit block here, then the group chosen by the outer any block is the pool of coroutines which gets a response from a remote server first, which is not likely the semantics we are after. If we wrap the inner all blocks with a noemit block, then the children of the any blocks will only emit a progress event once the entire group is completed.
+Notice that if we are directly transplanting the semantics described above, then the 'winner' of an *any* block would be the dictated by the first coroutine to unblock from an async point, regardless how long it takes the remainder of the coroutine to complete. This means that we can introduce *noemit* blocks to enable the same spectrum of behaviors. The next example shows such a use. Notice that if we do not have the *noemit* block here, then the group chosen by the outer *any* block is the pool of coroutines which gets a response from a remote server first, which is not likely the semantics we are after. If we wrap the inner *all* blocks with a *noemit* block, then the children of the *any* blocks will only emit a progress event once the entire group is completed.
 
 ```go
 first_group_to_complete = any {
@@ -188,7 +188,7 @@ first_group_to_complete = any {
 }
 ```
 
-Another major divergence from Golang-like semantics is that all of the asynchronous operations must be cancellable deregisterable. This is not true in non- preemptive Golang -- exceptions cannot be injected into a running goroutine and goroutines only yield control on communication (reading/writing from a channel or IO). If such a concurrency construct were implemented in a language with channel-rich communication, deadlocks would superabound. However, such structured concurrency may useful as a replacement for the common uses of channels.
+Another major divergence from Golang-like semantics is that all of the asynchronous operations must be cancellable or deregisterable. This is not true in non- preemptive Golang -- exceptions cannot be injected into a running goroutine and goroutines only yield control on communication (reading/writing from a channel or IO). If such a concurrency construct were implemented in a language with channel-rich communication, deadlocks would superabound. However, such structured concurrency may be useful as a replacement for the common uses of channels.
 
 Nathan Smith quoted ([Knuth, 1974](https://scholar.google.com/scholar?cluster=17147143327681396418&hl=en&as_sdt=0,5), p.275) when he proposes moving away from the `go` keyword, which he argues creates goto-like spaghetti flow, in favor of structured concurrency.
 
