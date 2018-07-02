@@ -18,6 +18,19 @@ index = true
 
 **Abstract**: Optimizations that are able to rely on the presence of *canonical properties* of the program under optimization can be written to be more robust and efficient than an equivalent but generalized optimization which also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier optimization, it must be rebuilt –- often from scratch. This additional necessary work can be intractable when many optimizations are applied over large programs. This dissertation introduces a methodology for constructing optimizations so that the program remains in an *always-canonical* form as the program is mutated, making only local changes to restore broken properties.
 
+{{< collapsing-header
+    title="Maintaining Canonical Form After Edge Deletion"
+    detail="[Author's Version](/documents/Fritz - Maintaining Canonical Form After Edge Deletion.pdf) / Workshop Slides Available Soon"
+    anchor="icooolps"
+    >}}
+
+{{% small %}}By Eric Fritz -- presented at [ICOOOLPS, 2018](https://conf.researchr.org/track/ecoop-issta-2018/ICOOOLPS-2018-papers){{%/ small %}}
+
+**Abstract**:
+Waddle is a research intermediate-form optimizer that strictly maintains a canonical form similar to the loop-simplify form used in LLVM. The properties of this canonical form simplify movement of instructions to the edges of loops and often localize the effect on variables to the loop in which they are defined. The guarantee of canonical form preservation allows program transformations to rely on the presence of certain program properties without a necessary sanity-check or recalculation pre-step and does not impose an order of transformations in which reconstruction passes must be inserted.
+
+In this paper, we present a form-preserving edge deletion operation, in which a provably unreachable branch between two basic blocks is removed from the control flow graph. Additionally, we show a distinct application of the block ejection operation, a core procedure used for loop body reconstruction, as utilized in a function inlining transformation.
+
 ### 2017
 
 {{< collapsing-header
