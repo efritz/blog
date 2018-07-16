@@ -20,7 +20,7 @@ index = true
 
 {{< collapsing-header
     title="Maintaining Canonical Form After Edge Deletion"
-    detail="[Author's Version](/documents/Fritz - Maintaining Canonical Form After Edge Deletion.pdf) / Workshop Slides Available Soon"
+    detail="[Author's Version](/documents/Fritz - Maintaining Canonical Form After Edge Deletion.pdf) / [Workshop Slides](/documents/Fritz - ICOOOLPS2018.pdf)"
     anchor="icooolps"
     >}}
 
