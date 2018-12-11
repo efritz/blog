@@ -15,13 +15,11 @@ A [printable version](/documents/Fritz - Resume.pdf) of this resume is also avai
     detail="2015 to Now"
     >}}
 
-I am a software developer on the [Summit](https://www.shoretel.com/products/summit-platform-overview) team, which focuses on building Mitel's Unified Communications Platform as a Service. Externally, I am a primary author of the following client-facing features.
+I am a software developer on the Next Generation Architecture team, which is currently focused on building Mitel's Internet of Things Collaboration strategy. This involves building out infrastructure for registering Lora (and future) gateways and devices and reading, storing, and aggregating sensor readings.
 
-- Call Routing allows a tenant to configure a set of rewrite rules which will redirect incoming calls to a particular destination based on the call's source, the original destination, and arbitrary user-defined context.
+We were previously focused on building [Summit](https://www.mitel.com/en-us/products/business-phone-systems/cloud/other/summit-platform) as part of Mitel's Unified Communications Platform as a Service. This allowed customers to build voice and SMS applications as Lua code that would run in a containerized sandbox.
 
-- Speech Recognition provides an interface for application developers to match a user's vocal input against a speech grammar. Speech grammars can be built in real-time programmatically, allowing applications to recognize a very expressive set of vocal responses. See the [API Documentation](https://code.corvisacloud.com/summit/channel.html#recognize).
-
-Internally, I am a primary author the following infrastructure services written in a mix of Go, Python, and C (in the form of Redis modules).
+I was the primary author the following infrastructure services written in a mix of Go, Python, and C (in the form of Redis modules).
 
 - **Charon** is an distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon).
 
@@ -31,7 +29,7 @@ Internally, I am a primary author the following infrastructure services written 
 
 {{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
-- **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system. For the client-facing API, see the [Summit documentation](https://code.corvisacloud.com/summit/audiostream.html).
+- **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system.
 
 {{< collapsing-header
     title="ESDN, Inc."
@@ -44,12 +42,12 @@ Developed an e-commerce and supply chain web application which streamline intera
 
 {{< collapsing-header
     title="PhD Computer Science"
-    detail="2014 to Now"
+    detail="2014 to 2018"
     >}}
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{%/ small %}}
 
-My [doctoral dissertation](/papers#thesis) was supervised by [Dr. John Boyland](http://www.cs.uwm.edu/faculty/boyland/).
+My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](http://www.cs.uwm.edu/faculty/boyland/).
 
 {{< collapsing-header
     title="MS Computer Science"
@@ -58,7 +56,7 @@ My [doctoral dissertation](/papers#thesis) was supervised by [Dr. John Boyland](
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{%/ small %}}
 
-My Master's thesis, *Optimizing the RedPrairie Distance Cache*,  was supervised by [Dr. Christine Cheng](http://www.cs.uwm.edu/faculty/ccheng/).
+My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](http://www.cs.uwm.edu/faculty/ccheng/).
 
 **Abstract**: RedPrairie's[^1] Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entires which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns.
 
