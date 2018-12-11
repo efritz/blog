@@ -9,14 +9,14 @@ index = true
 ### 2018
 
 {{< collapsing-header
-    title="Waddle: Always-Canonical Intermediate Representation"
-    detail="Available Soon / [Proposal Slides](/documents/Fritz - PhD Proposal.pdf)"
-    anchor="thesis"
+    title="Waddle - Always-Canonical Intermediate Representation"
+    detail="[Author's Version](/documents/Fritz - Dissertation.pdf) / [Defense Slides](/documents/Fritz - PhD Defense.pdf) / [Proposal Slides](/documents/Fritz - PhD Proposal.pdf)"
+    anchor="dissertation"
     >}}
 
-{{% small %}}By Eric Fritz -- Doctoral Dissertation (Expected 2018){{%/ small %}}
+{{% small %}}By Eric Fritz -- Doctoral Dissertation 2018{{%/ small %}}
 
-**Abstract**: Optimizations that are able to rely on the presence of *canonical properties* of the program under optimization can be written to be more robust and efficient than an equivalent but generalized optimization which also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier optimization, it must be rebuilt –- often from scratch. This additional necessary work can be intractable when many optimizations are applied over large programs. This dissertation introduces a methodology for constructing optimizations so that the program remains in an *always-canonical* form as the program is mutated, making only local changes to restore broken properties.
+**Abstract**: Program transformations that are able to rely on the presence of canonical properties of the program undergoing optimization can be written to be more robust and efficient than an equivalent but generalized transformation that also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier transformation, it must be rebuilt (often from scratch). This additional work can be a dominating factor in compilation time when many transformations are applied over large programs. This dissertation introduces a methodology for constructing program transformations so that the program remains in an always-canonical form as the program is mutated, making only local changes to restore broken properties.
 
 {{< collapsing-header
     title="Maintaining Canonical Form After Edge Deletion"
