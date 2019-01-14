@@ -1,17 +1,15 @@
-
-
 <header id="site-header">
-    <div id="logo">
-        <h1><a href="{{ .Site.Params.index_page }}" alt="{{ .Site.Title }}">{{ .Site.Title }}</a></h1>
-    </div>
+  <div id="logo">
+    <h1><a href="{{ .Site.Params.index_page }}" alt="{{ .Site.Title }}">{{ .Site.Title }}</a></h1>
+  </div>
 
-    <div class="center">
-        {{ if .Site.Menus.main }}
-            <ul>
-                {{ range sort .Site.Menus.main }}
-                    <li><a href="{{ .URL }}">{{ .Name | upper }}</a></li>
-                {{ end }}
-            </ul>
-        {{ end }}
-    </div>
+  <div class="center">
+    {{ if .Site.Menus.main }}
+    <ul>
+      {{ range sort .Site.Menus.main }}
+      <li><a href="{{ .URL }}">{{ .Name | upper }}</a></li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
 </header>

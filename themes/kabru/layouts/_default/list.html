@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    {{ partial "head.html" . }}
+{{ partial "head.html" . }}
 
-    <body>
-        <div id="site-wrapper">
-            {{ partial "header.html" . }}
+<body>
+  <div id="site-wrapper">
+    {{ partial "header.html" . }}
 
-            <main role="main">
-                <div class="container">
-                    {{ if isset .Params "index" }}
-                        <section class="article-content">
-                            {{ .Content }}
-                        </section>
-                    {{ else }}
-                        <h2>Articles</h2>
+    <main role="main">
+      <div class="container">
+        {{ if isset .Params "index" }}
+        <section class="article-content">
+          {{ .Content }}
+        </section>
+        {{ else }}
+        <h2>Articles</h2>
 
-                        {{ if eq .Title "Articles" }}
-                            {{ range .Paginator.Pages.GroupByDate "2006" }}
-                                <h3>{{ .Key }}</h3>
+        {{ if eq .Title "Articles" }}
+        {{ range .Paginator.Pages.GroupByDate "2006" }}
+        <h3>{{ .Key }}</h3>
 
-                                {{ range .Pages }}
-                                    {{ .Render "li" }}
-                                {{ end }}
-                            {{ end }}
-                        {{ else }}
-                            <h3>Tag {{ .Title }}</h3>
+        {{ range .Pages }}
+        {{ .Render "li" }}
+        {{ end }}
+        {{ end }}
+        {{ else }}
+        <h3>Tag {{ .Title }}</h3>
 
-                            {{ range .Paginator.Pages }}
-                                {{ .Render "li" }}
-                            {{ end }}
-                        {{ end }}
-                    {{ end }}
-                </div>
+        {{ range .Paginator.Pages }}
+        {{ .Render "li" }}
+        {{ end }}
+        {{ end }}
+        {{ end }}
+      </div>
 
-                {{ partial "pagination.html" . }}
-            </main>
-        </div>
+      {{ partial "pagination.html" . }}
+    </main>
+  </div>
 
-        {{ partial "footer.html" . }}
-    </body>
+  {{ partial "footer.html" . }}
+</body>
 </html>

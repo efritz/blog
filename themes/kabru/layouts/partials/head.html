@@ -1,28 +1,28 @@
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ .Title }}{{ if eq .IsHome false }} | {{ .Site.Title }}{{ end }}</title>
-    <meta name="description" content="{{ .Site.Params.site_description }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ .Title }}{{ if eq .IsHome false }} | {{ .Site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ .Site.Params.site_description }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{ .Hugo.Generator }}
+  {{ .Hugo.Generator }}
 
-    <link rel="canonical" href="{{ .Site.BaseURL }}" />
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ .RSSLink }}">
+  <link rel="canonical" href="{{ .Site.BaseURL }}" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ .RSSLink }}">
 
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/normalize.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/normalize.css"/>
 
-    {{ with .Site.Params.highlight.style }}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/{{ . }}.min.css">
-    {{ else }}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
-    {{ end }}
+  {{ with .Site.Params.highlight.style }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/{{ . }}.min.css">
+  {{ else }}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/styles/default.min.css">
+  {{ end }}
 
-    <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/main.css"/>
+  <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}css/main.css"/>
 
-    {{ range .Site.Params.custom_css }}
-        <link rel="stylesheet" href="{{ . }}">
-    {{ end }}
+  {{ range .Site.Params.custom_css }}
+  <link rel="stylesheet" href="{{ . }}">
+  {{ end }}
 </head>

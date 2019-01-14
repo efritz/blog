@@ -2,36 +2,36 @@
  * --------------------------------------------*/
 
 .thumbnail {
-    width: 100%;
+  width: 100%;
 }
 
 .lightbox {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.85);
+  display: none;
+  position: fixed;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.85);
 }
 
 .lightbox img {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: 0px 0px 1px 1px #ccc;
-    max-height: 90%;
-    max-width: 90%;
-}  
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0px 0px 1px 1px #ccc;
+  max-height: 90%;
+  max-width: 90%;
+}
 
 .lightbox:target {
-    outline: none;
-    display: block;
+  outline: none;
+  display: block;
 }
 
 /* Resume
@@ -39,10 +39,28 @@
 
 .class-legend,
 .class-icon {
-    color: #2a7ae2;
+  color: #2a7ae2;
 }
 
 .class-icon {
-    float: right;
-    margin-top: 5px;
+  float: right;
+  margin-top: 5px;
+}
+
+/* Papers
+ * --------------------------------------------*/
+
+.attachments ul {
+  list-style: none;
+  padding: 0;
+}
+
+.attachments li {
+  display: inline-block;
+}
+
+.attachments li+li:before {
+  content: "\00b7";
+  padding-left: 5px;
+  padding-right: 5px;
 }

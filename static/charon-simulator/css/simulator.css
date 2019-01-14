@@ -1,12 +1,12 @@
 body {
-    font-size: .8em;
+  font-size: .8em;
 }
 
 .table th {
-    border-top: 0px;
+  border-top: 0px;
 }
 
 .table th,
 .table td {
-    text-align: center;
+  text-align: center;
 }

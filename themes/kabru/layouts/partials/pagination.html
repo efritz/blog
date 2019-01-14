@@ -1,17 +1,17 @@
 {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
-    <nav role="pagination" class="pagination container float-container no-collapse">
-        {{ if .Paginator.HasNext }}
-            <div class="left">
-                <i class="fa fa-angle-double-left"></i>
-                <a href="{{.Paginator.Next.URL}}">Older</a>
-            </div>
-        {{ end }}
+<nav role="pagination" class="pagination container float-container no-collapse">
+  {{ if .Paginator.HasNext }}
+  <div class="left">
+    <i class="fa fa-angle-double-left"></i>
+    <a href="{{.Paginator.Next.URL}}">Older</a>
+  </div>
+  {{ end }}
 
-        {{ if .Paginator.HasPrev }}
-            <div class="right">
-                <a href="{{.Paginator.Prev.URL}}">Newer</a>
-                <i class="fa fa-angle-double-right"></i>
-            </div>
-        {{ end }}
-    </nav>
+  {{ if .Paginator.HasPrev }}
+  <div class="right">
+    <a href="{{.Paginator.Prev.URL}}">Newer</a>
+    <i class="fa fa-angle-double-right"></i>
+  </div>
+  {{ end }}
+</nav>
 {{ end }}

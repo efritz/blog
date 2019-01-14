@@ -1,21 +1,21 @@
 <footer id="site-footer">
-    <div class="container">
-        <span class="small">
-            &copy; {{ now.Year }} - {{ .Site.Params.author }}.
-            <a href="https://creativecommons.org/licenses/by/3.0/">Some Rights Reserved.</a>
-        </span>
+  <div class="container">
+    <span class="small">
+      &copy; {{ now.Year }} - {{ .Site.Params.author }}.
+      <a href="https://creativecommons.org/licenses/by/3.0/">Some Rights Reserved.</a>
+    </span>
 
-        <div class="social">
-            {{ partial "social.html" . }}
-        </div>
+    <div class="social">
+      {{ partial "social.html" . }}
     </div>
+  </div>
 </footer>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/highlight.min.js"></script>
 
 {{ range .Site.Params.highlight.languages }}
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/{{ . }}.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/{{ . }}.min.js"></script>
 {{ end }}
 
 {{- range .Site.Params.custom_js -}}
@@ -23,9 +23,9 @@
 {{ end }}
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        hljs.initHighlightingOnLoad();
-    });
+  $(document).ready(function() {
+    hljs.initHighlightingOnLoad();
+  });
 </script>
 
 {{ template "_internal/google_analytics.html" . }}

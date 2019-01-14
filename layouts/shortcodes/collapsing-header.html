@@ -1,9 +1,9 @@
 <div class="float-container">
-    <h4 class="left" {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>
-        {{ .Get "title" | markdownify }}
-    </h4>
+  <h4 class="left" {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>
+    {{ .Get "title" | markdownify }}
+  </h4>
 
-    <div class="right date">
-        {{ .Get "detail" | markdownify }}
-    </div>
+  <div class="right date">
+    {{ .Get "detail" | markdownify }}
+  </div>
 </div>
