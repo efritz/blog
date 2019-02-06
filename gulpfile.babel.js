@@ -37,7 +37,10 @@ gulp.task('minify-css', () => {
 });
 
 gulp.task('build', gulp.series(
+  'build-site',
+  gulp.parallel(
     'minify-html',
     'minify-js',
     'minify-css',
+  ),
 ));
