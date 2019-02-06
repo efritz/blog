@@ -1,5 +1,4 @@
 import gulp from 'gulp'
-import runSequence from 'run-sequence'
 import babel from 'gulp-babel'
 import cleancss from 'gulp-clean-css'
 import htmlmin from 'gulp-htmlmin'
@@ -25,7 +24,7 @@ gulp.task('minify-html', () => {
 gulp.task('minify-js', () => {
   return gulp.src('public/**/*.js', {base: './'})
     .pipe(babel({
-      presets: ['env']
+      presets: ['@babel/env']
     }))
     .pipe(uglify())
     .pipe(gulp.dest('./'));
@@ -37,10 +36,8 @@ gulp.task('minify-css', () => {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('build', callback => {
-  runSequence(
-    'build-site',
-    ['minify-html', 'minify-js', 'minify-css'],
-    callback,
-  );
-});
+gulp.task('build', gulp.series(
+    'minify-html',
+    'minify-js',
+    'minify-css',
+));
