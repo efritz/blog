@@ -1,16 +1,16 @@
-languageCode = "en-us"
-baseurl = "https://eric-fritz.com/"
-title = "Eric Fritz"
-theme = "kabru"
+languageCode = 'en-us'
+baseurl = 'https://eric-fritz.com/'
+title = 'Eric Fritz'
+theme = 'kabru'
 paginate = 20
 
-disqusShortname = "eric-fritz"
-googleAnalytics = "UA-24421005-1"
+disqusShortname = 'eric-fritz'
+googleAnalytics = 'UA-24421005-1'
 
 [params]
-  author = "Eric Fritz"
-  dateformat = "Jan 02, 2006"
-  index_page = "/articles/"
+  author = 'Eric Fritz'
+  dateformat = 'Jan 02, 2006'
+  index_page = '/articles/'
   custom_css = ['/css/overrides.css']
   custom_js  = [
     '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
@@ -18,33 +18,33 @@ googleAnalytics = "UA-24421005-1"
   ]
 
 [params.social]
-  email = "eric@eric-fritz.com"
-  google = ""
-  facebook = ""
-  twitter = ""
-  instagram = ""
-  linkedIn = ""
-  github = "efritz"
-  stackoverflow = ""
+  email = 'eric@eric-fritz.com'
+  google = ''
+  facebook = ''
+  twitter = ''
+  instagram = ''
+  linkedIn = ''
+  github = 'efritz'
+  stackoverflow = ''
 
 [params.highlight]
-  style = "github"
-  languages = ["go", "java", "cpp", "dockerfile"]
+  style = 'github'
+  languages = ['go', 'java', 'cpp', 'dockerfile']
 
 [[menu.main]]
-  name = "articles"
-  identifier = "articles"
+  name = 'articles'
+  identifier = 'articles'
   weight = 100
-  url = "/articles/"
+  url = '/articles/'
 
 [[menu.main]]
-  name = "papers"
-  identifier = "papers"
+  name = 'papers'
+  identifier = 'papers'
   weight = 200
-  url = "/papers/"
+  url = '/papers/'
 
 [[menu.main]]
-  name = "resume"
-  identifier = "resume"
+  name = 'resume'
+  identifier = 'resume'
   weight = 400
-  url = "/resume/"
+  url = '/resume/'
