@@ -6,7 +6,7 @@ index = true
 
 ## Resume
 
-A [printable version](/documents/Fritz - Resume.pdf) of this resume is also available.
+A [printable version]({{% asset "/papers/Fritz - Resume.pdf" %}}) of this resume is also available.
 
 ### Work History
 

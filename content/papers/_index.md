@@ -19,9 +19,9 @@ index = true
 **Abstract**: Program transformations that are able to rely on the presence of canonical properties of the program undergoing optimization can be written to be more robust and efficient than an equivalent but generalized transformation that also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier transformation, it must be rebuilt (often from scratch). This additional work can be a dominating factor in compilation time when many transformations are applied over large programs. This dissertation introduces a methodology for constructing program transformations so that the program remains in an always-canonical form as the program is mutated, making only local changes to restore broken properties.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Dissertation.pdf)
-* [Defense Slides](/documents/Fritz - PhD Defense.pdf)
-* [Proposal Slides](/documents/Fritz - PhD Proposal.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Dissertation.pdf" %}})
+* [Defense Slides]({{% asset "/papers/Fritz - PhD Defense.pdf" %}})
+* [Proposal Slides]({{% asset "/papers/Fritz - PhD Proposal.pdf" %}})
 {{% /attachments %}}
 
 {{< collapsing-header
@@ -38,8 +38,8 @@ Waddle is a research intermediate-form optimizer that strictly maintains a canon
 In this paper, we present a form-preserving edge deletion operation, in which a provably unreachable branch between two basic blocks is removed from the control flow graph. Additionally, we show a distinct application of the block ejection operation, a core procedure used for loop body reconstruction, as utilized in a function inlining transformation.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Maintaining Canonical Form After Edge Deletion.pdf)
-* [Workshop Slides](/documents/Fritz - ICOOOLPS2018.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Maintaining Canonical Form After Edge Deletion.pdf" %}})
+* [Workshop Slides]({{% asset "/papers/Fritz - ICOOOLPS2018.pdf" %}})
 {{% /attachments %}}
 
 ### 2017
@@ -55,7 +55,7 @@ In this paper, we present a form-preserving edge deletion operation, in which a 
 **Abstract**: Charon is a service designed to increase the stability of a distributed system by preventing the overcommitment of limited resources during extreme load. The service monitors the access history of resources and is used as a central authority which either grants or denies requests for resource acquisition and use. This paper describes the architecture and feature set of Charon, as well as the rationale behind design decisions.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Charon - The Design of a Limiting Microservice.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Charon - The Design of a Limiting Microservice.pdf" %}})
 {{% /attachments %}}
 
 {{< collapsing-header
@@ -68,7 +68,7 @@ In this paper, we present a form-preserving edge deletion operation, in which a 
 **Abstract**: Asynchronous programs in JavaScript using callbacks and promises are difficult to write correctly. Many programs have subtle errors due to the unwanted interaction of event handlers. To fix such errors, the programmer is burdened with explicit registration and de-registration of event handlers. This produces fragile code which is difficult to read and maintain. Arrows, a generalization of monads, are an elegant solution to asynchronous program composition. In this paper, we present the semantics of an Arrow-based DSL in JavaScript which can encode asynchronous programs as a state machines where edge transitions are triggered by external events. To ensure that arrows are composed correctly, we provide an optional type-checker that reports errors before the machine begins execution.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Typing and Semantics of Asynchronous Arrows in JavaScript.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Typing and Semantics of Asynchronous Arrows in JavaScript.pdf" %}})
 {{% /attachments %}}
 
 ### 2016
@@ -83,8 +83,8 @@ In this paper, we present a form-preserving edge deletion operation, in which a 
 **Abstract**: Developing scalable and robust Web applications is difficult. One obstacle is JavaScript's event model, which makes asynchronous programs hard to maintain and extend. In this paper, we present the case study of a JavaScript library based on Arrows for asynchronous computation. Our library enables modular and more understandable programs and supports static type inference and visualization of control flow.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Arrows in Commercial Web Applications.pdf)
-* [Workshop Slides](/documents/Fritz - HotWeb2016.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Arrows in Commercial Web Applications.pdf" %}})
+* [Workshop Slides]({{% asset "/papers/Fritz - HotWeb2016.pdf" %}})
 {{% /attachments %}}
 
 ### 2015
@@ -99,6 +99,6 @@ In this paper, we present a form-preserving edge deletion operation, in which a 
 **Abstract**: Asynchronous programming with callbacks in JavaScript leads to code that is difficult to understand and maintain. Arrows, a generalization of monads, are an elegant solution to asynchronous program composition. Unfortunately, improper arrow composition can cause mysterious failures with subtle sources. We present an arrows-based DSL in JavaScript which encodes semantics similar to ES6 Promises and an optional type-checker that reports errors at arrow composition time.
 
 {{% attachments %}}
-* [Author's Version](/documents/Fritz - Type Inference of Asynchronous Arrows in JavaScript.pdf)
-* [Workshop Slides](/documents/Fritz - REBLS2015.pdf)
+* [Author's Version]({{% asset "/papers/Fritz - Type Inference of Asynchronous Arrows in JavaScript.pdf" %}})
+* [Workshop Slides]({{% asset "/papers/Fritz - REBLS2015.pdf" %}})
 {{% /attachments %}}
