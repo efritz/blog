@@ -12,7 +12,7 @@ googleAnalytics = 'UA-24421005-1'
   dateformat = 'Jan 02, 2006'
   index_page = '/articles/'
   resources_root = 'https://laniakea.sfo2.digitaloceanspaces.com/blog'
-  custom_css = ['/css/overrides.css']
+  custom_css = ['/css/shortcodes.css']
   custom_js  = [
     '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
     '/js/mathjax.js',

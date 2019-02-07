@@ -34,20 +34,23 @@
   display: block;
 }
 
-/* Resume
+/* Legend
  * --------------------------------------------*/
 
-.class-legend,
-.class-icon {
+.class-legend {
   color: #2a7ae2;
 }
 
+/* Resume
+ * --------------------------------------------*/
+
 .class-icon {
+  color: #2a7ae2;
   float: right;
   margin-top: 5px;
 }
 
-/* Papers
+/* Attachments
  * --------------------------------------------*/
 
 .attachments ul {
