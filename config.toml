@@ -9,7 +9,7 @@ googleAnalytics = 'UA-24421005-1'
 
 [params]
   author = 'Eric Fritz'
-  dateformat = 'Jan 02, 2006'
+  dateformat = '01.02.2006'
   index_page = '/articles/'
   resources_root = 'https://laniakea.sfo2.digitaloceanspaces.com/blog'
   custom_css = ['/css/shortcodes.css']

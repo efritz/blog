@@ -1,0 +1,11 @@
+<article>
+  <div class="row">
+    <div class="left">{{ .Get "meta" }}</div>
+
+    <div class="right">
+      <h4 {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>{{ .Get "title" | markdownify }}</h4>
+
+      {{ .Inner | markdownify }}
+    </div>
+  </div>
+</article>

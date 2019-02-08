@@ -13,7 +13,7 @@ In order to find the *cost* of a particular route, the distance between two stop
 
 [^1]: If a query is made now, it is likely that the same query will be made again in the near future.
 
-### Hash Tables <i class="fa fa-bolt" aria-hidden="true"></i> Lightning Review
+### Lightning Review of Hash Tables
 
 Hash tables fall come in two varieties. A hash table that uses *separate chaining* stores a reference to a linked list in each slot. Lookup, insertion and deletion from the hash table is done by searching, inserting, and removing a node from the list in the correct slot. The cost of a lookup in such a table is linear to the size of the linked list. These lists are fairly short in practice, assuming an evenly-distributed hash function. Java Collection's [HashMap](http://www.docjar.com/html/api/java/util/HashMap.java.html) is an example of this technique.
 

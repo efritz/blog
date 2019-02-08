@@ -34,18 +34,15 @@
   display: block;
 }
 
-/* Legend
- * --------------------------------------------*/
-
-.class-legend {
-  color: #2a7ae2;
-}
-
 /* Resume
  * --------------------------------------------*/
 
+.class-legend,
 .class-icon {
   color: #2a7ae2;
+}
+
+.class-icon {
   float: right;
   margin-top: 5px;
 }
@@ -62,8 +59,7 @@
   display: inline-block;
 }
 
-.attachments li+li:before {
-  content: "\00b7";
-  padding-left: 5px;
-  padding-right: 5px;
+.attachments li:not(:last-child)::after {
+  content: '\00b7';
+  margin-left: .25em;
 }

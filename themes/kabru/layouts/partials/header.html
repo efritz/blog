@@ -3,7 +3,7 @@
     <h1><a href="{{ .Site.Params.index_page }}" alt="{{ .Site.Title }}">{{ .Site.Title }}</a></h1>
   </div>
 
-  <div class="center">
+  <nav role="nav">
     {{ if .Site.Menus.main }}
     <ul>
       {{ range sort .Site.Menus.main }}
@@ -11,5 +11,5 @@
       {{ end }}
     </ul>
     {{ end }}
-  </div>
+  </nav>
 </header>

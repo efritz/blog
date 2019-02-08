@@ -10,9 +10,9 @@ A [printable version]({{% asset "/papers/Fritz - Resume.pdf" %}}) of this resume
 
 ### Work History
 
-{{< collapsing-header
+{{< content
     title="Mitel"
-    detail="2015 to Now"
+    meta="2015 to Present"
     >}}
 
 I am a software developer on the Next Generation Architecture team, which is currently focused on building Mitel's Internet of Things Collaboration strategy. This involves building out infrastructure for registering Lora (and future) gateways and devices and reading, storing, and aggregating sensor readings.
@@ -30,41 +30,48 @@ I was the primary author the following infrastructure services written in a mix 
 {{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
 - **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system.
+{{< /content >}}
 
-{{< collapsing-header
+{{< content
     title="ESDN, Inc."
-    detail="2008 to 2011"
+    meta="2008 to 2011"
     >}}
 
 Developed an e-commerce and supply chain web application which streamline interactions between jewelry consumers, retailers, and suppliers. Major projects include a consumer-facing jewelry collection showcase and a retail (brick-and-mortar) location management system. Primary technologies include ASP.NET MVC using C# and MSSQL.
+{{< /content >}}
 
 ### Education
 
-{{< collapsing-header
+{{< content
     title="PhD Computer Science"
-    detail="2014 to 2018"
+    meta="2014 to 2018"
     >}}
 
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{%/ small %}}
+{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](http://www.cs.uwm.edu/faculty/boyland/).
+{{< /content >}}
 
-{{< collapsing-header
+{{< content
     title="MS Computer Science"
-    detail="2011 to 2013"
+    meta="2011 to 2013"
     >}}
 
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{%/ small %}}
+{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](http://www.cs.uwm.edu/faculty/ccheng/).
 
-**Abstract**: RedPrairie's[^1] Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entires which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns.
+RedPrairie's Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entires which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns.
+
+RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
+
+{{< /content >}}
 
 ### Teaching History
 
-{{< collapsing-header
+{{< content
     title="University of Wisconsin -- Milwaukee"
-    detail="2011 to 2016"
+    meta="2011 to 2016"
     >}}
 
 - {{% icon "check-square class-icon" %}} CompSci **658 / 790** -- iOS Programming
@@ -82,17 +89,16 @@ My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christ
 
 {{< legend
     icon="check-square"
-    content="*created* -- designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
+    content="*created*: designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
     >}}
 
 {{< legend
     icon="square"
-    content="*instructed* -- re-designed the coursework and lectures of an existing course"
+    content="*instructed*: re-designed the coursework and lectures of an existing course"
     >}}
 
 {{< legend
     icon="square-o"
-    content="*assisted* -- instructed labs, graded student work, prepared assignments"
+    content="*assisted*: instructed labs, graded student work, prepared assignments"
     >}}
-
-[^1]: RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
+{{< /content >}}
