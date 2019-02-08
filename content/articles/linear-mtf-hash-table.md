@@ -17,7 +17,7 @@ In order to find the *cost* of a particular route, the distance between two stop
 
 Hash tables fall come in two varieties. A hash table that uses *separate chaining* stores a reference to a linked list in each slot. Lookup, insertion and deletion from the hash table is done by searching, inserting, and removing a node from the list in the correct slot. The cost of a lookup in such a table is linear to the size of the linked list. These lists are fairly short in practice, assuming an evenly-distributed hash function. Java Collection's [HashMap](http://www.docjar.com/html/api/java/util/HashMap.java.html) is an example of this technique.
 
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" >}}
+{{< img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" absolute="true" >}}
 
 A hash table that uses *open addressing*, on the other hand, stores key/value pairs directly in the table instead of in an auxiliary data structure. However, this makes *hash collisions* a bit more interesting. Suppose two keys $k_1$ and $k_2$ hash to the same slot $i$ (extremely likely without [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function), which has its own troubles). Obviously, both keys cannot occupy the same slot simultaneously. If $k_1$ occupies slot $i$, $k_2$ may attempt to occupy slot $i + 1$, then $i + 2$ and so on until a free slot is found. Lookup happens symmetrically, where the search begins at slot $i$ and proceeds along the sequence $i + 1$, $i + 2$, $\dots$, until we encounter one of the following conditions.
 
@@ -27,7 +27,7 @@ A hash table that uses *open addressing*, on the other hand, stores key/value pa
 
 If we arrive back at index $i$ without seeing the target key, then the table is full (and every slot is occupied). If we encounter a slot containing `null`, then the key does not exist in the table - if it was present it would have been inserted here or earlier in the search sequence. In order to guarantee that this holds on deletion, entries which are removed are replaced by a special `DELETED` *tombstone* instead of being set back to `null`.
 
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg" >}}
+{{< img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg" absolute="true" >}}
 
 The cost of a lookup in such a table is less direct. Several slots in the same neighborhood may try to write to the same set of slots, leading to [primary clustering](https://en.wikipedia.org/wiki/Primary_clustering). If key $k$ hashes to slot $i$, it is not guaranteed that the key residing in slot $i$ is equal to $k$ - it may have just have been written there because it was the first open slot in its probe sequence.
 
