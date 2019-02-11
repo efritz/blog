@@ -231,6 +231,7 @@ code {
 #site-header li:not(:last-child)::after {
   content: '\00b7';
   margin-left: .25em;
+  margin-right: .25em;
 }
 
 main {
