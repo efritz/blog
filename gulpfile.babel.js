@@ -2,12 +2,7 @@ import gulp from 'gulp'
 import babel from 'gulp-babel'
 import cleancss from 'gulp-clean-css'
 import htmlmin from 'gulp-htmlmin'
-import shell from 'gulp-shell'
 import uglify from 'gulp-uglify'
-
-gulp.task('build-site', shell.task([
-  'hugo',
-]));
 
 gulp.task('minify-html', () => {
   return gulp.src('public/**/*.html')
@@ -36,11 +31,8 @@ gulp.task('minify-css', () => {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('build', gulp.series(
-  'build-site',
-  gulp.parallel(
-    'minify-html',
-    'minify-js',
-    'minify-css',
-  ),
+gulp.task('minify', gulp.parallel(
+  'minify-html',
+  'minify-js',
+  'minify-css',
 ));

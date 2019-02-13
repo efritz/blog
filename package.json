@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "gulp build"
+    "build": "hugo",
+    "minify": "gulp minify"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -12,7 +13,6 @@
     "gulp-clean-css": "^4.0.0",
     "gulp-cli": "^2.0.1",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-shell": "^0.6.5",
     "gulp-uglify": "^3.0.1",
     "gulp": "^4.0.0"
   },
