@@ -28,7 +28,11 @@ action "Master Only" {
 }
 
 action "Deploy" {
-  uses = "docker://alpine:latest"
+  uses = "docker://alpine:3.8"
   needs = ["Master Only"]
-  args = "echo \"test\""
+  secrets = ["SECRET_KEY"]
+  env = {
+    ACCESS_KEY = "EFZG2XIFKGU5ZYI6SQ4V"
+  }
+  runs = "./deploy.sh"
 }
