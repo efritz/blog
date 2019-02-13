@@ -19,4 +19,4 @@ host_bucket = %(bucket)s.sfo2.digitaloceanspaces.com
 EOF
 
 # Publish public directory to Digital Ocean bucket as public files
-s3cmd --config .s3cfg put public s3://laniakea/blog --acl-public --recursive
+s3cmd --config .s3cfg put public/* s3://laniakea/blog/ --acl-public --recursive
