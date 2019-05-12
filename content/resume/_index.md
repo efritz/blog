@@ -15,7 +15,7 @@ A [printable version]({{% asset "/papers/Fritz - Resume.pdf" %}}) of this resume
     meta="2015 to Present"
     >}}
 
-I am a senior software developer on the Labs team, which is currently focused on building the an IFTTT-like engine as well as the surrounding ecosystem to allow third-parties to easily integrate with customer-defined *workflows*.
+I am a senior software developer on the Labs team, which is currently focused on building an IFTTT-like engine as well as the surrounding ecosystem to allow third-parties to easily integrate with customer-defined *workflows*.
 
 We previously designed Mitel's Internet of Things Collaboration strategy, which involved building out infrastructure for registering LoRa gateways and devices and reading, storing, and aggregating sensor readings. Prior to an acquisition, we were focused on building [Summit](https://www.mitel.com/en-us/products/business-phone-systems/cloud/other/summit-platform) as part of Mitel's Unified Communications Platform as a Service offering. This allowed customers to build voice and SMS applications as Lua code that would run in a containerized sandbox.
 
