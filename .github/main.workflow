@@ -34,5 +34,5 @@ action "Deploy" {
   env = {
     ACCESS_KEY = "EFZG2XIFKGU5ZYI6SQ4V"
   }
-  runs = "./deploy.sh"
+  runs = "./bin/deploy.sh"
 }
