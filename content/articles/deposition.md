@@ -1,8 +1,8 @@
 +++
-date = "2018-04-16T00:00:00-00:00"
 title = "Deposition"
-showpagemeta = "true"
+date = "2018-04-16T00:00:00-00:00"
 tags = ["building", "deployment", "standards"]
+showpagemeta = true
 +++
 
 ### Impetus

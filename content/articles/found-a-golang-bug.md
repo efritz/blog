@@ -1,8 +1,8 @@
 +++
-date = "2019-02-03T00:00:00-00:00"
 title = "Found a Golang Bug!"
-showpagemeta = "true"
+date = "2019-02-03T00:00:00-00:00"
 tags = ["go", "bugs"]
+showpagemeta = true
 +++
 
 I have to say, this was a cool milestone in my career.

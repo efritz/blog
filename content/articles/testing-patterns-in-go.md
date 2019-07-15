@@ -1,8 +1,8 @@
 +++
-date = "2018-07-20T00:00:00-00:00"
 title = "Testing Patterns in Go"
-showpagemeta = "true"
+date = "2018-07-20T00:00:00-00:00"
 tags = ["testing", "go"]
+showpagemeta = true
 +++
 
 This article outlines some patterns of unit testing in Golang that I have found, over time, to work extremely well. he testing code here assumes the use of the [gomega](https://onsi.github.io/gomega) assertion library and the [sweet](https://github.com/aphistic/sweet) test-suite runner library.

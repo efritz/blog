@@ -1,8 +1,8 @@
 +++
-date = "2018-05-01T00:00:00-00:00"
 title = "Arrow-Structured Concurrency"
-showpagemeta = "true"
+date = "2018-05-01T00:00:00-00:00"
 tags = ["theory", "concurrency"]
+showpagemeta = true
 +++
 
 This article adapts some ideas from [Arrows for JavaScript](https://arrowsjs.io/) for use as concurrency *primitives* for some high-level language as a response to Nathaniel Smith's article [Notes on structured concurrency, or: Go statement considered harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/) published on April 25, 2018 and Martin Sústrik's response [Structured Concurrency in High-level Languages](http://250bpm.com/blog:124) published on April 28th, 2018.

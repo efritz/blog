@@ -6,7 +6,9 @@
     </span>
 
     <div class="social">
-      {{ partial "social.html" . }}
+      <a href="{{ .Site.BaseURL }}index.xml"><i class="fa fa-rss"></i></a>
+      <a href="mailto:{{.Site.Params.social.email}}"><i class="fa fa-envelope-square" aria-hidden="true"></i></a>
+      <a href="https://github.com/{{.Site.Params.social.github}}"><i class="fa fa-github-square" aria-hidden="true"></i></a>
     </div>
   </div>
 </footer>
@@ -18,9 +20,8 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.6.0/languages/{{ . }}.min.js"></script>
 {{ end }}
 
-{{- range .Site.Params.custom_js -}}
-<script src="{{ . }}"></script>
-{{ end }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="{{ .Site.BaseURL }}js/mathjax.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {

@@ -1,8 +1,8 @@
 +++
-date = "2017-08-30T00:00:00-00:00"
 title = "Linear MTF Hash Table"
-showpagemeta = "true"
+date = "2017-08-30T00:00:00-00:00"
 tags = ["theory", "datastructures"]
+showpagemeta = true
 +++
 
 Vehicular routing is a very interesting real-world problem that contains two distinct but interacting combinatorial optimization problems: the [travelling salesman problem (TSP)](https://en.wikipedia.org/wiki/Travelling_salesman_problem) and the [0-1 knapsack problem (KP)](https://en.wikipedia.org/wiki/Knapsack_problem). This unison of problems, unfortunately, creates a lot of opportunity for local maxima. Finding a better route for a particular truck may decrease the optimality of the contents fo the truck, and vice versa.

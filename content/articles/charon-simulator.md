@@ -1,8 +1,8 @@
 +++
-date = "2017-08-12T00:00:00-00:00"
 title = "Charon Simulator"
-showpagemeta = "true"
+date = "2017-08-12T00:00:00-00:00"
 tags = ["charon"]
+showpagemeta = true
 +++
 
 {{% small %}}To skip the fluff and get to the good stuff, see one of the sample configuration links in the [TL;DR](#sample-configurations).{{% /small %}}

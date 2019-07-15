@@ -1,10 +1,7 @@
 languageCode = 'en-us'
 baseurl = 'https://eric-fritz.com/'
 title = 'Eric Fritz'
-theme = 'kabru'
 paginate = 20
-
-disqusShortname = 'eric-fritz'
 googleAnalytics = 'UA-24421005-1'
 
 [params]
@@ -12,25 +9,13 @@ googleAnalytics = 'UA-24421005-1'
   dateformat = '01.02.2006'
   index_page = '/articles/'
   resources_root = 'https://assets.eric-fritz.com'
-  custom_css = ['/css/shortcodes.css']
-  custom_js  = [
-    '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
-    '/js/mathjax.js',
-  ]
+
+[params.highlight]
+  languages = ['go', 'java', 'cpp', 'dockerfile']
 
 [params.social]
   email = 'eric@eric-fritz.com'
-  google = ''
-  facebook = ''
-  twitter = ''
-  instagram = ''
-  linkedIn = ''
   github = 'efritz'
-  stackoverflow = ''
-
-[params.highlight]
-  style = 'github'
-  languages = ['go', 'java', 'cpp', 'dockerfile']
 
 [[menu.main]]
   name = 'articles'

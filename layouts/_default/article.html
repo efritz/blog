@@ -6,12 +6,4 @@
   <section class="article-content">
     {{ .Content }}
   </section>
-
-  {{ if isset .Params "showpagemeta" }}
-  <footer class="article-footer">
-    <div id="comments">
-      {{ template "_internal/disqus.html" . }}
-    </div>
-  </footer>
-  {{ end }}
 </article>

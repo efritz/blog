@@ -1,8 +1,8 @@
 +++
-date = "2017-08-14T00:00:00-00:00"
 title = "An Adventure in Unstable APIs"
-showpagemeta = "true"
+date = "2017-08-14T00:00:00-00:00"
 tags = ["charon", "whoops"]
+showpagemeta = true
 +++
 
 Antirez [announced](http://antirez.com/news/106) the Redis module system in May 2016. At this point in time, [Charon](/papers#charon)'s Redis interface was a set of Lua scripts which was the best available solution for atomicity and bandwidth at the time. Because scripts simply invoke other Redis commands, the data model had to be designed carefully to fit into Redis's supported datatypes. As a result, each script modified up to a few dozen keys and made debugging (which usually required inspection of values in the database) difficult.
