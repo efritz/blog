@@ -1,8 +1,8 @@
 languageCode = 'en-us'
-baseurl = 'https://eric-fritz.com/'
 title = 'Eric Fritz'
-paginate = 20
+baseurl = 'https://eric-fritz.com'
 googleAnalytics = 'UA-24421005-1'
+paginate = 20
 
 [params]
   author = 'Eric Fritz'
