@@ -17,7 +17,7 @@ body {
 
 ::selection {
   color: #fff;
-  background-color: #008659;
+  background-color: #4c98b2;
 }
 
 h1,
@@ -62,7 +62,7 @@ strong {
 
 a,
 a:visited {
-  color: #00c07f;
+  color: #4c98b2;
   text-decoration: none;
   transition-property: all;
   transition-duration: 0.15s;
@@ -199,7 +199,7 @@ code {
 }
 
 #site-header a:hover {
-  color: #00c07f;
+  color: #4c98b2;
   text-decoration: none;
 }
 
@@ -208,7 +208,7 @@ code {
   top: 10px;
   right: 15px;
   padding: 2px 10px;
-  background-color: #00c07f;
+  background-color: #4c98b2;
 }
 
 #logo a:hover {
