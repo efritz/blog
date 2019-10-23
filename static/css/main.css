@@ -384,3 +384,12 @@ html, body {
     color: inherit;
   }
 }
+
+/* Miscellaneous Styles
+* --------------------------------------------*/
+
+img[alt=sourcegraph] {
+  width: 25px;
+  padding-right: 5px;
+  vertical-align: middle;
+}

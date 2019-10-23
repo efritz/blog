@@ -10,11 +10,22 @@ A [printable version]({{% asset "/papers/Fritz - Resume.pdf" %}}) of this resume
 ### Work History
 
 {{< content
-    title="Mitel"
-    meta="2015 to Present"
+    title="![sourcegraph](https://sourcegraph.com/.assets/img/sourcegraph-mark.svg) Sourcegraph"
+    meta="2019 to Present"
     >}}
 
-I am a senior software developer on the Labs team, which is currently focused on building an IFTTT-like engine as well as the surrounding ecosystem to allow third-parties to easily integrate with customer-defined *workflows*.
+I am a software engineer on the Code Intelligence team. I am currently working on providing fast and precise code intelligence to power operations such as cross-repository jump-to-definition and cross-repository find-references.
+
+We are currently utilizing Microsoft's [Language Server Index Format](https://code.visualstudio.com/blogs/2019/02/19/lsif) as an upload format. For more information, see the [introductory blog post](https://about.sourcegraph.com/blog/code-intelligence-with-lsif). In addition to building the infrastructure for serving LSIF data, I have also worked on writing LSIF indexers for Go, Python, Typescript, and Java. Our progress can be tracked on [lsif.dev](https://lsif.dev/).
+
+{{< /content >}}
+
+{{< content
+    title="Mitel"
+    meta="2015 to 2019"
+    >}}
+
+I am a senior software engineer on the Labs team, which is currently focused on building an IFTTT-like engine as well as the surrounding ecosystem to allow third-parties to easily integrate with customer-defined *workflows*.
 
 We previously designed Mitel's Internet of Things Collaboration strategy, which involved building out infrastructure for registering LoRa gateways and devices and reading, storing, and aggregating sensor readings. Prior to an acquisition, we were focused on building [Summit](https://www.mitel.com/en-us/products/business-phone-systems/cloud/other/summit-platform) as part of Mitel's Unified Communications Platform as a Service offering. This allowed customers to build voice and SMS applications as Lua code that would run in a containerized sandbox.
 
