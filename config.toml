@@ -4,14 +4,18 @@ baseurl = 'https://eric-fritz.com'
 googleAnalytics = 'UA-24421005-1'
 paginate = 20
 
+[markup]
+  [markup.highlight]
+    codeFences = true
+    style = "github"
+    lineNos = true
+    noClasses = true
+
 [params]
   author = 'Eric Fritz'
   dateformat = '01.02.2006'
   index_page = '/articles/'
   resources_root = 'https://assets.eric-fritz.com'
-
-[params.highlight]
-  languages = ['go', 'java', 'cpp', 'dockerfile']
 
 [params.social]
   email = 'eric@eric-fritz.com'

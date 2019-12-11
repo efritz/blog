@@ -160,29 +160,24 @@ main {
 /* Code
 * --------------------------------------------*/
 
-pre {
+.highlight {
   margin: 0 -25px;
   border-top: 2px solid #f0f2f3;
   border-bottom: 2px solid #f0f2f3;
-}
 
-code {
   font-family: "Source Code Pro", monospace;
-  border: 2px solid #f0f2f3;
   padding: 3px;
-  border-radius: 3px;
-  color: #000;
-  font-weight: 500;
-  font-size: .8em;
+  font-size: .9em; 
 }
 
-.hljs {
-  width: 720px;
-  padding: 0px;
-  margin: 0 auto;
-  border: 0px;
-  padding: 10px;
-  background-color: inherit;
+.highlight > div {
+  margin: 0 25px;
+}
+
+.highlight > pre {
+  padding-top: 5px;
+  margin: 0 25px;
+  overflow-y: hidden;
 }
 
 /* Header
