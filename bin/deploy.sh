@@ -1,7 +1,7 @@
 #!/bin/sh -ex
 
 # Install build requirements
-apk update && apk add --no-cache ca-certificates git python py-setuptools
+apt-get update && apt-get install ca-certificates git python python-setuptools
 
 # Download and install s3cmd
 git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd
