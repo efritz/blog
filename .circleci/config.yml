@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node:
     docker:
-      - image: debian:stretch
+      - image: circleci/node:12.7.0-stretch
     working_directory: ~/blog
 
 jobs:
