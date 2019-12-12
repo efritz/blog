@@ -3,20 +3,22 @@ on:
   push:
     branches:
       - master
+      
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        uses: actions/npm@4633da3702a5366129dca9d8cc3191476fc3433c
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
         with:
-          args: install
+          hugo-version: '0.61.0'
+
       - name: Build
-        uses: srt32/hugo-action@v0.0.3
-      - name: Minify
-        uses: actions/npm@4633da3702a5366129dca9d8cc3191476fc3433c
-        with:
-          args: run minify
+        run: hugo --minify
+
       - name: Deploy
         run: ./bin/deploy.sh
         env:
