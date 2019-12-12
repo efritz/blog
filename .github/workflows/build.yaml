@@ -5,8 +5,7 @@ on:
       - master
       
 jobs:
-  build:
-    name: Build
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,12 +19,15 @@ jobs:
       - name: Build
         run: hugo --minify
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: ./bin/deploy.sh
+      - name: Deploy
+        run: |
+          sudo apt-get update && apt-get install ca-certificates git python python-setuptools
+          git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd
+          cd /tmp/s3cmd/
+          python setup.py install
+          cd -
+
+          ./bin/deploy.sh
         env:
           ACCESS_KEY: EFZG2XIFKGU5ZYI6SQ4V
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
