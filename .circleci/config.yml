@@ -1,0 +1,60 @@
+version: 2.1
+
+executors:
+  node:
+    docker:
+      - image: debian:stretch
+    working_directory: ~/blog
+
+jobs:
+  build:
+    executor: node
+    steps:
+      - checkout
+      - run:
+          name: Download hugo
+          command: |
+            version="0.61.0"
+            curl -L -o hugo.tar.gz "https://github.com/gohugoio/hugo/releases/download/v${version}/hugo_${version}_Linux-64bit.tar.gz"
+            tar -xvzf hugo.tar.gz hugo
+            sudo mv hugo /usr/local/bin/hugo
+            rm hugo.tar.gz
+      - run: hugo --minify
+      - run: mkdir /tmp/workspace
+      - persist_to_workspace:
+          root: .
+          paths:
+            - public
+            - bin
+
+  deploy:
+    executor: node
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install s3cmd
+          command: |
+            sudo apt-get update
+            sudo apt-get install python-setuptools
+
+            git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd
+            cd /tmp/s3cmd/
+            sudo python setup.py install
+            cd -
+            sudo rm -rf /tmp/s3cmd
+      - run:
+          name: Deploy
+          command: ./bin/deploy.sh
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
