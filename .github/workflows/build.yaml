@@ -21,7 +21,8 @@ jobs:
 
       - name: Deploy
         run: |
-          sudo apt-get update && apt-get install ca-certificates git python python-setuptools
+          sudo apt-get update
+          sudo apt-get install ca-certificates git python python-setuptools
           git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd
           cd /tmp/s3cmd/
           python setup.py install
