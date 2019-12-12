@@ -9,12 +9,14 @@ jobs:
     steps:
       - name: Install dependencies
         uses: actions/npm@4633da3702a5366129dca9d8cc3191476fc3433c
-        args: install
+        with:
+          args: install
       - name: Build
         uses: srt32/hugo-action@v0.0.3
       - name: Minify
         uses: actions/npm@4633da3702a5366129dca9d8cc3191476fc3433c
-        args: run minify
+        with:
+          args: run minify
       - name: Deploy
         run: ./bin/deploy.sh
         env:
