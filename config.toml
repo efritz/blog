@@ -5,6 +5,10 @@ googleAnalytics = 'UA-24421005-1'
 paginate = 20
 
 [markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
   [markup.highlight]
     codeFences = true
     style = "github"
