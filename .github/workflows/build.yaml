@@ -6,6 +6,7 @@ on:
       
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,8 +20,12 @@ jobs:
       - name: Build
         run: hugo --minify
 
-      - name: Deploy
-        run: ./bin/deploy.sh
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - run: ./bin/deploy.sh
         env:
           ACCESS_KEY: EFZG2XIFKGU5ZYI6SQ4V
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
