@@ -54,4 +54,10 @@ export async function getCommitsNear(
 
 The error may be immediately obvious from reading the reduced code (or the title of this article), but it wasn't at the time. The constant `MAX_TRAVERSAL_LIMIT` is imported into *commits.ts* from *xrepo.ts*, which itself imports from *commits.ts* before defining the imported constant. This causes the value imported into *commits.ts* to be `NaN`, which spreads is non-numberness through all arithmetic operations like a virus.
 
+### Takeaways
+
 The resolution was trivial: define constants in one file that does not depend on import order. For good measure, we added lint rules to prevent us writing code with circular imports (which is a compiler error in [some other languages](https://github.com/golang/go/issues/30247#issuecomment-463940936)).
+
+*Shouldn't this have been caught by unit tests?* **Yes!** And there **was** unit test coverage for the function in question. Unfortunately, the mock for the remote API only ensured the path was correct and did not check the body. These parameters were hand-verified and [not directly tested](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/commits.test.ts#L14) before a refactor. After the refactor, the tests still passed and gave a false sense of security.
+
+This highlights the importance of writing the correct assertions in unit tests (regardless of coverage), as well as testing units of behavior at the outer layers (which could have easily detected that this feature was not working): [smoke testing](https://en.wikipedia.org/wiki/Smoke_testing_(software)), [regression testing](https://en.wikipedia.org/wiki/Regression_testing), and [end-to-end testing](https://en.wikipedia.org/wiki/System_testing).
