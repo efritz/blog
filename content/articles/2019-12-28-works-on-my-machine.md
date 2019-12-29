@@ -1,5 +1,6 @@
 +++
 title = "Works On My Machine"
+slug = "works-on-my-machine"
 date = "2019-12-28T00:00:00-00:00"
 tags = ["bugs"]
 showpagemeta = true

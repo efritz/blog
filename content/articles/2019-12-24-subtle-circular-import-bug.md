@@ -1,5 +1,6 @@
 +++
 title = "Subtle Circular Import Bug"
+slug = "subtle-circular-import-bug"
 date = "2019-12-24T00:00:00-00:00"
 tags = ["bugs"]
 showpagemeta = true
