@@ -3,7 +3,7 @@
   {{ partial "meta.html" . }}
   {{ end }}
 
-  <section class="article-content">
+  <section class="article-content {{ .Slug }}">
     {{ .Content }}
   </section>
 </article>
