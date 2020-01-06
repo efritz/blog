@@ -81,7 +81,7 @@ cache.GetValueFunc = func(key string) (string,error) {
 
 This solution is nice as it doesn't use anything other than the base language. Everything is extremely explicit within your test (as tests **should** be). It does not require heavy use of reflection or metaprogramming which can make things fuzzy. This fuzziness can be a problem in in tools such as [Python unittest](https://docs.python.org/3/library/unittest.mock.html#module-unittest.mock)'s `MagicMock` object and `patch` method. In the former, you may not mock enough of the target object and not realize it at test time -- you are more likely to get strange, subtle results from the misuse of a mock than an error because it is so, so effective at being magic. The use of the latter (when a mock object cannot be easily used instead) is a pretty good sign that your unit under test does not correctly draw a boundary between its own behavior and the behavior of its dependencies. Patch tends to make tests brittle as they rely on internal knowledge of the implementation (not only what function or object must be patched but often times *how the implementation imports that dependency*).
 
-Creating these mock structures by hand, however, can be extremely tedious. For example, the official Go DynaSomoDB client defines 111 methods in its [mock interface](https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/dynamodbiface/). Try implementing a mock for that sonuvabitch. Additionally, hand-crafted mocks can easily fall-out-of-sync with the interface. This requires an update to the test, even in the cases which do not affect this test -- where a method is added, or a method unused by the unit under test is deleted or modified.
+Creating these mock structures by hand, however, can be extremely tedious. For example, the official Go DynamoDB client defines 111 methods in its [mock interface](https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/dynamodbiface/). Try implementing a mock for that sonuvabitch. Additionally, hand-crafted mocks can easily fall-out-of-sync with the interface. This requires an update to the test, even in the cases which do not affect this test -- where a method is added, or a method unused by the unit under test is deleted or modified.
 
 <center>**Useful + Tedious = Good Opportunity for Automation**</center>
 
@@ -192,7 +192,7 @@ func (s *TickerSuite) TestOnTick(t sweet.T) {
 	Expect(aN).To(Equal(5))
 ```
 
-In order to show a more fine-grained view of the mock clock, we can replace the blocking-advance loop in the test above with the following code. This snippet defines a function `test` which ensure that the value `count` is the value `n` for at least one second. Because we are testing in multiple goroutines, we allow the initial value to be different as long as it quickly transitions ot the expected value.
+In order to show a more fine-grained view of the mock clock, we can replace the blocking-advance loop in the test above with the following code. This snippet defines a function `test` which ensure that the value `count` is the value `n` for at least one second. Because we are testing in multiple goroutines, we allow the initial value to be different as long as it quickly transitions to the expected value.
 
 ```go
 test := func(n int) {
