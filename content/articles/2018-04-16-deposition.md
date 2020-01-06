@@ -2,7 +2,7 @@
 title = "Deposition"
 slug = "deposition"
 date = "2018-04-16T00:00:00-00:00"
-tags = ["building", "deployment", "standards"]
+tags = []
 showpagemeta = true
 +++
 

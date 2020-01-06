@@ -2,7 +2,7 @@
 title = "Linear MTF Hash Table"
 slug = "linear-mtf-hash-table"
 date = "2017-08-30T00:00:00-00:00"
-tags = ["theory", "datastructures"]
+tags = ["theory"]
 showpagemeta = true
 +++
 

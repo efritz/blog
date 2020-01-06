@@ -2,7 +2,7 @@
 title = "Charon Simulator"
 slug = "charon-simulator"
 date = "2017-08-12T00:00:00-00:00"
-tags = ["charon"]
+tags = []
 showpagemeta = true
 +++
 

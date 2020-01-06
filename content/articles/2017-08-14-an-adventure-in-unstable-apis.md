@@ -2,7 +2,7 @@
 title = "An Adventure in Unstable APIs"
 slug = "an-adventure-in-unstable-apis"
 date = "2017-08-14T00:00:00-00:00"
-tags = ["charon", "whoops"]
+tags = ["bugs"]
 showpagemeta = true
 +++
 
