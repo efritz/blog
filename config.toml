@@ -4,6 +4,9 @@ baseurl = 'https://eric-fritz.com'
 googleAnalytics = 'UA-24421005-1'
 paginate = 20
 
+[permalinks]
+  posts = '/:slug'
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]

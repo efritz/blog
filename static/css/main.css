@@ -167,7 +167,7 @@ main {
 
   font-family: "Source Code Pro", monospace;
   padding: 3px;
-  font-size: .9em; 
+  font-size: .9em;
 }
 
 .highlight > div {
@@ -217,6 +217,8 @@ main {
 #site-header ul {
   list-style: none;
   padding: 0;
+  margin-top: 0;
+  padding-top: 14px;
 }
 
 #site-header li {
@@ -262,16 +264,12 @@ html, body {
   height: 70px;
 }
 
-#site-footer div.container {
-  padding-top: 15px;
-}
-
 #site-footer {
   text-align: center;
 }
 
 #site-footer .social {
-  padding: 10px;
+  padding: 5px;
 }
 
 #site-footer .social a {
