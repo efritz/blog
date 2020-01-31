@@ -79,17 +79,19 @@ img {
   max-width: 100%;
 }
 
-/* TODO - global? */
 .date {
   margin: .8em 0;
   font-size: 0.75em;
   color: #999;
 }
 
-/* TODO - global? */
 .footnotes {
   font-size: 0.75em;
   margin: 0 auto;
+}
+
+.external-link{
+  padding-left: .25em;
 }
 
 /* General Layout
