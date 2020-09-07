@@ -1,5 +1,5 @@
 +++
-title = "Performance improvements in precise code intel"
-date = "2020-06-18T00:00:00-00:00"
-external = "https://about.sourcegraph.com/blog/performance-improvements-in-precise-code-intel"
+title = "Optimizing a code intelligence backend"
+date = "2020-06-17T00:00:00-00:00"
+external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-backend"
 +++
