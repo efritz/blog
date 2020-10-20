@@ -36,34 +36,25 @@ After merging the PRs, I kept an eye on the behavior of the production instance 
 
 The morning comes and I am greeted with an 8am Slack message in the code intelligence channel: **I can’t get code intelligence working in sourcegraph/sourcegraph on Sourcegraph.com. I just see a spinner. Does this have anything to do with the above mentioned migration?**
 
-Of course it does.
-
-At this point a lot of factors were in play:
+Of course it does. And it's difficult to nail down exactly _how_ it has to do with the migration due to a number of factors in play:
 
 - We were running Postgres via [CloudSQL](https://cloud.google.com/sql), where as we've historically been running Postgres in a pod in our Kubernetes cluster. This lead me to believe that the small number of knobs that the managed solution exposes were ill-tuned for this write-heavy workload.
-- We were running background migrations which lead me to believe that it was causing issues on either the service that was interacting with Postgres, or we were hammering Postgres too quickly with bulk inserts. _Something_ was causing the service's cpu utilization to exceed 90%.
+- We were running background migrations which lead me to believe that it was causing issues on either the service that was interacting with Postgres, or we were hammering Postgres too quickly with bulk inserts. _Something_ was causing the service's CPU utilization to exceed 90%.
 - All code intelligence queries were timing out after ten seconds from _some_ timeout parameter configured on _some_ layer of the stack (CloudSQL, cloudsql-proxy, our sql library, our the client disconnecting due to a timeout).
 
 {{< lightbox src="/images/code-intel-latency-timeouts.png" anchor="timing-out-queries" >}}
 
-To make matters worse, there was not a clear path to revert these changes to stabilize the production environment. We have been writing to Postgres _only_ from the worker process, so reverting the stack to _only_ read data from SQLite again would have caused us to lose the last 12 hours or so of data, as evidenced by the steady progression of disk usage on the database machine.
+To make matters worse, there was not a clear path to revert these changes to stabilize the production environment. We have been writing _only_ to Postgres from the worker process, so reverting the stack to _only_ read data from SQLite again would have caused us to lose the last 12 hours or so of code intelligence updates. The steady progression of disk usage on the database machine is mostly due to migrations, but a non-trivial amount of that data would have been user uploads from a continuous integration system, or uploads from auto-indexed repositories.
 
 {{< lightbox src="/images/cloudsql-storage.png" anchor="storage" >}}
 
-TODO
+Looking at the other graph for the CloudSQL instance, we clearly had a problem with the database server itself. Between 6PM the night before to 10AM the same morning, CPU utilization was regularly spiking above 80%, nearly zero egress bytes, and increased but nearly straight line of both active connections and transactions.
 
-{{< lightbox src="/images/cloudsql-cpu.png" anchor="cpu" >}}
-{{< lightbox src="/images/cloudsql-transactions.png" anchor="transactions" >}}
-{{< lightbox src="/images/cloudsql-active-connections.png" anchor="active connections" >}}
-{{< lightbox src="/images/cloudsql-read-write-operations.png" anchor="read/write operations" >}}
-{{< lightbox src="/images/cloudsql-ingress-egress-bytes.png" anchor="ingress/egress bytes" >}}
-<!-- {{< lightbox src="/images/cloudsql-memory.png" anchor="memory" >}} -->
+{{< lightbox src="/images/cloudsql.gif" anchor="cloudsql activity" >}}
 
-It took about two hours of chasing red herrings in a panicked state to find the root cause: I created the [schema without indices](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
+This graphs clearly identify the problem as being squarely in the inefficient-query bug space, but it still it took about two hours of chasing red herrings in a panicked state to find the root cause.
 
-<div style="text-align: center">
-<img src="https://techcrunch.com/wp-content/uploads/2012/06/912accb5_picard-facepalm.png" alt="facepalm" />
-</div>
+I created the new tables [without any indices](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
 
 In my experimental branch, I was toying with the idea of using [postgres_fdw](https://about.gitlab.com/handbook/engineering/development/enablement/database/doc/fdw-sharding.html) to shard data across multiple code intelligence databases. We decided to punt on this feature for the time being, at which point I copied the _simple_ version of the schema without foreign partitions into a PR for review.
 
@@ -96,7 +87,7 @@ CONSTRAINT NAME:  lsif_data_metadata_idx
 LOCATION:  comparetup_index_btree, tuplesort.c:4056
 ```
 
-...
+... Oof.
 
 Ok, so unique indexes are a no-go due to the state of the data we've been migrating. The big problem here is the lack of indexes, not the lack of uniqueness, so we can deal with this in steps.
 
@@ -114,6 +105,6 @@ LOCATION:  FileWrite, fd.c:1956
 Time: 216613.982 ms (03:36.614)
 ```
 
-Temporarily bumping the `temp_file_limit` from 1G to 20G allowed us to create the remaining indexes. Once this was done, everything was beyond fine -- like there was never an issue at all.
+Temporarily bumping the `temp_file_limit` from 1G to 20G allowed us to create the remaining indexes. Once this was done, everything was beyond fine -- like there was never an issue at all. The resource graphs above show an immediate drop around 10AM, which is when the new indexes took effect.
 
 I would find out later that the duplicate data in the `lsif_data_metadata` was not actually due to duplicate inserts (as I had originally feared), but due to [write multiplication](https://github.com/sourcegraph/sourcegraph/pull/14536) in the parallelized bulk inserter. Easy fix. The last thing to do is to create another version of the indexes with the uniqueness property and drop the temporary one we made to staunch the bleeding.
