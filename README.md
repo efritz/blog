@@ -8,7 +8,7 @@ The master branch is continuously deployed. The site will be built in CircleCI o
 
 ## License
 
-Copyright (c) 2020 Eric Fritz
+Copyright (c) 2021 Eric Fritz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
