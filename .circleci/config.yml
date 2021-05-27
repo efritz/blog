@@ -5,6 +5,10 @@ executors:
     docker:
       - image: circleci/node:12.7.0-stretch
     working_directory: ~/blog
+  python:
+    docker:
+      - image: circleci/python:2.7-stretch
+    working_directory: ~/blog
 
 jobs:
   build:
@@ -14,7 +18,7 @@ jobs:
       - run:
           name: Download hugo
           command: |
-            version="0.62.2"
+            version='0.62.2'
             curl -L -o hugo.tar.gz "https://github.com/gohugoio/hugo/releases/download/v${version}/hugo_${version}_Linux-64bit.tar.gz"
             tar -xvzf hugo.tar.gz hugo
             sudo mv hugo /usr/local/bin/hugo
@@ -28,21 +32,20 @@ jobs:
             - bin
 
   deploy:
-    executor: node
+    executor: python
     steps:
       - attach_workspace:
           at: .
       - run:
           name: Install s3cmd
           command: |
-            sudo apt-get update
-            sudo apt-get install python-setuptools
-
-            git clone https://github.com/s3tools/s3cmd.git /tmp/s3cmd
-            cd /tmp/s3cmd/
+            version='2.1.0'
+            curl -L "https://github.com/s3tools/s3cmd/archive/refs/tags/v${version}.zip" -o s3cmd.zip
+            unzip s3cmd.zip
+            cd "s3cmd-${version}"
             sudo python setup.py install
             cd -
-            sudo rm -rf /tmp/s3cmd
+            rm -rf s3cmd.zip "s3cmd-${version}"
       - run:
           name: Deploy
           command: ./bin/deploy.sh
