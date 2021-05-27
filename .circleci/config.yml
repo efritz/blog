@@ -45,7 +45,7 @@ jobs:
             cd "s3cmd-${version}"
             sudo python setup.py install
             cd -
-            rm -rf s3cmd.zip "s3cmd-${version}"
+            sudo rm -rf s3cmd.zip "s3cmd-${version}"
       - run:
           name: Deploy
           command: ./bin/deploy.sh
