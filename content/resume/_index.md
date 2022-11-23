@@ -67,7 +67,7 @@ Developed an e-commerce and supply chain web application which streamline intera
 ### Education
 
 {{< content
-    title="PhD Computer Science"
+    title="Ph.D. Computer Science"
     meta="2014 to 2018"
     >}}
 
