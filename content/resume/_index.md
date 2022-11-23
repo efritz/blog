@@ -25,21 +25,25 @@ We are currently utilizing Microsoft's [Language Server Index Format](https://co
     meta="2015 to 2019"
     >}}
 
-I am a senior software engineer on the Labs team, which is currently focused on building an IFTTT-like engine as well as the surrounding ecosystem to allow third-parties to easily integrate with customer-defined *workflows*.
+I was a senior software engineer on the Labs team focused on building proof of concept solutions for new investment areas. Most recently, I was focused on building _Nighthawk_, an IFTTT-like engine to orchestrate communication of relevant parties during incident responses. Users could define their own workflows and integrate with a ecosystem that hosts third-party behavioral extensions. Before that, I was focused on Mitel's Internet of Things Collaboration strategy, _Kestrel_, which involved building out infrastructure for registering LoRa gateways and devices and reading, storing, and aggregating sensor readings.
 
-We previously designed Mitel's Internet of Things Collaboration strategy, which involved building out infrastructure for registering LoRa gateways and devices and reading, storing, and aggregating sensor readings. Prior to an acquisition, we were focused on building [Summit](https://www.mitel.com/en-us/products/business-phone-systems/cloud/other/summit-platform) as part of Mitel's Unified Communications Platform as a Service offering. This allowed customers to build voice and SMS applications as Lua code that would run in a containerized sandbox.
+Prior to the formation of the Labs team, I was on the team platform building [Summit](https://www.mitel.com/en-us/products/business-phone-systems/cloud/other/summit-platform) as part of Mitel's Unified Communications Platform as a Service offering. This allowed customers to build voice and SMS applications as Lua code that would run in a containerized sandbox.
 
-I was the primary author the following infrastructure services written in a mix of Go, Python, and C (in the form of Redis modules).
+I was the primary author the following infrastructure and developer experience projects, primarily written in Go and Python with a bit of C (via Redis modules).
 
-- **Charon** is an distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon).
-
-- **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
+- **Apollo** is an audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system.
 
 - **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version. The following image is a portion of the scheduler metrics dashboard over the course of two weeks (for one datacenter). Peaks indicate heavy call traffic, and the two-day flat line periods are the weekend, where call volume does not generally exceed our elastic scaling threshold.
 
 {{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
-- **Apollo** is a audio streaming server which mixes hold music and announcements from tenant-configurable playlists. The server self-regulates load by redirecting attached clients to servers which are already serving a particular audio file, minimizing the bytes in-flight from the audio storage system.
+- **Charon** is a distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon), and an interactive example is available in the [request simulator](/articles/charon-simulator/).
+
+- **Deposition** is an internal tool used to track software lifecycle metadata such as builds, dependencies (including vulnerabilities), and deployments of our internal infrastructure. See the [blog post](http://localhost:1313/articles/deposition/) for the original motivation and additional product and implementation details.
+
+{{< lightbox src="/images/deposition-products.png" anchor="deposition" >}}
+
+- **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
 {{< /content >}}
 
 {{< content
