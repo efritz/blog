@@ -148,6 +148,13 @@ main {
   padding-bottom: .5em;
 }
 
+.article-group .key {
+  width: 80px;
+  text-align: right;
+  color: #999;
+  padding-top: .75em;
+}
+
 .pagination {
   padding-top: 30px;
   text-align: center;
