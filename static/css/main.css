@@ -151,8 +151,7 @@ main {
 .article-group .key {
   width: 80px;
   text-align: right;
-  color: #999;
-  padding-top: .75em;
+  padding-top: 1em;
 }
 
 .pagination {
@@ -315,6 +314,11 @@ html, body {
 
   .hljs {
     width: inherit;
+  }
+
+  .article-group .key {
+    width: 100%;
+    text-align: center;
   }
 }
 
