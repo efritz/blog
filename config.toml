@@ -1,6 +1,6 @@
 languageCode = 'en-us'
 title = 'Eric Fritz'
-baseurl = 'https://blog-pqpe.onrender.com' # 'https://eric-fritz.com'
+baseurl = 'https://eric-fritz.com'
 googleAnalytics = 'UA-24421005-1'
 paginate = 1000
 
@@ -22,7 +22,7 @@ paginate = 1000
   author = 'Eric Fritz'
   dateformat = '01.02.2006'
   index_page = '/articles/'
-  resources_root = 'https://blog-pqpe.onrender.com/assets' # 'https://assets.eric-fritz.com'
+  resources_root = 'https://assets.eric-fritz.com'
 
 [params.social]
   email = 'eric@eric-fritz.com'
