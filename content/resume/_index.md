@@ -73,7 +73,7 @@ Developed an e-commerce and supply chain web application which streamline intera
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
-My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](http://www.cs.uwm.edu/faculty/boyland/).
+My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](https://uwm.edu/engineering/people/boyland-john/).
 
 Abstract: _Program transformations that are able to rely on the presence of canonical properties of the program undergoing optimization can be written to be more robust and efficient than an equivalent but generalized transformation that also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier transformation, it must be rebuilt (often from scratch). This additional work can be a dominating factor in compilation time when many transformations are applied over large programs. This dissertation introduces a methodology for constructing program transformations so that the program remains in an always-canonical form as the program is mutated, making only local changes to restore broken properties._
 
@@ -86,7 +86,7 @@ Abstract: _Program transformations that are able to rely on the presence of cano
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
-My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](http://www.cs.uwm.edu/faculty/ccheng/).
+My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](https://uwm.edu/engineering/people/cheng-christine/).
 
 Abstract: _RedPrairie's Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entries which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns._
 
