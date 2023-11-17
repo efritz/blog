@@ -12,11 +12,11 @@ Most of the time, modifications to data via the API are performed by a build use
 
 The following screenshot shows a view of the audit log. The summary column gives a terse description of the action that was performed, along with links to any foreign entities that still exist.
 
-{{< lightbox src="/images/deposition-audit.png" anchor="deposition-audit-log" >}}
+{{< lightbox src="/images/deposition-audit.png" anchor="deposition-audit" >}}
 
 The following screenshot shows a detailed view of one audit log record, which shows the difference of the values in the database before and after the operation was performed. For a record update, this dialog shows the before-and-after values of the columns that were altered. For creation and deletion of records, this dialog shows the entire record as it was after creation and before deletion, respectively.
 
-{{< lightbox src="/images/deposition-audit-detail.png" anchor="deposition-audit-log-details" >}}
+{{< lightbox src="/images/deposition-audit-detail.png" anchor="deposition-audit-details" >}}
 
 This remainder of this article outlines how [PostgreSQL](https://www.postgresql.org/) was leveraged to add automatic audit log insertions without changing any application code. The code here is written to work with Deposition, assuming the existence of some external tables and the semantic value of their columns. However, the technique is not tied to any particular schema and can be easily adapted to fit another application using the same database with minimal changes.
 
@@ -175,3 +175,62 @@ class AuthResource(Resource):
 ```
 
 *In Deposition*, we also have worker processes that could modify the database. The jobs accepted by the worker process were generally tagged with the user and request context that created the job. Some jobs are run on a schedule (CVE scanning, for example), in which case they were given a canned user and a unique request context. The same query above is run after accepting a job to ensure that the audit log is correctly updated with any modifications that are performed asynchronously from the API request.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE FUNCTION public.audit_update() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$ DECLARE search_string text; BEGIN
+    IF num_audit_changes(row_to_json(OLD), row_to_json(NEW)) > 0 THEN
+        SELECT INTO search_string string_agg(value, ' ')
+            FROM (
+                SELECT extract_jsonb(to_jsonb(OLD) - 'secret') AS value UNION
+                SELECT extract_jsonb(to_jsonb(NEW) - 'secret') AS value
+            ) AS q;
+        INSERT INTO audit_logs (user_id, request_id, request_context, table_name, action_type, datetime, old_value, new_value, search_string)
+        VALUES (
+            CASE WHEN current_setting('settings.api_user_id') <> '' THEN current_setting('settings.api_user_id') ELSE NULL END,
+            current_setting('settings.api_request_id'),
+            current_setting('settings.api_request_context'),
+            TG_TABLE_NAME,
+            'update',
+            now(),
+            to_jsonb(OLD) - 'secret',
+            to_jsonb(NEW) - 'secret',
+            search_string
+        );
+    END IF;
+    RETURN NEW;
+END $$;
+
+
+CREATE FUNCTION public.extract_jsonb(elem jsonb) RETURNS SETOF text
+    LANGUAGE plpgsql
+    AS $$ BEGIN
+    IF jsonb_typeof(elem) = 'object' THEN
+
+        RETURN QUERY SELECT extract_jsonb(pairs.value) FROM jsonb_each(elem) pairs WHERE pairs.key != ALL ('{"password", "private_key"}');
+    ELSIF jsonb_typeof(elem) = 'array' THEN
+
+        RETURN QUERY SELECT extract_jsonb(value) FROM(SELECT jsonb_array_elements(elem) AS value) AS q;
+    ELSE
+
+        RETURN QUERY SELECT CAST(elem AS text);
+    END IF;
+END $$;
