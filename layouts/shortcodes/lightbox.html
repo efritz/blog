@@ -1,3 +1,5 @@
+<!-- TODO - replace with img -->
+
 <a href="#img-{{ .Get "anchor" }}">
   <img src="{{ if isset .Params "absolute" }}{{ else }}{{ .Site.Params.resources_root }}{{ end }}{{ .Get "src" }}" class="thumbnail">
 </a>
