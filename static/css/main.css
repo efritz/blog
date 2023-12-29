@@ -394,6 +394,7 @@ html, body {
 /* Miscellaneous Styles
 * --------------------------------------------*/
 
+img[alt=render],
 img[alt=sourcegraph] {
   width: 25px;
   padding-right: 5px;
