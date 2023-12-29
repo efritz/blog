@@ -42,15 +42,15 @@ Of course it does. And it's difficult to nail down exactly _how_ it has to do wi
 - We were running background migrations which lead me to believe that it was causing issues on either the service that was interacting with Postgres, or we were hammering Postgres too quickly with bulk inserts. _Something_ was causing the service's CPU utilization to exceed 90%.
 - All code intelligence queries were timing out after ten seconds from _some_ timeout parameter configured on _some_ layer of the stack (CloudSQL, cloudsql-proxy, our sql library, our the client disconnecting due to a timeout).
 
-{{< lightbox src="/images/code-intel-latency-timeouts.png" anchor="timing-out-queries" >}}
+{{< lightbox src="/images/migrating-to-postgres/latency-timeouts.png" anchor="timing-out-queries" >}}
 
 To make matters worse, there was not a clear path to revert these changes to stabilize the production environment. We have been writing _only_ to Postgres from the worker process, so reverting the stack to _only_ read data from SQLite again would have caused us to lose the last 12 hours or so of code intelligence updates. The steady progression of disk usage on the database machine is mostly due to migrations, but a non-trivial amount of that data would have been user uploads from a continuous integration system, or uploads from auto-indexed repositories.
 
-{{< lightbox src="/images/cloudsql-storage.png" anchor="storage" >}}
+{{< lightbox src="/images/migrating-to-postgres/storage.png" anchor="storage" >}}
 
 Looking at the other graph for the CloudSQL instance, we clearly had a problem with the database server itself. Between 6PM the night before to 10AM the same morning, CPU utilization was regularly spiking above 80%, nearly zero egress bytes, and increased but nearly straight line of both active connections and transactions.
 
-{{< lightbox src="/images/cloudsql.gif" anchor="cloudsql activity" >}}
+{{< lightbox src="/images/migrating-to-postgres/resources.gif" anchor="cloudsql activity" >}}
 
 This graphs clearly identify the problem as being squarely in the inefficient-query bug space, but it still it took about two hours of chasing red herrings in a panicked state to find the root cause.
 

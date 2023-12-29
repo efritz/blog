@@ -54,13 +54,13 @@ I was the primary author the following infrastructure and developer experience p
 
 - **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version. The following image is a portion of the scheduler metrics dashboard over the course of two weeks (for one datacenter). Peaks indicate heavy call traffic, and the two-day flat line periods are the weekend, where call volume does not generally exceed our elastic scaling threshold.
 
-{{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
+{{< lightbox src="/images/resume/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
 - **Charon** is a distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon), and an interactive example is available in the [request simulator](/articles/charon-simulator/).
 
 - **Deposition** is an internal tool used to track software lifecycle metadata such as builds, dependencies (including vulnerabilities), and deployments of our internal infrastructure. See the [blog post](http://localhost:1313/articles/deposition/) for the original motivation and additional product and implementation details.
 
-{{< lightbox src="/images/deposition-products.png" anchor="deposition" >}}
+{{< lightbox src="/images/resume/deposition-products.png" anchor="deposition" >}}
 
 - **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
 {{< /content >}}

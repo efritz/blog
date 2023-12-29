@@ -48,13 +48,13 @@ This is a bit more involved, as `apk info` gives only installed package names bu
 
 The following screenshot shows the products of which Deposition is aware. This list only contains services which are currently self-reporting -- we are still in the process of moving older services to use our new build conventions.
 
-{{< lightbox src="/images/deposition-products.png" anchor="deposition-products" >}}
+{{< lightbox src="/images/deposition/products.png" anchor="deposition-products" >}}
 
 On the other side of the build pipeline, on each successful deploy, we inform the API that a particular build has made it into a production environment with some unique build token (these could be a marathon path, a server name and binary path, or a Fargate task identifier, or a simple string which is meaningful to your development process).
 
 The following screenshot shows all active deployments of a service whose name contains the word *api* in our Chicago data center. At a glance, we can see exactly which version and which bamboo build created the production artifact (without scraping several APIs and correlating the docker tag of the Marathon task with Bamboo build logs).
 
-{{< lightbox src="/images/deposition-deployments.png" anchor="deposition-deployments" >}}
+{{< lightbox src="/images/deposition/deployments.png" anchor="deposition-deployments" >}}
 
 This allows us to retrieve an always-current list of *deployed* builds and the *active* (either deployed or most recent) builds of a product. This also allows us to query, in both directions, the relationship between builds and dependencies. In one direction, we can see all the dependencies of a build (or all aggregate dependencies of a product). In the other direction, we can see all the builds which depend on a particular dependency version (or all aggregate versions of a dependency).
 
@@ -62,14 +62,14 @@ This allows us to retrieve an always-current list of *deployed* builds and the *
 
 How would this have changed our double-outage example above? Once we determine that there exists a bug, vulnerability, or other reason to deprecate, we can simply flag a particular dependency version with the reason. A dependency flag created by a team does not necessarily apply for another team -- however, there are certain roles (security teams and automated CVE list scanners) which can apply a dependency flag for **all** teams.
 
-{{< lightbox src="/images/deposition-flagging.png" anchor="deposition-flagging" >}}
+{{< lightbox src="/images/deposition/flagging.png" anchor="deposition-flagging" >}}
 
 Also, as Deposition understands the how to compare two versions for particular sources, flagging a dependency at a particular version will also apply that flag to all lower versions of that dependency, as shown below. At present, Deposition understands the semantics of Alpine package versions, Debian package versions, and semantic versions used by pip and npm.
 
-{{< lightbox src="/images/deposition-versions.png" anchor="deposition-versions" >}}
+{{< lightbox src="/images/deposition/versions.png" anchor="deposition-versions" >}}
 
 When a dependency version is flagged, all builds using that version are flagged, any deployment using a flagged build is flagged, and any product with an active flagged build is flagged. Depending on the team configuration, a JIRA ticket or a GitHub issue is created for all deployments and active builds which were newly flagged by this action. This gives teams something automated to act on instead of having to search for what to replace via the Deposition UI.
 
-{{< lightbox src="/images/deposition-flagged-builds.png" anchor="deposition-flagged-builds" >}}
+{{< lightbox src="/images/deposition/flagged-builds.png" anchor="deposition-flagged-builds" >}}
 
 This also changes the process for future actions: any new build which uses a flagged version is rejected by the Deposition API and the automated build fails, and any new deployment which refers to a flagged build is similarly rejected. This makes it impossibly to accidentally build and deploy a service with vulnerable dependencies (although Deposition does provide an escape hatch to allow such builds through when absolutely necessary).

@@ -106,7 +106,7 @@ void promoteSlot(int i, int j) {
 
 What this ends up doing is rotating our target key/value pair *backwards* through the probe sequence, as illustrated here ($i = 1$ and $v = 4$).
 
-{{< img src="/images/table-rotation.svg" >}}
+{{< img src="/images/hash-tables/rotation.svg" >}}
 
 We also need to be concerned that we didn't just bork our table and make keys *unreachable*. Notice that every key we moved *except* for our target key was moved exactly one slot to the right. Also notice that because our target key was found sitting at slot $j$, there must not be any empty slots in the probe sequence from $i$ to $j$. Our target key is reachable by a subsequent query, as such a query would start at slot $i$. Any moved key would be reachable by a subsequent query, albeit one that has to look at exactly one additional key (our target key).
 
@@ -146,7 +146,7 @@ We've made a few changes. First, instead of scanning the array from right-to-lef
 
 First, we stash our target pair and immediately put a `DELETED` tombstone in slot $j$. This ensures our loop condition will eventually be met if we don't happen to see any other tombstones in our probe sequence. Next, we insert our stashed pair into slot $i$ and stash the previous contents of slot $i$. This repeats with slot $i + 1$, slot $i + 2$, and so on until we write to a slot that didn't have anything useful in it.
 
-{{< img src="/images/table-rotation-smart.svg" >}}
+{{< img src="/images/hash-tables/rotation-smart.svg" >}}
 
 In addition to rotating only part of the cluster, this version also has the effect of pushing `DELETED` elements further down the cluster so that the elements that are actually returned during a search are compacted closer to their target slot.
 
