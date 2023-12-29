@@ -10,8 +10,17 @@ A [printable version](https://assets.eric-fritz.com/papers/Fritz%20-%20Resume.pd
 ### Work History
 
 {{< content
-    title="![sourcegraph](https://sourcegraph.com/.assets/img/sourcegraph-mark.svg) Sourcegraph"
-    meta="2019 to Present"
+    title="![render](https://assets.eric-fritz.com/images/logos/render.png) Render"
+    meta="From 2023"
+    >}}
+
+The Datastores team enables managed Postgres and Redis databases balancing power, flexibility, and ease of use for end users. Currently, my efforts are focused on reducing compute and storage costs for hosting as well as increasing intelligent observability of database usage and performance to aid developers in self-serving optimization of their own applications.
+
+{{< /content >}}
+
+{{< content
+    title="![sourcegraph](https://assets.eric-fritz.com/images/logos/sourcegraph.svg) Sourcegraph"
+    meta="2019 to 2023"
     >}}
 
 I am a staff-level software engineer leading the [language platform team](https://handbook.sourcegraph.com/departments/engineering/teams/code-intelligence/#language-platform) (a subteam of [code intelligence](https://handbook.sourcegraph.com/departments/engineering/teams/code-intelligence/)). Our team works to provide fast and precise code intelligence to power code navigation operations such as cross-repository go-to-definition and global find-references. We are currently expanding our scope to usefully provide precise code intelligence data to other product teams at Sourcegraph.
