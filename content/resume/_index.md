@@ -103,6 +103,17 @@ RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
 
 {{< /content >}}
 
+{{< content
+    title="BFA Film"
+    meta="2007 to 2011"
+    >}}
+
+{{% small %}}University of Wisconsin – Milwaukee{{% /small %}}
+
+I received a Bachelor of Fine Arts in undergrad studying film theory and production.
+
+{{< /content >}}
+
 ### Teaching History
 
 {{< content
