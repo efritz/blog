@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+.thumbnail.half {
+  width: 49%;
+}
+
 .lightbox {
   display: none;
   position: fixed;
