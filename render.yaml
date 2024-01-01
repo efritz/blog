@@ -19,3 +19,11 @@ services:
     staticPublishPath: ./
     domains:
       - assets.eric-fritz.com
+  - name: efritz/blog-deadlinks
+    type: cron
+    runtime: go
+    repo: https://github.com/efritz/blog
+    branch: main
+    schedule: "0 0 * * *"
+    buildCommand: go build -o deadlinks ./cmd/deadlinks
+    startCommand: ./deadlinks
