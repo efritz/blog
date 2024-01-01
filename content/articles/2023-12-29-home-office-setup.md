@@ -6,7 +6,7 @@ tags = []
 showpagemeta = true
 +++
 
-I recently ended a four (plus) year stint at a geographically distributed, all-remote, async-first startup, and began a similar remote role at another slightly earlier stage SF-based startup. I took the two weeks between jobs to tidy up my home office to clean my mental slate. It's like clean your dorm between terms: _new semester, new me_.
+I recently ended a four (plus) year stint at a geographically distributed, all-remote, async-first startup, and began a similar remote role at another slightly earlier stage SF-based startup. I took the two weeks between jobs to tidy up my home office to clean my mental slate. It's like cleaning your dorm between terms: _new semester, new me_.
 
 I snapped a few pictures to immortalize the absence of dust and clutter on my desk and was reminded of an old [Sourcegraph blog post](https://about.sourcegraph.com/blog/home-offices-of-sourcegraph#eric-fritz-software-engineer) from 2020 where the entire company (which was very small at the time) shared their home office setup. I felt it was time to post a personal update.
 
