@@ -1,7 +1,7 @@
 +++
-title = "How I Deploy Static Sites"
-slug = "how-i-deploy-static-sites"
-date = "2020-05-03T00:00:00-00:00"
+title = "Deploying Static Sites"
+slug = "deploying-static-sites"
+date = "2023-01-01T00:00:00-00:00"
 tags = ["bugs"]
 showpagemeta = true
 +++
