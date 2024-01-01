@@ -17,3 +17,5 @@ services:
     branch: main
     rootDir: assets
     staticPublishPath: ./
+    domains:
+      - assets.eric-fritz.com
