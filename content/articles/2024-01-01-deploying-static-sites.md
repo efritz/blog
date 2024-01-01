@@ -1,8 +1,8 @@
 +++
 title = "Deploying Static Sites"
 slug = "deploying-static-sites"
-date = "2023-01-01T00:00:00-00:00"
-tags = ["bugs"]
+date = "2024-01-01T00:00:00-00:00"
+tags = []
 showpagemeta = true
 +++
 
