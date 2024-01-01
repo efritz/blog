@@ -148,6 +148,12 @@ main {
   padding-bottom: .5em;
 }
 
+.article-group .key {
+  width: 80px;
+  text-align: right;
+  padding-top: 1em;
+}
+
 .pagination {
   padding-top: 30px;
   text-align: center;
@@ -309,6 +315,11 @@ html, body {
   .hljs {
     width: inherit;
   }
+
+  .article-group .key {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 @media (max-width: 640px) {
@@ -383,6 +394,7 @@ html, body {
 /* Miscellaneous Styles
 * --------------------------------------------*/
 
+img[alt=render],
 img[alt=sourcegraph] {
   width: 25px;
   padding-right: 5px;

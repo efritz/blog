@@ -26,7 +26,7 @@ At any given time, a domain belongs in the *highest* tier that is in its active 
 
 I've heard that a picture is worth a thousand words.
 
-{{< lightbox src="/images/burst-tiers.png" anchor="burst-tiers" >}}
+{{< lightbox src="/images/charon/burst-tiers.png" anchor="burst-tiers" >}}
 
 I've also heard that a simulator is worth a thousand pictures[^1], so I brought one of those along too.
 
