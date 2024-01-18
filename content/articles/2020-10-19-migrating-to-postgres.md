@@ -54,7 +54,7 @@ Looking at the other graph for the CloudSQL instance, we clearly had a problem w
 
 This graphs clearly identify the problem as being squarely in the inefficient-query bug space, but it still it took about two hours of chasing red herrings in a panicked state to find the root cause.
 
-I turns out that I had inadvertently created the new tables [without any indices](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
+I turns out that I had inadvertently created the new tables [without any indexes](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
 
 In my experimental branch, I was toying with the idea of using [postgres_fdw](https://about.gitlab.com/handbook/engineering/development/enablement/database/doc/fdw-sharding.html) to shard data across multiple code intelligence databases. We decided to punt on this feature for the time being, at which point I copied the _simple_ version of the schema without foreign partitions into a PR for review.
 
@@ -75,7 +75,7 @@ sg=> EXPLAIN SELECT data FROM lsif_data_documents WHERE dump_id = 1 AND path = '
 
 # Repairing
 
-The solution was a trivial as the initial mistake: just add indexes. This was easy enough to do, although we had to do it by hand. Our migrations run in our frontend API pods, blocking application startup until the migration has completed. Blocking production startup in order to write hundreds of gigabytes of indices to a database was a non-starter. Our solution was to run the migration by hand in a CloudSQL shell in order to regain a responsive service, and merge a migration into the main branch that could be performed idempotently. This way, we can use concurrent index creation to avoid a full table lock, and the schema in our repository matches what is in production (a DevOps prime directive).
+The solution was a trivial as the initial mistake: just add indexes. This was easy enough to do, although we had to do it by hand. Our migrations run in our frontend API pods, blocking application startup until the migration has completed. Blocking production startup in order to write hundreds of gigabytes of indexes to a database was a non-starter. Our solution was to run the migration by hand in a CloudSQL shell in order to regain a responsive service, and merge a migration into the main branch that could be performed idempotently. This way, we can use concurrent index creation to avoid a full table lock, and the schema in our repository matches what is in production (a DevOps prime directive).
 
 ```text
 sg=> CREATE UNIQUE INDEX CONCURRENTLY lsif_data_metadata_idx on lsif_data_metadata (dump_id);
