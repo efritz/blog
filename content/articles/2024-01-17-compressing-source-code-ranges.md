@@ -14,7 +14,7 @@ At the time, I was designing a new set of Postgres tables and indexes that would
 
 To save space, I did some tricks such as interning `fileName` into a secondary table so that we'd only have to store many copies of a row identifier rather than the same number of copies of the full raw text path, and storing 40-character Git SHAs as 160-bits integers (as $16^{40} = 2^{160}$). The subsequent data dominating storage was the huge array of integers forming the `range` payload. Using the `EncodeRanges` function, the `range` payload could be compressed to the point where the storage of file paths would again be the subject of (future) concern.
 
-This function a nice piece of code because it works particularly wall *in the context it was written for*. This isn't an _algorithmic_ pearl, where the procedure will produce some optimal value for any pathological input you could supply. In fact, it's the opposite. It's the anti-Bellman–Ford. It makes *very specific* assumptions about how its input will be supplied, in order to take advantage of insights in the common cases of the input distribution.
+This function a nice piece of code because it works particularly well *in the context it was written for*. This isn't an _algorithmic_ pearl, where the procedure will produce some optimal value for any pathological input you could supply. In fact, it's the opposite. It's the anti-Bellman–Ford. It makes *very specific* assumptions about how its input will be supplied, in order to take advantage of insights in the common cases of the input distribution.
 
 The code, in its entirety [^1], is shown below.
 
@@ -131,7 +131,7 @@ Now the question is, how small can we make this payload so that we can shove it 
 
 ### Naive encoding
 
-In our most basic binary encoding, we can lay each 32-bit integer down into a byte array, one after another. Each of the 40 values occupies 32 bytes, meaning it takes 160 bytes to encode all 10 ranges, as so:
+In our most basic binary encoding, we can lay each 32-bit integer down into a byte array, one after another. Each of the 40 values occupies 32 bits, meaning it takes 160 bytes to encode all 10 ranges, as so:
 
 ```
 00000000 00000000 00000000 00111010 // 58
@@ -198,7 +198,7 @@ This yields an initial 64% reduction in space, but we have more tricks to apply.
 
 ### Delta encoding
 
-Varint encoding is so successful because _our input integers are already fairly small_. If there's a way to we can losslessly alter the data so that the inputs are even smaller, we can compound this benefit for even more space savings. To achieve this, we can use [delta encoding](https://en.wikipedia.org/wiki/Delta_encoding) to store the _difference_ between adjacent values in a sequence, rather than encoding the original values as they are given.
+Varint encoding is so successful because _our input integers are already fairly small_. If there's a way we can losslessly alter the data so that the inputs are even smaller, we can compound this benefit for even more space savings. To achieve this, we can use [delta encoding](https://en.wikipedia.org/wiki/Delta_encoding) to store the _difference_ between adjacent values in a sequence, rather than encoding the original values as they are given.
 
 #### Step 1: Column-orient the data
 
@@ -217,7 +217,7 @@ Because ranges are supplied in ascending order, high variance between start line
 
 #### Step 2: Store span lengths
 
-If we consider what ranges we're encoding represents, we can do something ridiculously effective. In the most common case, we're encoding the range of an _identifier_, not the entirety of an expression block. Thus, the range does not span multiple lines, and the start line and end line will, for a dominating proportion of uses, be the same. Furthermore, the majority of operations we're enabling will result in a list of references _of the same length_. In the case of our running example, the references to our target is always `Fprintf`, which is 7 characters long **in every context in which it appears**.
+If we consider what the ranges we're encoding represents, we can do something ridiculously effective. In the most common case, we're encoding the range of an _identifier_, not the entirety of an expression block. Thus, the range does not span multiple lines, and the start line and end line will, for a dominating proportion of uses, be the same. Furthermore, the majority of operations we're enabling will result in a list of references _of the same length_. In the case of our running example, the references to our target is always `Fprintf`, which is 7 characters long **in every context in which it appears**.
 
 Our next trick is to replace the ending line and character offsets with the range's line and character _span lengths_.
 
@@ -249,7 +249,7 @@ ranges := []int32{
 
 **Look at all those zeroes!**
 
-Since all character span lengths were the same, all but the first value reduces down to zero. In addition, we're encoding ranges of an identifier that's used as the _prefix of a statement_. This statement won't happen at any arbitrary starting column, but will be bound to a small number of indentation levels: a print statement within a function, a print statement within an if statement or loop, etc. In this example, it reduces most of elements of the start character sequence down to the range $\lbrace -1, 0, +1\rbrace$.
+Since all character span lengths were the same, all but the first value reduces down to zero. In addition, we're encoding ranges of an identifier that's used as the _prefix of a statement_. This statement won't happen at any arbitrary starting column, but will be bound to a small number of indentation levels: a print statement within a function, a print statement within an if statement or loop, etc. In this example, it reduces most of elements of the start character sequence down to the range $\lbrace -1, 0, +1\rbrace$. this set may increase in size, but only proportionally to indentation depth.
 
 There are many such cases across languages where identifier references will happen to occupy a fixed set of columns. In Go, for example, the receiver or type name for methods will fall into a repetitive pattern; as will the type names of aligned fields in structs or variable and constant blocks.
 
@@ -274,7 +274,7 @@ ranges := []int32{
 }
 ```
 
-Applying run-length encoding and reformatting the elements so it's obvious yields a new, shorter sequence which we'll then encode into varints as described earlier.
+Applying run-length encoding (and reformatting the elements to make the zero runs obvious) yields a new, shorter sequence which we'll then encode into varints as described earlier.
 
 ```go
 ranges := []int32{
