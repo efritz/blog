@@ -3,7 +3,7 @@
 set -exo pipefail
 
 base_args=
-if [ -n "$IS_PULL_REQUEST" ]; then
+if [ "$IS_PULL_REQUEST" == "true" ]; then
     base_args="--baseURL ${RENDER_EXTERNAL_URL}"
 fi
 
