@@ -10,6 +10,11 @@ services:
     domains:
       - eric-fritz.com
       - www.eric-fritz.com
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=15552000 # 6 months
+
   - name: efritz/blog-deadlinks
     type: cron
     runtime: go
