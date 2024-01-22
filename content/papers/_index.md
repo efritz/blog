@@ -14,9 +14,9 @@ index = true
 {{% squished %}}
 {{% small %}}Eric Fritz; Doctoral Dissertation{{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Dissertation.pdf)
-* [Defense Slides](https://assets.eric-fritz.com/papers/Fritz%20-%20PhD%20Defense.pdf)
-* [Proposal Slides](https://assets.eric-fritz.com/papers/Fritz%20-%20PhD%20Proposal.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Dissertation.pdf)
+* [Defense Slides](/assets/papers/Fritz%20-%20PhD%20Defense.pdf)
+* [Proposal Slides](/assets/papers/Fritz%20-%20PhD%20Proposal.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 
@@ -31,8 +31,8 @@ Program transformations that are able to rely on the presence of canonical prope
 {{% squished %}}
 {{% small %}}Eric Fritz; In [ICOOOLPS, 2018](https://conf.researchr.org/track/ecoop-issta-2018/ICOOOLPS-2018-papers){{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Maintaining%20Canonical%20Form%20After%20Edge%20Deletion.pdf)
-* [Workshop Slides](https://assets.eric-fritz.com/papers/Fritz%20-%20ICOOOLPS2018.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Maintaining%20Canonical%20Form%20After%20Edge%20Deletion.pdf)
+* [Workshop Slides](/assets/papers/Fritz%20-%20ICOOOLPS2018.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 
@@ -50,7 +50,7 @@ In this paper, we present a form-preserving edge deletion operation, in which a 
 {{% squished %}}
 {{% small %}}Eric Fritz, Andy Brezinsky, and Andy Ortlieb; Whitepaper{{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Charon%20-%20The%20Design%20of%20a%20Limiting%20Microservice.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Charon%20-%20The%20Design%20of%20a%20Limiting%20Microservice.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 
@@ -64,7 +64,7 @@ Charon is a service designed to increase the stability of a distributed system b
 {{% squished %}}
 {{% small %}}Eric Fritz and [Tian Zhao](http://uwm.edu/engineering/people/zhao-ph-d-tian/); In [Science of Computer Programming](https://www.sciencedirect.com/science/article/pii/S0167642317300527){{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Typing%20and%20Semantics%20of%20Asynchronous%20Arrows%20in%20JavaScript.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Typing%20and%20Semantics%20of%20Asynchronous%20Arrows%20in%20JavaScript.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 
@@ -79,8 +79,8 @@ Asynchronous programs in JavaScript using callbacks and promises are difficult t
 {{% squished %}}
 {{% small %}}Eric Fritz, Jose Antony, and [Tian Zhao](http://uwm.edu/engineering/people/zhao-ph-d-tian/); In [HotWeb, 2016](http://conferences.computer.org/hotweb2016/){{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Arrows%20in%20Commercial%20Web%20Applications.pdf)
-* [Workshop Slides](https://assets.eric-fritz.com/papers/Fritz%20-%20HotWeb2016.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Arrows%20in%20Commercial%20Web%20Applications.pdf)
+* [Workshop Slides](/assets/papers/Fritz%20-%20HotWeb2016.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 
@@ -95,8 +95,8 @@ Developing scalable and robust Web applications is difficult. One obstacle is Ja
 {{% squished %}}
 {{% small %}}Eric Fritz and [Tian Zhao](http://uwm.edu/engineering/people/zhao-ph-d-tian/); In [REBLS, 2015](http://2015.splashcon.org/track/rebls2015){{% /small %}}
 {{% attachments %}}
-* [Author's Version](https://assets.eric-fritz.com/papers/Fritz%20-%20Type%20Inference%20of%20Asynchronous%20Arrows%20in%20JavaScript.pdf)
-* [Workshop Slides](https://assets.eric-fritz.com/papers/Fritz%20-%20REBLS2015.pdf)
+* [Author's Version](/assets/papers/Fritz%20-%20Type%20Inference%20of%20Asynchronous%20Arrows%20in%20JavaScript.pdf)
+* [Workshop Slides](/assets/papers/Fritz%20-%20REBLS2015.pdf)
 {{% /attachments %}}
 {{% /squished %}}
 

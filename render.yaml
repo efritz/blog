@@ -10,15 +10,6 @@ services:
     domains:
       - eric-fritz.com
       - www.eric-fritz.com
-  - name: efritz/blog-assets
-    type: web
-    runtime: static
-    repo: https://github.com/efritz/blog
-    branch: main
-    rootDir: assets
-    staticPublishPath: ./
-    domains:
-      - assets.eric-fritz.com
   - name: efritz/blog-deadlinks
     type: cron
     runtime: go

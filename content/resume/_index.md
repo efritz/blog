@@ -5,12 +5,12 @@ index = true
 
 ## Resume
 
-A [printable version](https://assets.eric-fritz.com/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
+A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
 
 ### Work History
 
 {{< content
-    title="![render](https://assets.eric-fritz.com/images/logos/render.png) Render"
+    title="![render](/assets/images/logos/render.png) Render"
     meta="From 2023"
     >}}
 
@@ -19,7 +19,7 @@ The Datastores team enables managed Postgres and Redis databases balancing power
 {{< /content >}}
 
 {{< content
-    title="![sourcegraph](https://assets.eric-fritz.com/images/logos/sourcegraph.svg) Sourcegraph"
+    title="![sourcegraph](/assets/images/logos/sourcegraph.svg) Sourcegraph"
     meta="2019 to 2023"
     >}}
 

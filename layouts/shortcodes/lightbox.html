@@ -1,7 +1,7 @@
 <a href="#img-{{ .Get "anchor" }}">
-  <img src="{{ if isset .Params "absolute" }}{{ else }}{{ .Site.Params.resources_root }}{{ end }}{{ .Get "src" }}" class="thumbnail {{ if isset .Params "half" }}half{{ end }}">
+  <img src="{{ if isset .Params "absolute" }}{{ .Get "src" }}{{ else }}/assets{{ .Get "src" }}{{ end }}" class="thumbnail {{ if isset .Params "half" }}half{{ end }}">
 </a>
 
 <a href="#_" class="lightbox" id="img-{{ .Get "anchor" }}">
-  <img src="{{ if isset .Params "absolute" }}{{ else }}{{ .Site.Params.resources_root }}{{ end }}{{ .Get "src" }}">
+  <img src="{{ if isset .Params "absolute" }}{{ .Get "src" }}{{ else }}/assets{{ .Get "src" }}{{ end }}">
 </a>
