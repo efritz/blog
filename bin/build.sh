@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -exo pipefail
+
 base_args=
 if [ -n "$IS_PULL_REQUEST" ]; then
     base_args="--baseURL ${RENDER_EXTERNAL_URL}"
