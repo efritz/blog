@@ -168,6 +168,10 @@ main {
 /* Code
 * --------------------------------------------*/
 
+.highlight, pre {
+  overflow-y: scroll;
+}
+
 .highlight {
   margin: 0 -25px;
   border-top: 2px solid #f0f2f3;
@@ -185,7 +189,6 @@ main {
 .highlight > pre {
   padding-top: 5px;
   margin: 0 25px;
-  overflow-y: hidden;
 }
 
 /* Header
