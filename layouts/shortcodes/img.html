@@ -1,6 +1,6 @@
 {{ $src := (.Get "src") }}
 {{ if not (isset .Params "absolute") }}
-  {{ $src = (print .Site.Params.resources_root $src) }}
+  {{ $src = (print "/assets" $src) }}
 {{ end }}
 
 {{ $anchor := (.Get "anchor") }}
