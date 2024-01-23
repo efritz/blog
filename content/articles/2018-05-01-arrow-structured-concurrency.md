@@ -85,7 +85,7 @@ class AnyCombinator {
 
 The encoding for the other three combinators aren't particularly surprising -- new progress objects are created for the child arrows, cancellation of the parent applies to the children, and progress events of the children (generally) bubble up to the parent. One way of visualizing this is a [cactus stack](https://en.wikipedia.org/wiki/Parent_pointer_tree), like the one shown below.
 
-{{< img src="/images/arrows/progress-tree.svg" >}}
+{{< lightbox src="/images/arrows/progress-tree.svg" anchor="progress-tree" >}}
 
 This encodes a root progress object, denoted by $\epsilon$, which splits into a pair of progress objects, which both split one more time. Each junction denotes an *all* or *any* combinator. Cancellation of any promise causes all of the event handlers registered at the async point of all promises to the right of it to be unregistered. Progress of arrows will (generally) cause arrows to the left of it to make progress.
 

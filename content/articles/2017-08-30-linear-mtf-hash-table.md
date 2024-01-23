@@ -18,7 +18,7 @@ In order to find the *cost* of a particular route, the distance between two stop
 
 Hash tables fall come in two varieties. A hash table that uses *separate chaining* stores a reference to a linked list in each slot. Lookup, insertion and deletion from the hash table is done by searching, inserting, and removing a node from the list in the correct slot. The cost of a lookup in such a table is linear to the size of the linked list. These lists are fairly short in practice, assuming an evenly-distributed hash function. Java Collection's [HashMap](http://www.docjar.com/html/api/java/util/HashMap.java.html) is an example of this technique.
 
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" absolute="true" >}}
+{{< lightbox src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Hash_table_5_0_1_1_1_1_1_LL.svg" absolute="true" anchor="chaining" >}}
 
 A hash table that uses *open addressing*, on the other hand, stores key/value pairs directly in the table instead of in an auxiliary data structure. However, this makes *hash collisions* a bit more interesting. Suppose two keys $k_1$ and $k_2$ hash to the same slot $i$ (extremely likely without [perfect hashing](https://en.wikipedia.org/wiki/Perfect_hash_function), which has its own troubles). Obviously, both keys cannot occupy the same slot simultaneously. If $k_1$ occupies slot $i$, $k_2$ may attempt to occupy slot $i + 1$, then $i + 2$ and so on until a free slot is found. Lookup happens symmetrically, where the search begins at slot $i$ and proceeds along the sequence $i + 1$, $i + 2$, $\dots$, until we encounter one of the following conditions.
 
@@ -28,7 +28,7 @@ A hash table that uses *open addressing*, on the other hand, stores key/value pa
 
 If we arrive back at index $i$ without seeing the target key, then the table is full (and every slot is occupied). If we encounter a slot containing `null`, then the key does not exist in the table - if it was present it would have been inserted here or earlier in the search sequence. In order to guarantee that this holds on deletion, entries which are removed are replaced by a special `DELETED` *tombstone* instead of being set back to `null`.
 
-{{< img src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg" absolute="true" >}}
+{{< lightbox src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg" absolute="true" anchor="open-addressing" >}}
 
 The cost of a lookup in such a table is less direct. Several slots in the same neighborhood may try to write to the same set of slots, leading to [primary clustering](https://en.wikipedia.org/wiki/Primary_clustering). If key $k$ hashes to slot $i$, it is not guaranteed that the key residing in slot $i$ is equal to $k$ - it may have just have been written there because it was the first open slot in its probe sequence.
 
@@ -106,7 +106,7 @@ void promoteSlot(int i, int j) {
 
 What this ends up doing is rotating our target key/value pair *backwards* through the probe sequence, as illustrated here ($i = 1$ and $v = 4$).
 
-{{< img src="/images/hash-tables/rotation.svg" >}}
+{{< lightbox src="/images/hash-tables/rotation.svg" anchor="rotation" >}}
 
 We also need to be concerned that we didn't just bork our table and make keys *unreachable*. Notice that every key we moved *except* for our target key was moved exactly one slot to the right. Also notice that because our target key was found sitting at slot $j$, there must not be any empty slots in the probe sequence from $i$ to $j$. Our target key is reachable by a subsequent query, as such a query would start at slot $i$. Any moved key would be reachable by a subsequent query, albeit one that has to look at exactly one additional key (our target key).
 
@@ -146,7 +146,7 @@ We've made a few changes. First, instead of scanning the array from right-to-lef
 
 First, we stash our target pair and immediately put a `DELETED` tombstone in slot $j$. This ensures our loop condition will eventually be met if we don't happen to see any other tombstones in our probe sequence. Next, we insert our stashed pair into slot $i$ and stash the previous contents of slot $i$. This repeats with slot $i + 1$, slot $i + 2$, and so on until we write to a slot that didn't have anything useful in it.
 
-{{< img src="/images/hash-tables/rotation-smart.svg" >}}
+{{< lightbox src="/images/hash-tables/rotation-smart.svg" anchor="rotation-smart" >}}
 
 In addition to rotating only part of the cluster, this version also has the effect of pushing `DELETED` elements further down the cluster so that the elements that are actually returned during a search are compacted closer to their target slot.
 
