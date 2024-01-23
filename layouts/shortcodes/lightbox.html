@@ -1,6 +1,8 @@
-<a href="#img-{{ .Get "anchor" }}">
-  <img src="{{ if isset .Params "absolute" }}{{ .Get "src" }}{{ else }}/assets{{ .Get "src" }}{{ end }}" class="thumbnail {{ if isset .Params "half" }}half{{ end }}">
-</a>
+<figure class="center">
+  <a href="#img-{{ .Get "anchor" }}">
+    <img src="{{ if isset .Params "absolute" }}{{ .Get "src" }}{{ else }}/assets{{ .Get "src" }}{{ end }}" alt="{{ .Get "alt" }}" class="thumbnail {{ if isset .Params "half" }}half{{ end }}">
+  </a>
+</figure>
 
 <a href="#_" class="lightbox" id="img-{{ .Get "anchor" }}">
   <img src="{{ if isset .Params "absolute" }}{{ .Get "src" }}{{ else }}/assets{{ .Get "src" }}{{ end }}">
