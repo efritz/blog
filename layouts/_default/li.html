@@ -5,11 +5,17 @@
     </time>
 
     <div class="right">
-      {{ if .Params.External }}
-        <h4><a href="{{ .Params.External }}">{{ .Title }} <i class="fa fa-external-link external-link"></i></a></h4>
-      {{ else }}
-        <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
-      {{ end }}
+      <h4>
+        {{ if .Params.Mirror }}
+          <span class="mirror">
+            <a href="{{ .Params.Mirror }}">{{ .Title }} <span class="small">(original date)</span></a>
+          </span>
+        {{ else if .Params.External }}
+          <a href="{{ .Params.External }}">{{ .Title }} <i class="fa fa-external-link external-link"></i></a>
+        {{ else }}
+          <a href="{{ .Permalink }}">{{ .Title }}</a>
+        {{ end }}
+      </h4>
     </div>
   </div>
 </article>
