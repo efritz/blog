@@ -1,7 +1,7 @@
 +++
 title = "Found a Golang Bug!"
 slug = "found-a-golang-bug"
-date = "2019-02-03T00:00:00-00:00"
+date = "2019-02-03"
 tags = ["go", "bugs"]
 showpagemeta = true
 +++

@@ -1,7 +1,7 @@
 +++
 title = "Precise Code Intelligence: An LLM Antihallucinogen"
 slug = "llm-antihallucinogen"
-date = "2024-01-21T00:00:00-00:00"
+date = "2024-01-21"
 tags = []
 showpagemeta = true
 +++
