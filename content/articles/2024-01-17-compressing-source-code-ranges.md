@@ -1,7 +1,7 @@
 +++
 title = "Pearl: Compressing source code ranges"
 slug = "compressing-source-code-ranges"
-date = "2024-01-17T00:00:00-00:00"
+date = "2024-01-17"
 tags = ["pearl"]
 showpagemeta = true
 +++

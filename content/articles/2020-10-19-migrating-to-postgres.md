@@ -1,7 +1,7 @@
 +++
 title = "Migrating to Postgres: A Cloud of Mistakes"
 slug = "migrating-to-postgres"
-date = "2020-10-18T00:00:00-00:00"
+date = "2020-10-18"
 tags = ["bugs"]
 showpagemeta = true
 +++
