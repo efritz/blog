@@ -1,7 +1,7 @@
 +++
 title = "Optimizing a code intelligence indexer"
 slug = "optimizing-indexer"
-date = "2020-09-07T00:00:00-00:00"
+date = "2020-09-07"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-indexer"
 icon = "sourcegraph"

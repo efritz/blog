@@ -1,7 +1,7 @@
 +++
 title = "Testing Patterns in Go"
 slug = "testing-patterns-in-go"
-date = "2018-07-20T00:00:00-00:00"
+date = "2018-07-20"
 tags = ["go", "testing"]
 showpagemeta = true
 +++

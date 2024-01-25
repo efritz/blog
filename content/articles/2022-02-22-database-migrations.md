@@ -1,7 +1,7 @@
 +++
 title = "How we finally fixed an embarrassing (migration) problem"
 slug = "fixing-broken-migrations"
-date = "2022-02-22T00:00:00-00:00"
+date = "2022-02-22"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/introducing-migrator-service"
 icon = "sourcegraph"

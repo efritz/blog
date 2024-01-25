@@ -1,7 +1,7 @@
 +++
 title = "Multi-version upgrades"
 slug = "multi-version-upgrades"
-date = "2022-10-25T00:00:00-00:00"
+date = "2022-10-25"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/multi-version-upgrades"
 icon = "sourcegraph"

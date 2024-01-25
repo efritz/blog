@@ -1,7 +1,7 @@
 +++
 title = "Ranking in a week"
 slug = "ranking-in-a-week"
-date = "2022-11-21T00:00:00-00:00"
+date = "2022-11-21"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/ranking-in-a-week"
 icon = "sourcegraph"

@@ -1,7 +1,7 @@
 +++
 title = "Evolution of the code intelligence backend"
 slug = "lsif-backend-evolution"
-date = "2020-06-17T00:00:00-00:00"
+date = "2020-06-17"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/evolution-of-the-precise-code-intel-backend"
 icon = "sourcegraph"

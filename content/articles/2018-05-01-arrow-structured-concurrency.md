@@ -1,7 +1,7 @@
 +++
 title = "Arrow-Structured Concurrency"
 slug = "arrow-structured-concurrency"
-date = "2018-05-01T00:00:00-00:00"
+date = "2018-05-01"
 tags = ["theory"]
 showpagemeta = true
 +++

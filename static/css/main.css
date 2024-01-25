@@ -517,3 +517,7 @@ img[alt=sourcegraph] {
   border-bottom: 1px solid;
   border-color: #4c98b2;
 }
+
+.mirror a {
+  color: #999;
+}
