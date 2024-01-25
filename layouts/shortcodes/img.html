@@ -1,0 +1,20 @@
+{{ $src := (.Get "src") }}
+{{ if not (isset .Params "absolute") }}
+  {{ $src = (print "/assets" $src) }}
+{{ end }}
+
+{{ $anchor := (.Get "anchor") }}
+
+<figure class="center">
+  <a href="#img-{{ $anchor }}">
+    <img src="{{ $src }}" alt="{{ .Get "alt" }}" class="thumbnail">
+  </a>
+
+  {{ if isset .Params "caption" }}
+    <figcaption>{{ .Get "caption" }}</figcaption>
+  {{ end }}
+</figure>
+
+<a href="#_" class="lightbox" id="img-{{ $anchor }}">
+  <img src="{{ $src }}">
+</a>
