@@ -42,19 +42,19 @@ Of course it does. And it's difficult to nail down exactly _how_ it has to do wi
 - We were running background migrations which lead me to believe that it was causing issues on either the service that was interacting with Postgres, or we were hammering Postgres too quickly with bulk inserts. _Something_ was causing the service's CPU utilization to exceed 90%.
 - All code intelligence queries were timing out after ten seconds from _some_ timeout parameter configured on _some_ layer of the stack (CloudSQL, cloudsql-proxy, our sql library, our the client disconnecting due to a timeout).
 
-{{< lightbox src="/images/code-intel-latency-timeouts.png" anchor="timing-out-queries" >}}
+{{< lightbox src="/images/migrating-to-postgres/latency-timeouts.png" anchor="timing-out-queries" >}}
 
 To make matters worse, there was not a clear path to revert these changes to stabilize the production environment. We have been writing _only_ to Postgres from the worker process, so reverting the stack to _only_ read data from SQLite again would have caused us to lose the last 12 hours or so of code intelligence updates. The steady progression of disk usage on the database machine is mostly due to migrations, but a non-trivial amount of that data would have been user uploads from a continuous integration system, or uploads from auto-indexed repositories.
 
-{{< lightbox src="/images/cloudsql-storage.png" anchor="storage" >}}
+{{< lightbox src="/images/migrating-to-postgres/storage.png" anchor="storage" >}}
 
 Looking at the other graph for the CloudSQL instance, we clearly had a problem with the database server itself. Between 6PM the night before to 10AM the same morning, CPU utilization was regularly spiking above 80%, nearly zero egress bytes, and increased but nearly straight line of both active connections and transactions.
 
-{{< lightbox src="/images/cloudsql.gif" anchor="cloudsql activity" >}}
+{{< lightbox src="/images/migrating-to-postgres/resources.gif" anchor="cloudsql activity" >}}
 
 This graphs clearly identify the problem as being squarely in the inefficient-query bug space, but it still it took about two hours of chasing red herrings in a panicked state to find the root cause.
 
-I turns out that I had inadvertently created the new tables [without any indices](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
+I turns out that I had inadvertently created the new tables [without any indexes](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
 
 In my experimental branch, I was toying with the idea of using [postgres_fdw](https://about.gitlab.com/handbook/engineering/development/enablement/database/doc/fdw-sharding.html) to shard data across multiple code intelligence databases. We decided to punt on this feature for the time being, at which point I copied the _simple_ version of the schema without foreign partitions into a PR for review.
 
@@ -75,7 +75,7 @@ sg=> EXPLAIN SELECT data FROM lsif_data_documents WHERE dump_id = 1 AND path = '
 
 # Repairing
 
-The solution was a trivial as the initial mistake: just add indexes. This was easy enough to do, although we had to do it by hand. Our migrations run in our frontend API pods, blocking application startup until the migration has completed. Blocking production startup in order to write hundreds of gigabytes of indices to a database was a non-starter. Our solution was to run the migration by hand in a CloudSQL shell in order to regain a responsive service, and merge a migration into the main branch that could be performed idempotently. This way, we can use concurrent index creation to avoid a full table lock, and the schema in our repository matches what is in production (a DevOps prime directive).
+The solution was a trivial as the initial mistake: just add indexes. This was easy enough to do, although we had to do it by hand. Our migrations run in our frontend API pods, blocking application startup until the migration has completed. Blocking production startup in order to write hundreds of gigabytes of indexes to a database was a non-starter. Our solution was to run the migration by hand in a CloudSQL shell in order to regain a responsive service, and merge a migration into the main branch that could be performed idempotently. This way, we can use concurrent index creation to avoid a full table lock, and the schema in our repository matches what is in production (a DevOps prime directive).
 
 ```text
 sg=> CREATE UNIQUE INDEX CONCURRENTLY lsif_data_metadata_idx on lsif_data_metadata (dump_id);

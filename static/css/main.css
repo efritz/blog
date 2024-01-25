@@ -34,9 +34,9 @@ h6 {
 h1 { font-size: 1.333em; }
 h2 { font-size: 1.777em; }
 h3 { font-size: 1.333em; }
-h4 { font-size: 1.000em; }
-h5 { font-size: 1.000em; }
-h6 { font-size: 1.000em; }
+h4 { font-size: 1.000em; font-weight: bold }
+h5 { font-size: 1.000em; font-weight: bold }
+h6 { font-size: 1.000em; font-weight: bold }
 
 h3 {
   border-bottom: 1px solid rgba(0, 0, 0, .0785);
@@ -168,6 +168,10 @@ main {
 /* Code
 * --------------------------------------------*/
 
+.highlight, pre {
+  overflow-y: scroll;
+}
+
 .highlight {
   margin: 0 -25px;
   border-top: 2px solid #f0f2f3;
@@ -185,7 +189,6 @@ main {
 .highlight > pre {
   padding-top: 5px;
   margin: 0 25px;
-  overflow-y: hidden;
 }
 
 /* Header
@@ -394,8 +397,19 @@ html, body {
 /* Miscellaneous Styles
 * --------------------------------------------*/
 
+img[alt=render],
 img[alt=sourcegraph] {
   width: 25px;
   padding-right: 5px;
   vertical-align: middle;
+}
+
+.alert-banner {
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f8d7da;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }

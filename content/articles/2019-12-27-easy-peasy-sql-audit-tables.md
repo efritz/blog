@@ -12,11 +12,11 @@ Most of the time, modifications to data via the API are performed by a build use
 
 The following screenshot shows a view of the audit log. The summary column gives a terse description of the action that was performed, along with links to any foreign entities that still exist.
 
-{{< lightbox src="/images/deposition-audit.png" anchor="deposition-audit-log" >}}
+{{< lightbox src="/images/audit-tables/audit-logs.png" anchor="deposition-audit-log" >}}
 
 The following screenshot shows a detailed view of one audit log record, which shows the difference of the values in the database before and after the operation was performed. For a record update, this dialog shows the before-and-after values of the columns that were altered. For creation and deletion of records, this dialog shows the entire record as it was after creation and before deletion, respectively.
 
-{{< lightbox src="/images/deposition-audit-detail.png" anchor="deposition-audit-log-details" >}}
+{{< lightbox src="/images/audit-tables/audit-details.png" anchor="deposition-audit-log-details" >}}
 
 This remainder of this article outlines how [PostgreSQL](https://www.postgresql.org/) was leveraged to add automatic audit log insertions without changing any application code. The code here is written to work with Deposition, assuming the existence of some external tables and the semantic value of their columns. However, the technique is not tied to any particular schema and can be easily adapted to fit another application using the same database with minimal changes.
 

@@ -1,0 +1,25 @@
+services:
+  - name: efritz/blog
+    type: web
+    runtime: static
+    repo: https://github.com/efritz/blog
+    branch: main
+    buildCommand: ./bin/build.sh
+    staticPublishPath: public
+    pullRequestPreviewsEnabled: true
+    domains:
+      - eric-fritz.com
+      - www.eric-fritz.com
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=15552000 # 6 months
+
+  - name: efritz/blog-deadlinks
+    type: cron
+    runtime: go
+    repo: https://github.com/efritz/blog
+    branch: main
+    schedule: "0 0 * * *"
+    buildCommand: go build -o deadlinks ./cmd/deadlinks
+    startCommand: ./deadlinks

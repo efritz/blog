@@ -5,13 +5,22 @@ index = true
 
 ## Resume
 
-A [printable version](https://assets.eric-fritz.com/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
+A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
 
 ### Work History
 
 {{< content
-    title="![sourcegraph](https://sourcegraph.com/.assets/img/sourcegraph-mark.svg) Sourcegraph"
-    meta="2019 to Present"
+    title="![render](/assets/images/logos/render.png) Render"
+    meta="From 2023"
+    >}}
+
+The Datastores team enables managed Postgres and Redis databases balancing power, flexibility, and ease of use for end users. Currently, my efforts are focused on reducing compute and storage costs for hosting as well as increasing intelligent observability of database usage and performance to aid developers in self-serving optimization of their own applications.
+
+{{< /content >}}
+
+{{< content
+    title="![sourcegraph](/assets/images/logos/sourcegraph.svg) Sourcegraph"
+    meta="2019 to 2023"
     >}}
 
 I am a staff-level software engineer leading the [language platform team](https://handbook.sourcegraph.com/departments/engineering/teams/code-intelligence/#language-platform) (a subteam of [code intelligence](https://handbook.sourcegraph.com/departments/engineering/teams/code-intelligence/)). Our team works to provide fast and precise code intelligence to power code navigation operations such as cross-repository go-to-definition and global find-references. We are currently expanding our scope to usefully provide precise code intelligence data to other product teams at Sourcegraph.
@@ -45,13 +54,13 @@ I was the primary author the following infrastructure and developer experience p
 
 - **Bigboss** is a Mesos framework and deployment system for frequent-churn containers. Bigboss elastically schedules call processor services so that at any given time between 30-40% of all running processes are available to accept a new call without delay. When new call processor code is deployed, idle call processors are shut down and replaced with a fresh container running the updated version. The following image is a portion of the scheduler metrics dashboard over the course of two weeks (for one datacenter). Peaks indicate heavy call traffic, and the two-day flat line periods are the weekend, where call volume does not generally exceed our elastic scaling threshold.
 
-{{< lightbox src="/images/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
+{{< lightbox src="/images/resume/bigboss-dashboard.png" anchor="bigboss-dashboard" >}}
 
 - **Charon** is a distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon), and an interactive example is available in the [request simulator](/articles/charon-simulator/).
 
 - **Deposition** is an internal tool used to track software lifecycle metadata such as builds, dependencies (including vulnerabilities), and deployments of our internal infrastructure. See the [blog post](http://localhost:1313/articles/deposition/) for the original motivation and additional product and implementation details.
 
-{{< lightbox src="/images/deposition-products.png" anchor="deposition" >}}
+{{< lightbox src="/images/resume/deposition-products.png" anchor="deposition" >}}
 
 - **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
 {{< /content >}}
@@ -73,7 +82,7 @@ Developed an e-commerce and supply chain web application which streamline intera
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
-My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](http://www.cs.uwm.edu/faculty/boyland/).
+My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](https://uwm.edu/engineering/people/boyland-john/).
 
 Abstract: _Program transformations that are able to rely on the presence of canonical properties of the program undergoing optimization can be written to be more robust and efficient than an equivalent but generalized transformation that also handles non-canonical programs. If a canonical property is required but broken earlier in an earlier transformation, it must be rebuilt (often from scratch). This additional work can be a dominating factor in compilation time when many transformations are applied over large programs. This dissertation introduces a methodology for constructing program transformations so that the program remains in an always-canonical form as the program is mutated, making only local changes to restore broken properties._
 
@@ -86,11 +95,22 @@ Abstract: _Program transformations that are able to rely on the presence of cano
 
 {{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
-My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](http://www.cs.uwm.edu/faculty/ccheng/).
+My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](https://uwm.edu/engineering/people/cheng-christine/).
 
 Abstract: _RedPrairie's Transportation Management products are based on a suite of optimizers that approximate solutions for the Vehicle Routing Problem, a well-known NP-hard problem. The optimizers work by heuristically updating portions of route assignments and require many prohibitively expensive queries to a Geographic Information System. The thesis explores several strategies for caching queries in-memory -- specifically, how can hash tables be organized to maximize the entries which can fit in resident memory, and which cache eviction strategies retain the most useful data with respect to the optimizer's access patterns._
 
 RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
+
+{{< /content >}}
+
+{{< content
+    title="BFA Film"
+    meta="2007 to 2011"
+    >}}
+
+{{% small %}}University of Wisconsin – Milwaukee{{% /small %}}
+
+I received a Bachelor of Fine Arts in undergrad studying film theory and production.
 
 {{< /content >}}
 
@@ -101,18 +121,18 @@ RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
     meta="2011 to 2016"
     >}}
 
-- {{% icon "check-square class-icon" %}} CompSci **658 / 790** -- iOS Programming
-- {{% icon "check-square class-icon" %}} CompSci **482**       -- Server-side Internet Programming
-- {{% icon "check-square class-icon" %}} CompSci **481**       -- Rich Internet Applications
-- {{% icon "square       class-icon" %}} CompSci **655**       -- Compiler Implementation Laboratory
-- {{% icon "square       class-icon" %}} CompSci **251**       -- Intermediate Computer Programming
-- {{% icon "square-o     class-icon" %}} CompSci **744**       -- Text Retrieval and Its Applications in Biomedicine
-- {{% icon "square-o     class-icon" %}} CompSci **395**       -- Social, Professional, Ethical Issues
-- {{% icon "square-o     class-icon" %}} CompSci **361**       -- Introduction to Software Engineering
-- {{% icon "square-o     class-icon" %}} CompSci **351**       -- Data Structures and Algorithms
-- {{% icon "square-o     class-icon" %}} CompSci **315**       -- Assembly Language Programming
-- {{% icon "square-o     class-icon" %}} CompSci **201**       -- Introduction to Computer Programming
-- {{% icon "square-o     class-icon" %}} CompSci **150**       -- Survey of Computer Science
+- {{% icon "check-square resume-icon" %}} CompSci **658 / 790** -- iOS Programming
+- {{% icon "check-square resume-icon" %}} CompSci **482**       -- Server-side Internet Programming
+- {{% icon "check-square resume-icon" %}} CompSci **481**       -- Rich Internet Applications
+- {{% icon "square       resume-icon" %}} CompSci **655**       -- Compiler Implementation Laboratory
+- {{% icon "square       resume-icon" %}} CompSci **251**       -- Intermediate Computer Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **744**       -- Text Retrieval and Its Applications in Biomedicine
+- {{% icon "square-o     resume-icon" %}} CompSci **395**       -- Social, Professional, Ethical Issues
+- {{% icon "square-o     resume-icon" %}} CompSci **361**       -- Introduction to Software Engineering
+- {{% icon "square-o     resume-icon" %}} CompSci **351**       -- Data Structures and Algorithms
+- {{% icon "square-o     resume-icon" %}} CompSci **315**       -- Assembly Language Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **201**       -- Introduction to Computer Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **150**       -- Survey of Computer Science
 
 {{< legend
     icon="check-square"

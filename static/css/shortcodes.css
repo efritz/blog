@@ -1,8 +1,18 @@
 /* Lightbox
  * --------------------------------------------*/
 
+figure {
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
 .thumbnail {
   width: 100%;
+}
+
+.thumbnail.half {
+  width: 49%;
 }
 
 .lightbox {
@@ -24,6 +34,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: #fff;
   box-shadow: 0px 0px 1px 1px #ccc;
   max-height: 90%;
   max-width: 90%;
@@ -42,7 +53,7 @@
   color: #2a7ae2;
 }
 
-.class-icon {
+.resume-icon {
   float: right;
   margin-top: 5px;
 }
