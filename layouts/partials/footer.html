@@ -17,7 +17,7 @@
   $scripts := slice
     (resources.Get "js/lightbox.js")
     (resources.Get "js/mathjax.js")
-  | resources.Concat "js/bundle.js" | minify | fingerprint
+  | resources.Concat "assets/js/bundle.js" | minify | fingerprint
 }}
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
