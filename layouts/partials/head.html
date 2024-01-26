@@ -15,7 +15,7 @@
       (resources.Get "css/normalize.css")
       (resources.Get "css/main.css")
       (resources.Get "css/shortcodes.css")
-    | resources.Concat "css/bundle.css" | minify | fingerprint
+    | resources.Concat "assets/css/bundle.css" | minify | fingerprint
   }}
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
