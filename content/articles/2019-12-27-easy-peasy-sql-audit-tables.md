@@ -1,7 +1,7 @@
 +++
 title = "Easy Peasy SQL Audit Tables"
 slug = "easy-peasy-sql-audit-tables"
-date = "2019-12-27T00:00:00-00:00"
+date = "2019-12-27"
 tags = ["sql"]
 showpagemeta = true
 +++

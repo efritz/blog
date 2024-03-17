@@ -5,12 +5,12 @@ index = true
 
 ## Resume
 
-A [printable version](https://assets.eric-fritz.com/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
+A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
 
 ### Work History
 
 {{< content
-    title="![render](https://assets.eric-fritz.com/images/logos/render.png) Render"
+    title="![render](/assets/images/logos/render.png) Render"
     meta="From 2023"
     >}}
 
@@ -19,7 +19,7 @@ The Datastores team enables managed Postgres and Redis databases balancing power
 {{< /content >}}
 
 {{< content
-    title="![sourcegraph](https://assets.eric-fritz.com/images/logos/sourcegraph.svg) Sourcegraph"
+    title="![sourcegraph](/assets/images/logos/sourcegraph.svg) Sourcegraph"
     meta="2019 to 2023"
     >}}
 
@@ -121,18 +121,18 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
     meta="2011 to 2016"
     >}}
 
-- {{% icon "check-square class-icon" %}} CompSci **658 / 790** -- iOS Programming
-- {{% icon "check-square class-icon" %}} CompSci **482**       -- Server-side Internet Programming
-- {{% icon "check-square class-icon" %}} CompSci **481**       -- Rich Internet Applications
-- {{% icon "square       class-icon" %}} CompSci **655**       -- Compiler Implementation Laboratory
-- {{% icon "square       class-icon" %}} CompSci **251**       -- Intermediate Computer Programming
-- {{% icon "square-o     class-icon" %}} CompSci **744**       -- Text Retrieval and Its Applications in Biomedicine
-- {{% icon "square-o     class-icon" %}} CompSci **395**       -- Social, Professional, Ethical Issues
-- {{% icon "square-o     class-icon" %}} CompSci **361**       -- Introduction to Software Engineering
-- {{% icon "square-o     class-icon" %}} CompSci **351**       -- Data Structures and Algorithms
-- {{% icon "square-o     class-icon" %}} CompSci **315**       -- Assembly Language Programming
-- {{% icon "square-o     class-icon" %}} CompSci **201**       -- Introduction to Computer Programming
-- {{% icon "square-o     class-icon" %}} CompSci **150**       -- Survey of Computer Science
+- {{% icon "check-square resume-icon" %}} CompSci **658 / 790** -- iOS Programming
+- {{% icon "check-square resume-icon" %}} CompSci **482**       -- Server-side Internet Programming
+- {{% icon "check-square resume-icon" %}} CompSci **481**       -- Rich Internet Applications
+- {{% icon "square       resume-icon" %}} CompSci **655**       -- Compiler Implementation Laboratory
+- {{% icon "square       resume-icon" %}} CompSci **251**       -- Intermediate Computer Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **744**       -- Text Retrieval and Its Applications in Biomedicine
+- {{% icon "square-o     resume-icon" %}} CompSci **395**       -- Social, Professional, Ethical Issues
+- {{% icon "square-o     resume-icon" %}} CompSci **361**       -- Introduction to Software Engineering
+- {{% icon "square-o     resume-icon" %}} CompSci **351**       -- Data Structures and Algorithms
+- {{% icon "square-o     resume-icon" %}} CompSci **315**       -- Assembly Language Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **201**       -- Introduction to Computer Programming
+- {{% icon "square-o     resume-icon" %}} CompSci **150**       -- Survey of Computer Science
 
 {{< legend
     icon="check-square"

@@ -10,9 +10,15 @@
   <link rel="canonical" href="{{ .Site.BaseURL }}" />
   <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}">
 
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+  {{
+    $styles := slice
+      (resources.Get "css/normalize.css")
+      (resources.Get "css/main.css")
+      (resources.Get "css/shortcodes.css")
+    | resources.Concat "assets/css/bundle.css" | minify | fingerprint
+  }}
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}/css/normalize.css"/>
-  <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}/css/main.css">
-  <link rel="stylesheet" type="text/css" href="{{ .Site.BaseURL }}/css/shortcodes.css">
+  <link rel="stylesheet" type="text/css" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous">
 </head>
