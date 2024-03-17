@@ -117,10 +117,10 @@ Something here!
 
 TODO
 
-{{< lightbox src="/imagesstatic-sites/domains.png" anchor="Issuing custom domain certificates" >}}
-{{< lightbox src="/imagesstatic-sites/prs.png" anchor="Automatic preview environments for PRs" >}}
-{{< lightbox src="/imagesstatic-sites/previews.png" anchor="List of preview environments" >}}
-{{< lightbox src="/imagesstatic-sites/live-preview.png" anchor="A fully functional preview environment" >}}
+{{< lightbox src="/images/static-sites/domains.png" anchor="Issuing custom domain certificates" >}}
+{{< lightbox src="/images/static-sites/prs.png" anchor="Automatic preview environments for PRs" >}}
+{{< lightbox src="/images/static-sites/previews.png" anchor="List of preview environments" >}}
+{{< lightbox src="/images/static-sites/live-preview.png" anchor="A fully functional preview environment" >}}
 
 render.yaml:
 
