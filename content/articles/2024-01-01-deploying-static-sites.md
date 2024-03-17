@@ -1,7 +1,7 @@
 +++
 title = "Deploying Static Sites like it's 2024"
 slug = "deploying-static-sites"
-date = "2024-01-01T00:00:00-00:00"
+date = "2024-03-17T00:00:00-00:00"
 tags = []
 showpagemeta = true
 +++
@@ -17,8 +17,6 @@ In order to avoid setting up a full AWS or GCP account for personal projects, I 
 TODO
 
 [Spaces](https://www.digitalocean.com/products/spaces0)
-
-
 
 
 
@@ -67,7 +65,6 @@ TODO
 
 
 SCRIPTS:
-
 
 deploy.sh:
 
@@ -119,3 +116,48 @@ done
 Something here!
 
 TODO
+
+{{< lightbox src="/imagesstatic-sites/domains.png" anchor="Issuing custom domain certificates" >}}
+{{< lightbox src="/imagesstatic-sites/prs.png" anchor="Automatic preview environments for PRs" >}}
+{{< lightbox src="/imagesstatic-sites/previews.png" anchor="List of preview environments" >}}
+{{< lightbox src="/imagesstatic-sites/live-preview.png" anchor="A fully functional preview environment" >}}
+
+render.yaml:
+
+```
+services:
+  - name: efritz/blog
+    type: web
+    runtime: static
+    repo: https://github.com/efritz/blog
+    branch: main
+    buildCommand: ./bin/build.sh
+    staticPublishPath: public
+    pullRequestPreviewsEnabled: true
+    domains:
+      - eric-fritz.com
+      - www.eric-fritz.com
+    headers:
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=15552000 # 6 months
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: '*'
+```
+
+build.sh
+
+```bash
+#!/usr/bin/env bash
+
+set -exo pipefail
+
+base_args=
+if [ "$IS_PULL_REQUEST" == "true" ]; then
+    base_args="--baseURL ${RENDER_EXTERNAL_URL}"
+fi
+
+# shellcheck disable=SC2086
+hugo --gc --minify $base_args
+```
