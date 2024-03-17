@@ -20,6 +20,7 @@ services:
 
   - name: efritz/blog-deadlinks
     type: cron
+    plan: starter
     runtime: go
     repo: https://github.com/efritz/blog
     branch: main
