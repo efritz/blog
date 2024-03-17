@@ -14,9 +14,13 @@ services:
       - path: /assets/*
         name: Cache-Control
         value: public, max-age=15552000 # 6 months
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: '*'
 
   - name: efritz/blog-deadlinks
     type: cron
+    plan: starter
     runtime: go
     repo: https://github.com/efritz/blog
     branch: main

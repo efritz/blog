@@ -413,3 +413,7 @@ img[alt=sourcegraph] {
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }
+
+.mirror a {
+  color: #999;
+}

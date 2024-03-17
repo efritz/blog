@@ -1,7 +1,7 @@
 +++
 title = "Home office setup"
 slug = "home-office-setup"
-date = "2023-12-29T00:00:00-00:00"
+date = "2023-12-29"
 tags = []
 showpagemeta = true
 +++
