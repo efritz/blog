@@ -1,5 +1,3 @@
-
-
 +++
 title = "PostgreSQL Stories: From slow query to fast—via stats"
 date = "2024-04-03"
