@@ -60,6 +60,14 @@ strong {
   font-weight: bold;
 }
 
+blockquote {
+  text-align: justify;
+}
+
+.text-right {
+  text-align: right;
+}
+
 a,
 a:visited {
   color: #4c98b2;
