@@ -22,26 +22,25 @@ As a corollary, the code being iterated over was for **me**, and outside eyes we
 
 ### The crazy wall scribblings
 
+My working drafts are not meant for public consumption and likely constitute a cognitohazard for others. They may make little sense outside of the specific journey I'm taking to solve a particular problem.
 
+I'll move existing code _out of the way_ in what can't legally be called a "refactor". I'll leave unit tests in a broken state. I'll implement new functionality for the minimal portion of interface implementations and leave the _build_ in a broken state. These things are easy to come back to (and impossible to forget with literally **any** form of continuous integration).
 
-"not meant for public consumption"
+Well, the code is relatively messy, but at least the commit messages track my progress. Right?
 
+**No!!!**
 
+_WIP._ _WIP._ _WIP._ 
 
-I'll leave unit tests in a broken state. I'll implement half of a refactor and leave the _build_ in a broken state. These things are easy to come back to (and impossible to forget with literally **any** form of continuous integration).
+That's it. That's all you get. That's the entire branch history.
 
-
-Code made a bit of progress? Slam F5 to auto-save. It's how I play video games and it's how I checkpoint my own progress in experimental branches. If I was doing this pre-Git, I probably would've copied the file and renamed it to `NewFinalestFinal_Final (2)` [^1]. That's not below me.
+I have a [`git wip` alias](https://github.com/efritz/dotfiles/blob/18988e89aed2070a8a4a268d8f1f9de0b55673aa/git/gitconfig#L33) specifically slamming the entire repo state into a progress commit. Code made a bit of progress? Slam F5 to auto-save. It's how I play video games, and it's how I checkpoint my own progress in experimental branches. What a waste to learn _two habits_ when one will do! If I was doing this pre-Git, I probably would've copied the entire file and renamed it to `NewFinalestFinal_Final (2)` [^1]. That's not below me.
 
 [^1]: I also use print line debugging **daily**.
 
+The current state of code is my current progress, state of mind, and todo list. If I feel the need to go back in time to save something, I'll keep it around as dead (or commented out) code. There is no expectation of code cleanliness at this stage of experimentation.
 
-[gitconfig aliases](https://github.com/efritz/dotfiles/blob/18988e89aed2070a8a4a268d8f1f9de0b55673aa/git/gitconfig#L33)
-
-`git wip` 
-
-
-
+But at some point, TODO
 
 ### The "thesis version"
 
