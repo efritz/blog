@@ -1,13 +1,53 @@
 +++
-title = "Git epics"
-slug = "git-epics"
+title = "I am abusive to Git"
+slug = "i-am-abusie-to-git"
 date = "2024-06-04T00:00:00-00:00"
 # TODO - update
-tags = ["git"]
+tags = ["git", "workflows"]
 showpagemeta = true
 +++
 
-In the following, blah
+When I was working as a Staff Engineer at Sourcegraph, I performed a lot of "exploratory coding" that helped determine if some nascent idea could stand on its own legs. If the idea was validated with sufficient confidence, it would be polished, productionized, and shipped. Sometimes the polish ended up taking the majority of the effort. Often times these ideas were backtracked and abandoned and its learnings taken back to the team to amend our frontier ideas. If a particular change didn't move the needle _enough_ relative to the estimated engineering effort, we'd instead focus efforts on higher-impact ideas.
+
+Doing the work of _implementing_ an idea, even a small bit of it, has vast benefits in building my mental model of a solution space (and, as a nice side-effect, the problem space it intersects), identifying possible hurdles which may be otherwise overlooked in "pure-theory" planning, and refining estimates of effort.
+
+Over four years, I ended up falling into a very particular rhythm that accentuated the core ideas of
+1. This is an iterative experiment,
+1. This is more likely than not going to be thrown away, and
+1. A **working result** is the the ultimate goal, through whatever quick or surgical means (which can be cleaned up later) get you there. Note that the result here is not necessarily a working code artifact, and could be something as intangible as a better mental model of the existing code or domain.
+
+As a corollary, the code being iterated over was for **me**, and outside eyes were expected to eventually gaze upon a rewritten history of what I _learned_ rather than the crazy wall scribblings that reflected my _learnings_.
+
+{{< lightbox src="https://i.kym-cdn.com/entries/icons/original/000/022/524/pepe_silvia_meme_banner.jpg" absolute=true anchor="conspiracy" alt="Branch ef/pepe-silvia" >}}
+
+### The crazy wall scribblings
+
+
+
+"not meant for public consumption"
+
+
+
+I'll leave unit tests in a broken state. I'll implement half of a refactor and leave the _build_ in a broken state. These things are easy to come back to (and impossible to forget with literally **any** form of continuous integration).
+
+
+Code made a bit of progress? Slam F5 to auto-save. It's how I play video games and it's how I checkpoint my own progress in experimental branches. If I was doing this pre-Git, I probably would've copied the file and renamed it to `NewFinalestFinal_Final (2)` [^1]. That's not below me.
+
+[^1]: I also use print line debugging **daily**.
+
+
+[gitconfig aliases](https://github.com/efritz/dotfiles/blob/18988e89aed2070a8a4a268d8f1f9de0b55673aa/git/gitconfig#L33)
+
+`git wip` 
+
+
+
+
+### The "thesis version"
+
+TODO
+
+
 
 <blockquote>
 [We] want to establish the idea that a computer language is not just a way of getting a computer to perform operations but rather that it is a novel formal medium for expressing ideas about methodology. Thus, programs must be written for people to read, and only incidentally for machines to execute.
@@ -19,32 +59,33 @@ In the following, blah
 
 
 
-<!-- ---
-title: 'A Git epic: Implementing non-sequential migrations'
-author: Eric Fritz
-authorUrl: https://eric-fritz.com
-publishDate: 2023-01-01T12:00-00:00
-tags: [blog]
-slug: git-epic
-heroImage: https://sourcegraphstatic.com/blog/git-epic/git-epic.jpg
-socialImage: https://sourcegraphstatic.com/blog/git-epic/git-epic.jpg
-published: true
-description: 'TODO'
---- -->
+
+{{< lightbox src="/images/git-abuse/git-squash.png" anchor="git-complex" >}}
+{{< lightbox src="/images/git-abuse/git-clean.png" anchor="git-complex" >}}
+{{< lightbox src="/images/git-abuse/git-complex.png" anchor="git-complex" >}}
+
+
+
+
+
+
+
 
 BLAH BLAH 1
 
-{{< lightbox src="/images/git-epics/wait-prompt.png" anchor="wait-prompt" >}}
+{{< lightbox src="/images/git-abuse/wait-prompt.png" anchor="wait-prompt" >}}
 
 BLAH BLAH 2
 
-{{< lightbox src="/images/git-epics/confusing-diff.png" anchor="confusing-diff" >}}
+{{< lightbox src="/images/git-abuse/confusing-diff.png" anchor="confusing-diff" >}}
 
-{{< lightbox src="/images/git-epics/focused-diff1.png" anchor="focused-diff1" >}}
+{{< lightbox src="/images/git-abuse/focused-diff1.png" anchor="focused-diff1" >}}
 
-{{< lightbox src="/images/git-epics/focused-diff2.png" anchor="focused-diff2" >}}
+{{< lightbox src="/images/git-abuse/focused-diff2.png" anchor="focused-diff2" >}}
 
 BLAH BLAH 3
+
+### A "Git epic"
 
 > This branch is an experiment (never meant to be merged) to ensure that a set of migration features, when implemented to completion, work well together. Now that this has been proven, this effort will be cut up into smaller, more digestible chunks. <br/><br/>
 > The PRs that come from this branch will be linked here. Periodically, I may merge an updated `main` into this branch to "checkpoint" completed work. This will reduce the diff of this experimental branch to `main` to keep the relevant portions of the experiment that are still in discussion focused. <br/><br/>
@@ -533,3 +574,12 @@ PR Notes:
   - This PR ensures that the migrator no longer holds a lock while concurrently creating indexes.
   - NOTE: Discovered this error only while working on experiment. See #30418.
 - [chore: Remove dead code _#30855_](https://github.com/sourcegraph/sourcegraph/pull/30855)
+
+
+
+
+https://mermaid.live/edit#pako:eNp1k09vwjAMxb9KlAlxgSHYTrkN9n9MQtth0pRL1hoakSaV644h1O--NKUTU0Nvfe-XZ8uyDzxxKXDBx-OxtB8Ot2vjdtKGX2kHg4O2mgQ7MGmZ_4aUQQ5DwYapwu1wdFQ3mh5QFZk3Dq0UZHSkCBYuzzUt1RcY7xNWMDphCoXKGDAtVR6JFqilrevBoOmkq8CWbyKYSeCZTgWT_Ebyvjg_il-obJIxWE_gpwDUOVhiDlNAwabtswySravoP9NP_HhaXbKLaaxYa83OW1fnrevO6trIlbZ9eBFLuI2JdzHxPiY-xMTH3uAQvjXsuqHNekNr_X7SSiGxqWALh8DWlU1IO6uMpn2sbqBngs3BmHKyy3RJBsoJQUnl2RHlgBs46bGNeorlP8fEl0bkI-5zfGbqTyFssORh0yVvmGbXG6z2nKrIve9twkXYZF4Vqd_xW602qHIu1sqUXoVUk8PX9rbCiY04umqT_RGFsp_OdS_qXzsYH0w
+
+https://mermaid.live/edit#pako:eNp1k19PwjAUxb9KU0N4AQnoU9_kj4hiQiCRxPSlbHdbQ9fO7i5IyL673QZGXNnbzvnt3Juu50QDEwJltN_vc701dh8pc-C6fuW60zlJLZGRE-GauKeLCaTQZaQbCrvv9s5qLHFuRZY449RItWwNCoSJSVOJS7ED5Xy0BfT-MJmwQilQDZWfiQYouS7LTqfa5DKBLNesNoOaJzJkhNMnTtvi-CzurNBBQiAawHcGVqagkRgbgmVk2HyWQLA3BV4z7cTtYnVP7oa-YY01um093LYeL9ZljVRI3YYnvoSpT5z5xGefOPeJL__3aR9LCjaG1p54zICtZx-z9WZ2ztp8FSJPfFNWwiIZMjIxFkhU6ACl0UJJPN6kR4yMQal8cEhkjgryAUKO-c3ja7a8_vFN3MI349UnvlUi7VGX5XJDV5X6hnNaN4HTiqm6UGGl40SBZnPUAWX1TadFFroOTKWIrUgpi4TKnQqhRGPfm-7VFexRa4o4-SUyoT-NuXxR_gA02CpA
+
+https://mermaid.live/edit#pako:eNqNVMtuwjAQ_BXLFeICrUj6kHwrj1JaaBE9cPHFJBtikdiRcUorlH-v85JoY0vNzTOzuyOvM2ccyBAwwcPhkIqtVIcokScqqiMVvd6ZC64JOiMqkPn6OoYU-gT1Q6YO_UGD7rmeK5bFhjjXUAUrqZmGiUxTrpdsB4nhtcphcKHJmGJJAkmtOjaKWlBQURS9XumknYCWG1KRQaVHPCSI4keKu-C4AXeKiSBGEN3AVwaKpyA0kioERdCoLoshOMhc_9Z0O24X62t0NbINqynPTflu6s5N3buph5ZqzaeMi654YuswtYEzG_hkA-c28NkGLmzgS2cxCj45nEbtVrzOVhpBt1cQSwUEbSBigZbKeScpqD1cjqrLX23-lg5_XuvPd_jzur0iYOb3sb7Pmho7LVs9-K2HW4cH3zVo4vYwdVOz_96o15StmoI_tN_Qb7ZR7zZwXYJ4gE0jMzM0GVVFC8VVBFFcasoQKmWF0bFcy49vEWBSRQzOs9CEz5SzvWIpJhFLjgaFkJtnsqpDr8q-4gdrIpKV
