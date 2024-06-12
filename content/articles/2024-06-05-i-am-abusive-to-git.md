@@ -59,8 +59,8 @@ TODO
 
 
 
-{{< lightbox src="/images/git-abuse/git-squash.png" anchor="git-complex" >}}
-{{< lightbox src="/images/git-abuse/git-clean.png" anchor="git-complex" >}}
+{{< lightbox src="/images/git-abuse/git-squash.png" anchor="git-squash" >}}
+{{< lightbox src="/images/git-abuse/git-clean.png" anchor="git-clean" >}}
 {{< lightbox src="/images/git-abuse/git-complex.png" anchor="git-complex" >}}
 
 
