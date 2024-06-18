@@ -32,7 +32,7 @@ Well, the code is relatively messy, but at least the commit messages track my pr
 
 **No!!!**
 
-_WIP._ _WIP._ _WIP._ 
+_WIP._ _WIP._ _WIP._
 
 That's it. That's all you get. That's the entire branch history.
 
@@ -156,9 +156,18 @@ The following table shows a complete timeline of the experimental pull request [
 <style type="text/css">
   /* General styles and layout */
   #git-epic-git-graph-container {
-    overflow-y: scroll;
+    overflow-x: scroll;
     line-height: 1;
   }
+
+  #git-epic-git-graph-container::-webkit-scrollbar {
+    width: .5em;
+    height: .5em;
+  }
+
+  #git-epic-git-graph-container::-webkit-scrollbar-track       { background: #f1f1f1; }
+  #git-epic-git-graph-container::-webkit-scrollbar-thumb       { background: #888888; }
+  #git-epic-git-graph-container::-webkit-scrollbar-thumb:hover { background: #555555; }
 
   #git-epic-git-graph {
     position: relative;
