@@ -437,6 +437,7 @@ img[alt=sourcegraph] {
   vertical-align: middle;
 }
 
+
 .alert-banner {
   color: #721c24;
   background-color: #f8d7da;
@@ -449,4 +450,26 @@ img[alt=sourcegraph] {
 
 .mirror a {
   color: #999;
+}
+
+/* Article-specific styles
+* --------------------------------------------*/
+
+.schema-design-nosql table {
+  border-collapse: collapse;
+}
+
+.schema-design-nosql table p {
+  margin: 0;
+}
+
+.schema-design-nosql table th,
+.schema-design-nosql table td {
+  padding: 5px;
+  border: 1px solid #abafb3;
+}
+
+.schema-design-nosql table td:nth-child(1),
+.schema-design-nosql table td:nth-child(2) {
+  white-space: nowrap;
 }
