@@ -1,6 +1,6 @@
 +++
 title = "I am abusive to Git"
-slug = "i-am-abusie-to-git"
+slug = "i-am-abusive-to-git"
 date = "2024-06-17T00:00:00-00:00"
 tags = ["git", "workflows"]
 showpagemeta = true
