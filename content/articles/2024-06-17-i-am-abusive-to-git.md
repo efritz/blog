@@ -133,7 +133,7 @@ True to this plan, I iteratively cut forty five distinct changes out of this exp
 
 It got smaller and smaller with every extracted change merged. The checklist of what needed to be extracted reduced in tandem. Eventually, there was nothing left and that signaled a successful merge of the entire branch.
 
-{{< lightbox src="/images/git-epics/zero-diff.png" anchor="zero-diff" >}}
+{{< lightbox src="/images/git-abuse/zero-diff.png" anchor="zero-diff" >}}
 
 The extracted changes fell into four different classes.
 
