@@ -180,6 +180,19 @@ main {
 /* Code
 * --------------------------------------------*/
 
+pre {
+  padding: 0 .25em;
+}
+
+pre > code {
+  padding: 0;
+}
+
+code {
+  padding: 0 .25em;
+  background-color: #f1f1f1;
+}
+
 .highlight, pre {
   overflow-y: scroll;
 }
@@ -199,8 +212,14 @@ main {
 }
 
 .highlight > pre {
+  padding: 0;
   padding-top: 5px;
   margin: 0 25px;
+}
+
+.highlight code {
+  padding: 0;
+  background-color: #fff;
 }
 
 /* Header
