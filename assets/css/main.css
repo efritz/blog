@@ -60,6 +60,18 @@ strong {
   font-weight: bold;
 }
 
+blockquote {
+  text-align: justify;
+}
+
+blockquote .citation {
+  text-align: right;
+}
+
+.text-right {
+  text-align: right;
+}
+
 a,
 a:visited {
   color: #4c98b2;
