@@ -348,6 +348,6 @@ The following table shows a complete timeline of the experimental pull request [
   </div>
 </div>
 
-### Takeaways
+### Takeaway
 
-1. Code for people, not for machines.
+Code for people, not for machines. The ability to communicate your ideas to humans - whether or not those ideas are expressed in a precise language also understandable by machines - is a worthwhile skill to develop.
