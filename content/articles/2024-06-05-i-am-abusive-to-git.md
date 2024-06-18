@@ -20,7 +20,7 @@ Over four years, I ended up falling into a very particular rhythm of exploratory
 
 As a corollary, the code being iterated over was for **me**, and outside eyes were expected to eventually gaze upon a rewritten history of what I _learned_ rather than the crazy wall scribblings that reflected my _learnings_.
 
-{{< lightbox src="https://i.kym-cdn.com/entries/icons/original/000/022/524/pepe_silvia_meme_banner.jpg" absolute=true anchor="conspiracy" alt="Branch ef/pepe-silvia" >}}
+{{< lightbox src="/images/git-abuse/pepe-silvia.jpg" anchor="conspiracy" >}}
 
 ### The crazy wall scribblings
 
