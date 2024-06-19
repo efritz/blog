@@ -18,4 +18,11 @@
     </div>
     {{ end }}
   </div>
+
+  {{ if .Params.External }}
+    <div class="external-notice">
+      <i>This article was originally <a href="{{ .Params.External }}">published externally <i class="fa fa-external-link external-link"></i></a>,
+      but has been re-published here for consistency and long-term availability.</i>
+    </div>
+  {{ end }}
 </header>

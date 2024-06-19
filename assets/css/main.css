@@ -532,6 +532,15 @@ img[alt=sourcegraph] {
   border-radius: 0.25rem;
 }
 
+.external-notice {
+  margin: 1em 0;
+  padding: 1em 6em;
+  text-align: center;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  border-color: #4c98b2;
+}
+
 .mirror a {
   color: #999;
 }
