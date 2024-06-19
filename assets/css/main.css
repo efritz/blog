@@ -522,6 +522,15 @@ img[alt=sourcegraph] {
   vertical-align: middle;
 }
 
+.fa-sourcegraph:before {
+  content: '\00a0';
+  padding: 0 0.5em;
+  margin-right: .25em;
+  background-image: url('https://sourcegraph.com/.assets/img/sourcegraph-mark.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .alert-banner {
   color: #721c24;
   background-color: #f8d7da;
