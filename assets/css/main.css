@@ -517,9 +517,31 @@ html, body {
 
 img[alt=render],
 img[alt=sourcegraph] {
-  width: 25px;
+  width: 20px;
+  height: 20px;
   padding-right: 5px;
   vertical-align: middle;
+}
+
+.fa-sourcegraph:before {
+  content: '\00a0';
+  padding: 0 0.5em;
+  margin-right: .25em;
+  background-image: url('/assets/images/logos/sourcegraph.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.fa-render:before {
+  content: '\00a0';
+  margin-right: .25em;
+  background-image: url('/assets/images/logos/render.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-size: 14px;
 }
 
 .alert-banner {
