@@ -220,7 +220,6 @@ The following table shows a complete timeline of the experimental pull request [
   #git-epic-git-graph tbody tr th {
     position: sticky;
     left: 0;
-    z-index: 1000;
     background-color: #fff;
     padding-right: 0.5em;
   }

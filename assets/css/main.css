@@ -289,7 +289,7 @@ main {
   height: 4px;
   background-color: black;
   transition: width 0.1s ease-in-out;
-  z-index: 2000;
+  z-index: 1000;
 }
 
 /* Footer
