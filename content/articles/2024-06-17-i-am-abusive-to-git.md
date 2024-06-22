@@ -224,6 +224,10 @@ The following table shows a complete timeline of the experimental pull request [
     background-color: #fff;
     padding-right: 0.5em;
   }
+
+  #git-epic-git-graph tbody tr td {
+    min-width: 1em;
+  }
 </style>
 
 <div id="git-resetter">
