@@ -15,6 +15,7 @@
 
 {{
   $scripts := slice
+    (resources.Get "js/scroll.js")
     (resources.Get "js/lightbox.js")
     (resources.Get "js/mathjax.js")
   | resources.Concat "assets/js/bundle.js" | minify | fingerprint

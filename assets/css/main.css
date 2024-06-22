@@ -281,6 +281,16 @@ main {
   padding-bottom: 20px;
 }
 
+#read-progress-bar {
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 4px;
+  background-color: black;
+  transition: width 0.1s ease-in-out;
+}
+
 /* Footer
 * --------------------------------------------*/
 
@@ -377,6 +387,14 @@ html, body {
   #site-header {
     padding: 5px 20px;
     text-align: center;
+  }
+
+  #read-progress-bar {
+    position: fixed;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
   }
 
   .article-header {
@@ -510,7 +528,6 @@ html, body {
     line-height: inherit;
   }
 }
-
 
 /* Miscellaneous Styles
 * --------------------------------------------*/
