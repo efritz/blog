@@ -255,7 +255,7 @@ One of our large enterprise customers, who is also one of our earliest adopters 
 
 The precise code intelligence worker process, which converts LSIF data uploaded by the user into our internal representation and writes it to our code intelligence data store, was ballooning in memory as jobs were processed. The extra memory hunger was extreme enough that the workers were consistently crashing with an "out of memory" exception towards the end of each job. No job was completing successfully.
 
-After grabbing additional screenshots of our monitoring system, output to a few SQL queries, and a few pprof traces from the offending Go process, we proved that the culprit was [the function that determined the set of uploads visible at each commit](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@dc8beddf4066e30198c5ea368e6ee1092a6f4560/-/blob/enterprise/internal/codeintel/stores/dbstore/commit_graph.go#L37:6) and knew we needed to find a way to reduce the resident memory required to do so.
+After grabbing additional screenshots of our monitoring system, output to a few SQL queries, and a few pprof traces from the offending Go process, we proved that the culprit was [the function that determined the set of uploads visible at each commit](https://github.com/efritz/sourcegraph/blob/dc8beddf4066e30198c5ea368e6ee1092a6f4560/enterprise/internal/codeintel/stores/dbstore/commit_graph.go#L37) and knew we needed to find a way to reduce the resident memory required to do so.
 
 To give a sense of this user's scale:
 

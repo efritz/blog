@@ -9,7 +9,7 @@ icon = "sourcegraph"
 
 When it comes to developer tools, speed is a critical feature. The difference between a 100ms, 1s, and 10s delay fundamentally alters user psychology—it's the difference between coding at the speed of thought vs. losing focus as your mind wanders while waiting for the UI to respond.
 
-One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@95b315285814aded55089da22aba944cf19410c9/-/blob/cmd/frontend/internal/cli/serve_cmd.go?subtree=true#L115:6), [private Sourcegraph instances](https://docs.sourcegraph.com/#quickstart-guide), and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
+One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://github.com/efritz/sourcegraph/tree/95b315285814aded55089da22aba944cf19410c9/cmd/frontend/internal/cli/serve_cmd.go#L115:6), [private Sourcegraph instances](https://docs.sourcegraph.com/#quickstart-guide), and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
 
 {{< lightbox
   src="/images/external/shared/precise-xrepo-j2d.gif"
@@ -69,7 +69,7 @@ The "middleman" nature of the API server when serving user requests was an artif
 
 The way we did this was a bit of a kludge. In essence, we wanted to eliminate an unnecessary network call between the precise code API server client (in the Sourcegraph frontend service) and the API server. However, we didn't want to have to write a bunch of new code to define an API service and client for the bundle manager directly, so what we did was we kept the existing API server and client as-is, but replaced the actual network calls with function calls to the HTTP handler functions directly.
 
-[In the code](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@bc072662500da3ce0bc7b5820bf0f63fb59182fb/-/blob/internal/codeintel/lsifserver/client/proxy.go#L40-46), we use the `httptest.NewRecorder` function to record the handler response, and then return this request to the caller as if it came from an actual over-the-network HTTP client call. Not the cleanest code in the world, but this addressed the immediate performance bottleneck and we were eager to move onto the others. In a separate pass, we were able to even further collapse this boundary and replace the fake HTTP server shim with direct function calls.
+[In the code](https://github.com/efritz/sourcegraph/tree/bc072662500da3ce0bc7b5820bf0f63fb59182fb/internal/codeintel/lsifserver/client/proxy.go#L40-46), we use the `httptest.NewRecorder` function to record the handler response, and then return this request to the caller as if it came from an actual over-the-network HTTP client call. Not the cleanest code in the world, but this addressed the immediate performance bottleneck and we were eager to move onto the others. In a separate pass, we were able to even further collapse this boundary and replace the fake HTTP server shim with direct function calls.
 
 ## Parallelization
 
@@ -109,7 +109,7 @@ In the implementation, we used channels as bounded queues to break up the parsin
   alt="concurrency diagram"
   anchor="concurrent-pipeline" >}}
 
-* The [unmarshaller goroutines](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@0eda838ebbe02021dd1739e3f92bc2fcd9577672/-/blob/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L65-72) read lines from an input channel, parse it, and place the result into an output element channel.
+* The [unmarshaller goroutines](https://github.com/efritz/sourcegraph/tree/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L65-72) read lines from an input channel, parse it, and place the result into an output element channel.
 * A [batcher goroutine](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L75-L109) then consumes the items from the element channel in batches, reordering them by input ID to be consistent with the original order in the LSIF data.
 * After the batch receives the expected number of values from the channel, it [sends a signal](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L95-L97) to the unmarshallers to free them to resume work. This signalling procedure ensures that no unmarshaller looks for work past the current batching window (which would be pointless and wasteful).
 * Each completed batch is then [passed](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L104) to the correlator for processing.
@@ -132,7 +132,7 @@ To complete a go-to-definition or find-references action, we first load the docu
 If we want to look up definitions or references by name, rather than cursor location, we can construct a partial moniker out of the name and look up definitions and references in the definition and reference data.
 
 We optimized the time it took to write the SQLite bundle by taking advantage of the structure of these 4 categories of data. Prior to 3.17, the worker process would start four goroutines, one for each category, and
-would sequentially [write batches](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@master/-/blob/internal/sqliteutil/batch_inserter.go)
+would sequentially [write batches](https://github.com/efritz/sourcegraph/blob/1e83fa635ade825e39b41031b5bd5809cecc2a69/internal/sqliteutil/batch_inserter.go)
 of data into the target table. The SQLite batcher inserter utility is about as fast as it can be: it
 sets the correct pragmas, uses a single transaction, and minimizes the number of commands by
 squeezing as many rows into each insert statement as possible.
@@ -187,7 +187,7 @@ Due to the reduced size of data, we are also able to insert more definition and 
 
 We replaced the gzipped JSON-encoded bundle payloads with gzipped [gob-encoded](https://golang.org/pkg/encoding/gob/) structures. This reduced heap allocations, reduced overall bundle size, and yielded small improvements in overall processing time.
 
-Most importantly, this allowed us to remove some tech debt caused by data structures that had evolved to become more complex over time. In particular, we used custom [replacers](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@a5232c14d15f1e18f6d20ae6d15e5c1fe68bb244/-/blob/lsif/src/encoding.ts#L99) to enable the serialization of TypeScript maps and sets, which we had to [replicate](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@f1644db9bbb75683fcc14e64ead9746338b38669/-/blob/internal/codeintel/bundles/serializer/default_serializer.go#L355-367) in the Go rewrite in order to continue reading previously generated bundle files.
+Most importantly, this allowed us to remove some tech debt caused by data structures that had evolved to become more complex over time. In particular, we used custom [replacers](github.com/efritz/sourcegraph/tree/a5232c14d15f1e18f6d20ae6d15e5c1fe68bb244/lsif/src/encoding.ts#L99) to enable the serialization of TypeScript maps and sets, which we had to [replicate](https://github.com/efritz/sourcegraph/tree/f1644db9bbb75683fcc14e64ead9746338b38669//internal/codeintel/bundles/serializer/default_serializer.go#L355-367) in the Go rewrite in order to continue reading previously generated bundle files.
 
 <div type="alert success">
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/d17750ffd9aecafdc68fdeb9a6dbc7e62e876c5c#diff-baa2de1a12d5be3e15c550035933d4e5R1">`d17750f`</a>, reduced bundle sizes by 10%.

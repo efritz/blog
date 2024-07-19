@@ -6,7 +6,7 @@ tags = ["bugs"]
 showpagemeta = true
 +++
 
-At [Sourcegraph](https://github.com/sourcegraph/sourcegraph), we have recently decided to migrate code intelligence data that has historically been stored in thousands of SQLite databases on disk into a single Postgres instance. Long story short, we were running into some limits of writing a persistence layer over SQLite databases in a consistent way.
+At [Sourcegraph](https://about.sourcegraph.com), we have recently decided to migrate code intelligence data that has historically been stored in thousands of SQLite databases on disk into a single Postgres instance. Long story short, we were running into some limits of writing a persistence layer over SQLite databases in a consistent way.
 
 - We were unable to horizontally scale, as one database can only be opened by one backend at a time. We would need to implement a sharding mechanism in which data is spread out evenly across multiple machines, and requests could be routed to (one of) the backend(s) with that data.
 - We also had to maintain a symmetry between rows in the database (metadata) and the files on disk (actual data). This required a janitor process to run in the background to clean up data that was orphaned on the other side. This process would be additionally complicated if we were to shard data onto multiple disks.
