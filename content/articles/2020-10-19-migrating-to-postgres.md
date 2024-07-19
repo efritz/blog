@@ -11,7 +11,7 @@ At [Sourcegraph](https://about.sourcegraph.com), we have recently decided to mig
 - We were unable to horizontally scale, as one database can only be opened by one backend at a time. We would need to implement a sharding mechanism in which data is spread out evenly across multiple machines, and requests could be routed to (one of) the backend(s) with that data.
 - We also had to maintain a symmetry between rows in the database (metadata) and the files on disk (actual data). This required a janitor process to run in the background to clean up data that was orphaned on the other side. This process would be additionally complicated if we were to shard data onto multiple disks.
 
-We noticed these problems were symptoms of [accidental complexity](http://faculty.salisbury.edu/~xswang/Research/Papers/SERelated/no-silver-bullet.pdf) within our system rather than essential complexity inherent in our problem domain. Moving this data into Postgres allowed us to reduce some operational concerns by unifying data access and allowed us to solve the problems we're actually getting paid to solve.
+We noticed these problems were symptoms of [accidental complexity](https://www.cs.unc.edu/techreports/86-020.pdf) within our system rather than essential complexity inherent in our problem domain. Moving this data into Postgres allowed us to reduce some operational concerns by unifying data access and allowed us to solve the problems we're actually getting paid to solve.
 
 See [this related article](/articles/lsif-backend-evolution) how the architecture of the code intelligence backend services have evolved over the last year. This change is just a small aside in a much larger journey -- one that is just getting started.
 
