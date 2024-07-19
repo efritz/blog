@@ -24,9 +24,9 @@ As of Sourcegraph 3.37, we no longer spuriously mark the database as dirty durin
 
 This release adds:
 
-- [New tools](https://docs.sourcegraph.com/admin/how-to/manual_database_migrations) that allow site administrators to run database migrations independently from an upgrade. Large database instances can be upgraded ahead of time of a general application upgrade to reduce the possibility of downtime due to migrations taking longer than the health check timeout.
-- Better error messages and [a better recovery process](https://docs.sourcegraph.com/admin/how-to/dirty_database) in the (now rare) case of a real database migration failure.
-- A general pruning of [now-irrelevant troubleshooting documentation](https://docs.sourcegraph.com/admin/how-to/dirty_database_pre_3_37).
+- [New tools](https://sourcegraph.com/docs/admin/updates/migrator/migrator-operations) that allow site administrators to run database migrations independently from an upgrade. Large database instances can be upgraded ahead of time of a general application upgrade to reduce the possibility of downtime due to migrations taking longer than the health check timeout.
+- Better error messages and [a better recovery process](https://sourcegraph.com/docs/admin/how-to/dirty_database) in the (now rare) case of a real database migration failure.
+- A general pruning of now-irrelevant troubleshooting documentation.
 
 We've tried to make this transition as seamless as possible, and there should be no manual steps required to proceed to Sourcegraph 3.37.0 and beyond. If we've done everything right, you'll notice no differences.
 
@@ -140,9 +140,9 @@ If your next upgrade does **not** crash, please tweet me at [@ericfritz](https:/
 
 We've updated several documentation pages which are worth a look for existing site administrators:
 
-- [How to run `migrator` operations](https://docs.sourcegraph.com/admin/how-to/manual_database_migrations)
-- [How to troubleshoot a dirty database](https://docs.sourcegraph.com/admin/how-to/dirty_database) (replacing the [legacy documentation](https://docs.sourcegraph.com/admin/how-to/dirty_database_pre_3_37))
-- [Rolling back a PostgresSQL database](https://docs.sourcegraph.com/admin/how-to/rollback_database)
+- [How to run `migrator` operations](https://sourcegraph.com/docs/admin/updates/migrator/migrator-operations)
+- [How to troubleshoot a dirty database](https://sourcegraph.com/docs/admin/how-to/dirty_database)
+- [Rolling back a PostgresSQL database](https://sourcegraph.com/docs/admin/how-to/rollback_database)
 
 Check out some of the higher-scope code changes that made this change possible:
 

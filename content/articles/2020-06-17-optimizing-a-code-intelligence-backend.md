@@ -9,7 +9,7 @@ icon = "sourcegraph"
 
 When it comes to developer tools, speed is a critical feature. The difference between a 100ms, 1s, and 10s delay fundamentally alters user psychology—it's the difference between coding at the speed of thought vs. losing focus as your mind wanders while waiting for the UI to respond.
 
-One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://github.com/efritz/sourcegraph/tree/95b315285814aded55089da22aba944cf19410c9/cmd/frontend/internal/cli/serve_cmd.go#L115:6), [private Sourcegraph instances](https://docs.sourcegraph.com/#quickstart-guide), and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
+One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://github.com/efritz/sourcegraph/tree/95b315285814aded55089da22aba944cf19410c9/cmd/frontend/internal/cli/serve_cmd.go#L115:6), private Sourcegraph instances, and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
 
 {{< lightbox
   src="/images/external/shared/precise-xrepo-j2d.gif"

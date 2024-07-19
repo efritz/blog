@@ -14,7 +14,7 @@ Jumping to the definition of a symbol under your cursor and finding all its refe
     alt="Precise jump to definition and find refs"
     anchor="j2d" >}}
 
-Code navigation is the core of how Sourcegraph helps you understand the parts of the universe of code that are most relevant and important to you. Code navigation also presents a difficult technical challenge, especially when you want to provide code navigation *outside the IDE* in a variety of other applications where developers are trying to understand code: a web-based code search engine like [Sourcegraph.com](https://sourcegraph.com/search), [private instances of Sourcegraph](https://docs.sourcegraph.com/#quickstart-guide), and in code hosts like GitHub, GitLab, Bitbucket, and Phabricator through the [Sourcegraph browser extension](https://docs.sourcegraph.com/integration/browser_extension).
+Code navigation is the core of how Sourcegraph helps you understand the parts of the universe of code that are most relevant and important to you. Code navigation also presents a difficult technical challenge, especially when you want to provide code navigation *outside the IDE* in a variety of other applications where developers are trying to understand code: a web-based code search engine like [Sourcegraph.com](https://sourcegraph.com/search), private instances of Sourcegraph, and in code hosts like GitHub, GitLab, Bitbucket, and Phabricator through the [Sourcegraph browser extension](https://sourcegraph.com/docs/integration/browser_extension).
 
 In order to provide compiler-accurate code navigation, IDEs work a lot of magic behind the scenes which involves static analysis, incremental compilation, build execution, and lots and lots of caching, much of which assumes read, write, and exec permissions on your local filesystem. So how does Sourcegraph provide precise code navigation to any user within milliseconds without this access? The answer is the Language Server Index Format, or LSIF ("elsif"). This post will share our technical journey with LSIF, including why we chose to adopt this as the foundation for our precise code navigation, the challenges we faced scaling an LSIF-based backend, and where we see things going from here.
 
@@ -58,7 +58,7 @@ The LSIF backend began life as a simple [Express](https://expressjs.com/) server
     alt="architecture diagram"
     anchor="mvp" >}}
 
-On the client side, we wrote a simple [Sourcegraph extension](https://docs.sourcegraph.com/extensions) to query the lsif-server API.
+On the client side, we wrote a simple Sourcegraph extension to query the lsif-server API.
 
 We chose TypeScript and Express, because this was the fastest way to get something up and running, given the experience of our team. The primary goal was to solicit feedback from users about the ergonomics of the upload API (for which users would have to configure their CI pipeline to generate LSIF) and the basic user experience of code navigation backed by LSIF. Performance, scalability, robustness, and code quality were not primary concerns.
 
@@ -145,7 +145,7 @@ To address these issues, we moved the queue data from Redis into PostgreSQL. Thi
 
 For a while, the lsif-server was accessible only through an undocumented proxy in the Sourcegraph frontend service. This proxy accepted uploads and served code navigation queries. The only consumers of this API were first-party Sourcegraph extensions like [sourcegraph/go](https://sourcegraph.com/extensions/sourcegraph/go) and [sourcegraph/typescript](https://sourcegraph.com/extensions/sourcegraph/typescript).
 
-Adding a GraphQL API enabled the LSIF backend to be used by other parts of Sourcegraph, such as the nascent [Batch Changes](https://docs.sourcegraph.com/batch_changes) feature, and also to third-party Sourcegraph extension authors and third-party API consumers. As the functionality of the LSIF backend continues to grow (we've recently added support for [diagnostics](https://github.com/efritz/sourcegraph/commit/43897d9f8e7033d5c842f30013e1a5ab091332c8)), so do the possibilities for users of this API.
+Adding a GraphQL API enabled the LSIF backend to be used by other parts of Sourcegraph, such as the nascent [Batch Changes](https://sourcegraph.com/docs/batch_changes) feature, and also to third-party Sourcegraph extension authors and third-party API consumers. As the functionality of the LSIF backend continues to grow (we've recently added support for [diagnostics](https://github.com/efritz/sourcegraph/commit/43897d9f8e7033d5c842f30013e1a5ab091332c8)), so do the possibilities for users of this API.
 
 {{< lightbox
     src="/images/external/evolution/arch-5.png"

@@ -7,7 +7,7 @@ external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-indexer"
 icon = "sourcegraph"
 +++
 
-We (Sourcegraph's [code intelligence team](https://handbook.sourcegraph.com/engineering/code-intelligence)) recently made Go [code intelligence](https://docs.sourcegraph.com/code_intelligence) faster, especially on very large repositories. For example, we cut the indexing time by 95% for the huge [Go AWS SDK](https://sourcegraph.com/github.com/aws/aws-sdk-go) repository, from 8 minutes to 24 seconds. Here's how we did it.
+We (Sourcegraph's Code Intelligence team) recently made Go [code intelligence](https://sourcegraph.com/docs/code-search/code-navigation/precise_code_navigation) faster, especially on very large repositories. For example, we cut the indexing time by 95% for the huge [Go AWS SDK](https://sourcegraph.com/github.com/aws/aws-sdk-go) repository, from 8 minutes to 24 seconds. Here's how we did it.
 
 ## Background: what is code intelligence?
 
