@@ -77,11 +77,11 @@ In order to do this, we decided to store the LSIF data in a different format tha
 - [SQLite](https://www.sqlite.org/index.html), an embedded file-based SQL database engine, and
 - [Dgraph](https://dgraph.io/), a distributed graph database built on top of an LSM-tree-based database [BadgerDB](https://github.com/dgraph-io/badger).
 
-We built two versions of the backend. Benchmarks showed that the upload performance of the SQLite and Dgraph backends were both proportional to the input size: SQLite with a factor between 2.2x and 2.8, and Dgraph with a factor of 25x. We were relatively inexperienced with Dgraph, so the relatively slow performance could be explained by a lack of operational experience and a bad choice of graph schema (the Dgraph backend implementation can be found [here](https://github.com/sourcegraph/sourcegraph/pull/5333)).
+We built two versions of the backend. Benchmarks showed that the upload performance of the SQLite and Dgraph backends were both proportional to the input size: SQLite with a factor between 2.2x and 2.8, and Dgraph with a factor of 25x. We were relatively inexperienced with Dgraph, so the relatively slow performance could be explained by a lack of operational experience and a bad choice of graph schema (the Dgraph backend implementation can be found [here](https://github.com/efritz/sourcegraph/commit/b820154f7877dde038f99456ec99e3176efa2e64)).
 
 Had we more time, we might have experimented more with Dgraph, but we decided to go with SQLite based on its higher initial performance, the familiarity we had with using it in the past, and the fact that it would be easier to deploy operationally into the many deployment environments that our customers have.
 
-After [this change](https://github.com/sourcegraph/sourcegraph/pull/5332), queries only needed to read from disk the documents containing the target source range, instead of the LSIF dump for the entire repository.
+After [this change](https://github.com/efritz/sourcegraph/commit/71ef03a17800e894bf2514c41877962e1af467ab), queries only needed to read from disk the documents containing the target source range, instead of the LSIF dump for the entire repository.
 
 ## Processing uploads asynchronously
 
@@ -98,7 +98,7 @@ To address this issue, we decided to separate the work of converting LSIF into S
 
 To coordinate work between the LSIF upload handler and the lsif-worker process, we needed a queue. We used [node-resque](https://github.com/actionhero/node-resque), a Node.js port of the popular Rails library [resque](https://github.com/resque/resque). This library stores job data in Redis, which was already a component of our stack. We also considered using PostreSQL (but accessing the existing PostgreSQL instance came with certain restrictions due to concerns for uptime and performance), some sort of local [IPC](https://en.wikipedia.org/wiki/Inter-process_communication) (but this would have prevented scaling lsif-server and lsif-worker independently), and using an AMQP server (but this would have required introducing a new major service into our architecture).
 
-We implemented the splitting of lsif-server and lsif-worker in [this PR](https://github.com/sourcegraph/sourcegraph/pull/5525).
+We implemented the splitting of lsif-server and lsif-worker in [this PR](https://github.com/efritz/sourcegraph/commit/e4ab447c1e3a3b89128fdc92068be35d0ac1c932).
 
 ## Storing cross-repository data in PostgreSQL
 
@@ -113,18 +113,18 @@ This was fine so long as there was just one instance each of lsif-server and lsi
     alt="architecture diagram"
     anchor="xrepo" >}}
 
-The potential volume of additional writes continued to concern us. As LSIF use grew, would it cause operational issues in the PostgreSQL instance that would affect the performance of unrelated parts of the application? To be safe, we kept the table spaces of the LSIF data disjoint (prefixed table names, no foreign keys to existing tables) from the other data. We also tried migrating the LSIF tables into a second PostgreSQL instance. However, this required some nasty trickery with [db_link](https://github.com/sourcegraph/sourcegraph/blob/d1cffed06e58a90082243601d936279214547e30/migrations/1528395594_create_lsif_database.up.sql) in order to run migrations, which we found quite painful and [eventually reverted](https://github.com/sourcegraph/sourcegraph/pull/5935). Some more back-of-the-envelope calculations suggested that the LSIF-related load wouldn't overwhelm the single shared PostgreSQL instance, and these calculations have largely held up over time.
+The potential volume of additional writes continued to concern us. As LSIF use grew, would it cause operational issues in the PostgreSQL instance that would affect the performance of unrelated parts of the application? To be safe, we kept the table spaces of the LSIF data disjoint (prefixed table names, no foreign keys to existing tables) from the other data. We also tried migrating the LSIF tables into a second PostgreSQL instance. However, this required some nasty trickery with [db_link](https://github.com/efritz/sourcegraph/blob/d1cffed06e58a90082243601d936279214547e30/migrations/1528395594_create_lsif_database.up.sql) in order to run migrations, which we found quite painful and [eventually reverted](https://github.com/efritz/sourcegraph/commit/47439f172fa569ec41d91d18bb3b48d802e11bd6). Some more back-of-the-envelope calculations suggested that the LSIF-related load wouldn't overwhelm the single shared PostgreSQL instance, and these calculations have largely held up over time.
 
 ## Queue v2: Bull and Redis
 
-We saw some operational issues related to stuck workers and lost jobs that we traced back to our queueing library, node-resque. This motivated a switch to [Bull](https://github.com/OptimalBits/bull), which also had some additional features that allowed us to schedule jobs (similar in spirit to cron), list all jobs in a particular state, and [search within job payloads for text matching a query](https://github.com/sourcegraph/sourcegraph/blob/d323af7360dadd40aee35de3476a7577c1f726f1/lsif/src/search-jobs.lua) using Redis's EVAL command.
+We saw some operational issues related to stuck workers and lost jobs that we traced back to our queueing library, node-resque. This motivated a switch to [Bull](https://github.com/OptimalBits/bull), which also had some additional features that allowed us to schedule jobs (similar in spirit to cron), list all jobs in a particular state, and [search within job payloads for text matching a query](https://github.com/efritz/sourcegraph/blob/d323af7360dadd40aee35de3476a7577c1f726f1/lsif/src/search-jobs.lua) using Redis's EVAL command.
 
 The relevant PRs:
 
-- [Replace node-resque with bull (#6062)](https://github.com/sourcegraph/sourcegraph/pull/6062)
-- [Add machinery for repeated/scheduled jobs (#6067)](https://github.com/sourcegraph/sourcegraph/pull/6067)
-- [Add scheduled job to clean old job data (#6136)](https://github.com/sourcegraph/sourcegraph/pull/6136)
-- [Endpoints for jobs in lsif-server (#6227)](https://github.com/sourcegraph/sourcegraph/pull/6227)
+- [Replace node-resque with bull (#6062)](https://github.com/efritz/sourcegraph/commit/f022e03a28fbcab7d56ef1aa715b57f0f12f5d91)
+- [Add machinery for repeated/scheduled jobs (#6067)](https://github.com/efritz/sourcegraph/commit/099a4081d535c537137e433375f64b6ecda8e790)
+- [Add scheduled job to clean old job data (#6136)](https://github.com/efritz/sourcegraph/commit/efe910f80ec439b26880c7b8ad0d2e45cf23c42f)
+- [Endpoints for jobs in lsif-server (#6227)](https://github.com/efritz/sourcegraph/commit/8d52b0d6b075de2bb6aedb728aec9385a15118b2)
 
 ## Queue v3: PostgreSQL
 
@@ -145,7 +145,7 @@ To address these issues, we moved the queue data from Redis into PostgreSQL. Thi
 
 For a while, the lsif-server was accessible only through an undocumented proxy in the Sourcegraph frontend service. This proxy accepted uploads and served code navigation queries. The only consumers of this API were first-party Sourcegraph extensions like [sourcegraph/go](https://sourcegraph.com/extensions/sourcegraph/go) and [sourcegraph/typescript](https://sourcegraph.com/extensions/sourcegraph/typescript).
 
-Adding a GraphQL API enabled the LSIF backend to be used by other parts of Sourcegraph, such as the nascent [Batch Changes](https://docs.sourcegraph.com/batch_changes) feature, and also to third-party Sourcegraph extension authors and third-party API consumers. As the functionality of the LSIF backend continues to grow (we've recently added support for [diagnostics](https://github.com/sourcegraph/sourcegraph/pull/11233)), so do the possibilities for users of this API.
+Adding a GraphQL API enabled the LSIF backend to be used by other parts of Sourcegraph, such as the nascent [Batch Changes](https://docs.sourcegraph.com/batch_changes) feature, and also to third-party Sourcegraph extension authors and third-party API consumers. As the functionality of the LSIF backend continues to grow (we've recently added support for [diagnostics](https://github.com/efritz/sourcegraph/commit/43897d9f8e7033d5c842f30013e1a5ab091332c8)), so do the possibilities for users of this API.
 
 {{< lightbox
     src="/images/external/evolution/arch-5.png"

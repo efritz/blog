@@ -146,7 +146,7 @@ We've updated several documentation pages which are worth a look for existing si
 
 Check out some of the higher-scope code changes that made this change possible:
 
-- [experiment: non-sequential migrations (_#29831_)](https://github.com/sourcegraph/sourcegraph/pull/29831)
-- [migrations: Poll for advisory locks in the runner (_#30602_)](https://github.com/sourcegraph/sourcegraph/pull/30602)
-- [migrations: Support graphical migrations (_#30664_)](https://github.com/sourcegraph/sourcegraph/pull/30664)
-- [migrations: Support sane concurrent index creation (_#30693_)](https://github.com/sourcegraph/sourcegraph/pull/30693)
+- [experiment: non-sequential migrations (_#29831_)](https://github.com/efritz/sourcegraph/commit/a87f116f8ce4aac0dece43e52fe23e426378560f)
+- [migrations: Poll for advisory locks in the runner (_#30602_)](https://github.com/efritz/sourcegraph/commit/63b2ae869a0b30491e141bf5bb7de7079df2bebc)
+- [migrations: Support graphical migrations (_#30664_)](https://github.com/efritz/sourcegraph/commit/473b6a9c1cc7e3d9bafa29bbb0c0abe905dcdf12)
+- [migrations: Support sane concurrent index creation (_#30693_)](https://github.com/efritz/sourcegraph/commit/f6438f417000b368651ce194ef5ce1fb19cc50dc)

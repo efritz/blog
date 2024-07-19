@@ -42,7 +42,7 @@ So, after the improvements discussed here, how well do we index Go code at scale
 * Previously, it took nearly **8 minutes** to index the Go AWS SDK; it now takes only **24 seconds**.
 * Previously, it took nearly **7 hours** to index 56 million lines of code; it now takes under **20 minutes**.
 
-Indexing speed is _so_ important for code bases undergoing constant change. Stale, hours-old code intelligence on a monorepo at scale is about as useful as using a map of Pangea to find your way home. This is why the code intelligence team is dedicated to [increasing the efficiency of every part of the stack](https://about.sourcegraph.com/blog/optimizing-a-code-intel-backend) to make sure your map of the code is always accurate.
+Indexing speed is _so_ important for code bases undergoing constant change. Stale, hours-old code intelligence on a monorepo at scale is about as useful as using a map of Pangea to find your way home. This is why the code intelligence team is dedicated to [increasing the efficiency of every part of the stack](/articles/optimizing-backend) to make sure your map of the code is always accurate.
 
 ## How we optimized it
 
