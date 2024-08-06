@@ -8,6 +8,22 @@ showpagemeta = true
 
 :(
 
+
+
+
+
+> In other words, a public repository's forks will remain public in their own separate repository network even after the upstream repository is made private. This allows the fork owners to continue to work and collaborate without interruption.
+
+> If a public repository is made private and then deleted, its public forks will continue to exist in a separate network.
+
+[What happens to forks when a repository is deleted or changes visibility?](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/what-happens-to-forks-when-a-repository-is-deleted-or-changes-visibility)
+
+
+
+
+
+
+
 TODO
 
 ```go
