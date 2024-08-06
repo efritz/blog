@@ -6,7 +6,7 @@ tags = ["bugs"]
 showpagemeta = true
 +++
 
-[Sourcegraph](https://github.com/sourcegraph/sourcegraph)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. The [LSIF service](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) requires git ancestry data in order to answer queries such as *find the commit closest to $c$ for which we have LSIF data*, or *determine if commit $c$ (for which we have LSIF data) is the closest such commit to the HEAD of master*. Each query to the LSIF server referencing a previously unknown commit forces a query to gitserver for the first $n$ ancestors of the commit. This data is stored into a local database where it can later be used within table expressions and join conditions.
+[Sourcegraph](https://about.sourcegraph.com)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. The [LSIF service](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) requires git ancestry data in order to answer queries such as *find the commit closest to $c$ for which we have LSIF data*, or *determine if commit $c$ (for which we have LSIF data) is the closest such commit to the HEAD of master*. Each query to the LSIF server referencing a previously unknown commit forces a query to gitserver for the first $n$ ancestors of the commit. This data is stored into a local database where it can later be used within table expressions and join conditions.
 
 While poking around on the [production instance](https://sourcegraph.com), I noticed that the commits table was not getting new entries, despite making queries for commits that should have triggered this behavior. Apparently, this piece of code was broken for about two weeks, and because it was only responsible for the behavior of the service when data is missing (which it isn't on this production instance), the bug was able to sneak under the radar for quite some time. Production logs showed git commands such as the following being run (and unsurprisingly failing):
 
@@ -18,7 +18,7 @@ Tracing the relevant application code did not show an obvious answer. The `NaN` 
 
 Removing all of the non-relevant code, we have the following content over two files.
 
-The file [xrepo.ts](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/xrepo.ts) defines the constant `MAX_TRAVERSAL_LIMIT` and calls a function imported from the other file.
+The file [xrepo.ts](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/xrepo.ts) defines the constant `MAX_TRAVERSAL_LIMIT` and calls a function imported from the other file.
 
 ```typescript
 import { discoverAndUpdateCommit } from "./commits";
@@ -26,7 +26,7 @@ export const MAX_TRAVERSAL_LIMIT = 100;
 discoverAndUpdateCommit();
 ```
 
-And the file [commits.ts](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/commits.ts) imports the `MAX_TRAVERSAL_LIMIT` constant from the other file, defines a second constant, and defines some additional functions.
+And the file [commits.ts](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/commits.ts) imports the `MAX_TRAVERSAL_LIMIT` constant from the other file, defines a second constant, and defines some additional functions.
 
 ```typescript
 import { MAX_TRAVERSAL_LIMIT } from "./xrepo";
@@ -59,6 +59,6 @@ The error may be immediately obvious from reading the reduced code (or the title
 
 The resolution was trivial: define constants in one file that does not depend on import order. For good measure, we added lint rules to prevent us writing code with circular imports (which is a compiler error in [some other languages](https://github.com/golang/go/issues/30247#issuecomment-463940936)).
 
-*Shouldn't this have been caught by unit tests?* **Yes!** And there **was** unit test coverage for the function in question. Unfortunately, the mock for the remote API only ensured the path was correct and did not check the body. These parameters were hand-verified and [not directly tested](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/commits.test.ts#L14) before a refactor. After the refactor, the tests still passed and gave a false sense of security.
+*Shouldn't this have been caught by unit tests?* **Yes!** And there **was** unit test coverage for the function in question. Unfortunately, the mock for the remote API only ensured the path was correct and did not check the body. These parameters were hand-verified and [not directly tested](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif/src/commits.test.ts#L14) before a refactor. After the refactor, the tests still passed and gave a false sense of security.
 
 This highlights the importance of writing the correct assertions in unit tests (regardless of coverage), as well as testing units of behavior at the outer layers (which could have easily detected that this feature was not working): [smoke testing](https://en.wikipedia.org/wiki/Smoke_testing_(software)), [regression testing](https://en.wikipedia.org/wiki/Regression_testing), and [end-to-end testing](https://en.wikipedia.org/wiki/System_testing).

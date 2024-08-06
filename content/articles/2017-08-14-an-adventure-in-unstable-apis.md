@@ -104,7 +104,7 @@ RUN git clone "$CLONE_URL" && \
 
 ### Takeaways
 
-Container builds should be, as far as possible, *reproducible forever*. Re-building a container without a change to source should build the **exact** same container. Production image builds are not a place to fetch the latest for any external dependency - this has been [especially](https://glide.sh/) [problematic](https://github.com/golang/dep) [in Go](https://docs.google.com/document/d/1Bz5-UB7g2uPBdOx-rw5t9MxJwkfpx90cqG9AFL0JAYo/edit).
+Container builds should be, as far as possible, *reproducible forever*. Re-building a container without a change to source should build the **exact** same container. Production image builds are not a place to fetch the latest for any external dependency - this has been [especially](https://glide.sh/) [problematic](https://github.com/golang/dep) [in Go](https://docs.google.com/document/d/1Bz5-UB7g2uPBdOx-rw5t9MxJwkfpx90cqG9AFL0JAYo).
 
 Protect yourself from your API dependencies - even if it's for proof of concept. If you rely on your foundation being stable, make sure that you're not straddling the bleeding edge. Lock to stable versions (or ranges, if supported) and vet updates. Be aware of what's changing.
 

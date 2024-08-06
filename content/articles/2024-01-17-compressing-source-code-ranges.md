@@ -8,7 +8,7 @@ showpagemeta = true
 
 _Since the dawn of time, mankind hath sought to make things smaller._
 
-One of the favorite _little_ pieces of code I wrote during my time at Sourcegraph was an [`EncodeRanges`](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@53a48d9b239b80a6aa7835f5acd487124825e286/-/blob/internal/codeintel/shared/ranges/ranges.go?L21:6&popover=pinned) function that took a series of offsets into a text document and compressed them into a tight, tiny, opaque ball of bits.
+One of the favorite _little_ pieces of code I wrote during my time at Sourcegraph was an [`EncodeRanges`](https://github.com/efritz/sourcegraph/blob/53a48d9b239b80a6aa7835f5acd487124825e286/internal/codeintel/shared/ranges/ranges.go#L21) function that took a series of offsets into a text document and compressed them into a tight, tiny, opaque ball of bits.
 
 At the time, I was designing a new set of Postgres tables and indexes that would store a quick way to go from a globally unique _symbol_ (name of a type, a variable, etc) to all of the source code locations that relate to it. These structures would enable operations such as listing every relevant part of a file that defines an _implementation_ of a given target interface. The table would relate a `symbolName` to components of `repository`, `commit`, `fileName`, and `ranges` for each reference of the symbol. References are grouped together by their _class_, which allows us to select the proper set of references in different operations such as _go to the interface that describes this implementation_, or _find all uses of this type_.
 
