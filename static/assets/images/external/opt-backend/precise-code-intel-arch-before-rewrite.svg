@@ -36,7 +36,7 @@
 <!-- bundle_manager -->
 <g id="node2" class="node">
 <title>bundle_manager</title>
-<g id="a_node2"><a xlink:href="https://github.com/sourcegraph/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-bundle-manager" xlink:title="Bundle manager" target="_blank">
+<g id="a_node2"><a xlink:href="https://github.com/efritz/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-bundle-manager" xlink:title="Bundle manager" target="_blank">
 <polygon fill="#ffffb3" stroke="black" points="125.5,-206.38 32.5,-206.38 32.5,-170.38 125.5,-170.38 125.5,-206.38"/>
 <text text-anchor="middle" x="79" y="-185.88" font-family="Iosevka" font-size="10.00">Bundle manager</text>
 </a>
@@ -77,7 +77,7 @@
 <!-- indexer -->
 <g id="node4" class="node">
 <title>indexer</title>
-<g id="a_node4"><a xlink:href="https://github.com/sourcegraph/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-worker" xlink:title="Indexer" target="_blank">
+<g id="a_node4"><a xlink:href="https://github.com/efritz/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-worker" xlink:title="Indexer" target="_blank">
 <polygon fill="#bebada" stroke="black" points="205.5,-314.38 150.5,-314.38 150.5,-278.38 205.5,-278.38 205.5,-314.38"/>
 <text text-anchor="middle" x="178" y="-293.88" font-family="Iosevka" font-size="10.00">Indexer</text>
 </a>
@@ -92,7 +92,7 @@
 <!-- worker -->
 <g id="node5" class="node">
 <title>worker</title>
-<g id="a_node5"><a xlink:href="https://github.com/sourcegraph/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-worker" xlink:title="Worker" target="_blank">
+<g id="a_node5"><a xlink:href="https://github.com/efritz/sourcegraph/tree/master/enterprise/cmd/precise-code-intel-worker" xlink:title="Worker" target="_blank">
 <polygon fill="#fb8072" stroke="black" points="289,-314.38 235,-314.38 235,-278.38 289,-278.38 289,-314.38"/>
 <text text-anchor="middle" x="262" y="-293.88" font-family="Iosevka" font-size="10.00">Worker</text>
 </a>
@@ -107,7 +107,7 @@
 <!-- http_api -->
 <g id="node6" class="node">
 <title>http_api</title>
-<g id="a_node6"><a xlink:href="https://github.com/sourcegraph/sourcegraph/tree/master/enterprise/internal/codeintel/httpapi" xlink:title="LSIF upload endpoint" target="_blank">
+<g id="a_node6"><a xlink:href="https://github.com/efritz/sourcegraph/tree/master/enterprise/internal/codeintel/httpapi" xlink:title="LSIF upload endpoint" target="_blank">
 <polygon fill="#80b1d3" stroke="black" points="146.5,-422.38 31.5,-422.38 31.5,-386.38 146.5,-386.38 146.5,-422.38"/>
 <text text-anchor="middle" x="89" y="-401.88" font-family="Iosevka" font-size="10.00">LSIF upload endpoint</text>
 </a>
@@ -128,7 +128,7 @@
 <!-- graphql_resolvers -->
 <g id="node7" class="node">
 <title>graphql_resolvers</title>
-<g id="a_node7"><a xlink:href="https://github.com/sourcegraph/sourcegraph/tree/master/enterprise/internal/codeintel/resolvers/graphql" xlink:title="GraphQL resolvers" target="_blank">
+<g id="a_node7"><a xlink:href="https://github.com/efritz/sourcegraph/tree/master/enterprise/internal/codeintel/resolvers/graphql" xlink:title="GraphQL resolvers" target="_blank">
 <polygon fill="#80b1d3" stroke="black" points="280,-422.38 176,-422.38 176,-386.38 280,-386.38 280,-422.38"/>
 <text text-anchor="middle" x="228" y="-401.88" font-family="Iosevka" font-size="10.00">GraphQL resolvers</text>
 </a>
