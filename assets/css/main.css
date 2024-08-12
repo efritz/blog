@@ -199,8 +199,12 @@ code {
   overflow-y: scroll;
 }
 
+.highlight pre {
+  overflow-y: visible;
+}
+
 .highlight {
-  margin: 0 -25px;
+  margin: 0 0 0 -35px;
   border-top: 2px solid #f0f2f3;
   border-bottom: 2px solid #f0f2f3;
 
