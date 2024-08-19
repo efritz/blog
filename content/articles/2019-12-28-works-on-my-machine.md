@@ -6,7 +6,7 @@ tags = ["bugs"]
 showpagemeta = true
 +++
 
-As described in a [previous article](http://eric-fritz.com/articles/subtle-circular-import-bug/), [Sourcegraph](https://about.sourcegraph.com)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. Requests to this service specify a repository name, which indicates the directory to perform the git command in, as well as the arguments that should be passed to the command. The [LSIF service](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) needs to fetch commit ancestry data from gitserver, which it gets through a formatting the output of *git log*. The request payload looks like the following.
+As described in a [previous article](http://eric-fritz.com/articles/subtle-circular-import-bug), [Sourcegraph](https://about.sourcegraph.com)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. Requests to this service specify a repository name, which indicates the directory to perform the git command in, as well as the arguments that should be passed to the command. The [LSIF service](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) needs to fetch commit ancestry data from gitserver, which it gets through a formatting the output of *git log*. The request payload looks like the following.
 
 ```json
 {

@@ -156,7 +156,7 @@ This script creates three files:
 - `commits.txt` is a flat list of git SHAs that were a result of merging a PR into the target branch (not always `main`). These commits may or may not be in the forked repository network, depending on the merge target. These should be synced over.
 - `replace_pairs.txt` contains pairs of of pull request identifier and its merge commit. This will later be used to mass replace `/pull/{id}` with `/commit/{sha}`. Since pull requests can't be linked directly anymore, I can at least link to the full pull request _contents_.
 
-Next, I ran a second program (with the same preamble as the program above) to list all the _non-merge commits_ of each pull request. Based on the [pants-on-head way I work](/articles/i-am-abusive-to-git/), these will mostly be `WIP.` commits, but _sometimes_ I did a better job and (possibly) linked directly to these.
+Next, I ran a second program (with the same preamble as the program above) to list all the _non-merge commits_ of each pull request. Based on the [pants-on-head way I work](/articles/i-am-abusive-to-git), these will mostly be `WIP.` commits, but _sometimes_ I did a better job and (possibly) linked directly to these.
 
 ```go
 func extractCommits(ctx context.Context) error {

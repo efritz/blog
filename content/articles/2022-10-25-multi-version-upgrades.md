@@ -52,7 +52,7 @@ Note that we are unable to squash migration definitions that are undefined in th
 
 Unfortunately, this absolutely throws a wrench in the works for multi-version upgrades. But let's deal with that later. For now, we'll discuss the remaining evolutions of the migration definition files and let the wrenches form a huge pile we can take care of all at once.
 
-In what turns out to be prerequisite work for making multi-version upgrades a possibility, we engineered what was basically a [drop-in replacement](introducing-migrator-service) for golang-migrate. While the original goal was to separate application _deployment_ and _startup_ into individual (but related) concepts, it also allowed us maximum flexibility in how we defined and organized migrations on disk.
+In what turns out to be prerequisite work for making multi-version upgrades a possibility, we engineered what was basically a [drop-in replacement](/articles/fixing-broken-migrations) for golang-migrate. While the original goal was to separate application _deployment_ and _startup_ into individual (but related) concepts, it also allowed us maximum flexibility in how we defined and organized migrations on disk.
 
 Because golang-migrate supported so many database systems, its design catered to the common features. As it happens, transactions were not one of the common features. Our replacement was designed _only_ to support Postgres, which allowed us to introduce [implicit transactions](https://github.com/efritz/sourcegraph/commit/4e2a91c8d54d41e0f3963ef18ebabdf3feb189e5) so that explicit `BEGIN;` and `COMMIT;` were not necessary in the migration definitions themselves.
 

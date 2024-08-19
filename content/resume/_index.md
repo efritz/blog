@@ -58,7 +58,7 @@ I was the primary author the following infrastructure and developer experience p
 
 - **Charon** is a distributed limiting service which grants or denies an internal application permission to use a resource on behalf of a tenant based on current resource usage and the tenant's recent usage history. The service increases infrastructure reliability by ensuring that no resource is overcommitted, and ensures that no single tenant can utilize a disproportionate amount of resources with respect to a tenant's service-level agreement. Technical details are available in the [Whitepaper](/papers#charon), and an interactive example is available in the [request simulator](/articles/charon-simulator).
 
-- **Deposition** is an internal tool used to track software lifecycle metadata such as builds, dependencies (including vulnerabilities), and deployments of our internal infrastructure. See the [blog post](http://localhost:1313/articles/deposition/) for the original motivation and additional product and implementation details.
+- **Deposition** is an internal tool used to track software lifecycle metadata such as builds, dependencies (including vulnerabilities), and deployments of our internal infrastructure. See the [blog post](http://localhost:1313/articles/deposition) for the original motivation and additional product and implementation details.
 
 {{< lightbox src="/images/resume/deposition-products.png" anchor="deposition" >}}
 

@@ -188,4 +188,4 @@ Dropping the un-optimized v0.9.0 release from our data set, we get the following
 
 We're still working on improving performance so every language, every codebase, and every programmer gets fast, precise code intelligence. If you thought this post was interesting or valuable, we'd appreciate it if you'd share it with others!
 
-To read another optimization story similar to this one, see our previous discussion about optimizing the [code intelligence backend](/articles/optimizing-a-code-intel-backend/), which concentrates on reducing the latency of the part of the code intelligence indexing system that receives the data emitted by LSIF indexers like lsif-go.
+To read another optimization story similar to this one, see our previous discussion about optimizing the [code intelligence backend](/articles/optimizing-a-code-intel-backend), which concentrates on reducing the latency of the part of the code intelligence indexing system that receives the data emitted by LSIF indexers like lsif-go.

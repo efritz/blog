@@ -3,7 +3,7 @@ title = "Optimizing a code intelligence commit graph (Part 1)"
 slug = "optimizing-commit-graph-part-1"
 date = "2021-05-27"
 showpagemeta = true
-external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-commit-graph/"
+external = "https://about.sourcegraph.com/blog/optimizing-commit-graph/"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
 +++
@@ -13,7 +13,7 @@ tags = ["sourcegraph"]
   headline="We enabled Sourcegraph to respond to requests for commits missing a code intelligence index quickly and with precise results. Read about our journey."
 >}}
 
-Sourcegraph's Code Intelligence team builds tools and services that provide contextual information around code. These enable users to perform fast, comprehensive, and accurate code navigation, and to surface dependency relationships across projects, repositories, and languages. In this post I'll dive into how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. In [Part 2](/articles/optimizing-a-code-intel-commit-graph-part-2/), we'll cover how additional scalability concerns presented themselves and how we tackled them.
+Sourcegraph's Code Intelligence team builds tools and services that provide contextual information around code. These enable users to perform fast, comprehensive, and accurate code navigation, and to surface dependency relationships across projects, repositories, and languages. In this post I'll dive into how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. In [Part 2](/articles/optimizing-commit-graph-part-2), we'll cover how additional scalability concerns presented themselves and how we tackled them.
 
 Since the first version of Sourcegraph, precise code navigation has been a first-order concern. Its ability to provide compiler-accurate code navigation in a web-based interface is a superpower for our users.
 
@@ -23,7 +23,7 @@ Since the first version of Sourcegraph, precise code navigation has been a first
   anchor="j2d"
   caption="Cross-repository jump to definition from a use in sourcegraph/sourcegraph to a definition in gorilla/mux." >}}
 
-The [journey to our current implementation](/articles/evolution-of-the-precise-code-intel-backend/) began in February 2019 when we shifted our efforts from running Language Servers alongside Sourcegraph to pre-indexing source code via the Language Server Index Format (LSIF) and uploading it to Sourcegraph. This change introduced a new requirement of the user: they are now responsible for producing and uploading the LSIF index.
+The [journey to our current implementation](/articles/lsif-backend-evolution) began in February 2019 when we shifted our efforts from running Language Servers alongside Sourcegraph to pre-indexing source code via the Language Server Index Format (LSIF) and uploading it to Sourcegraph. This change introduced a new requirement of the user: they are now responsible for producing and uploading the LSIF index.
 
 The method to produce an LSIF index is highly variable and depends on many factors. If a repository is not too large, a user may wish to create a new index on every commit in their CI. If a repository is very large (the monorepo case), or an organization has a large number of repositories, it may be better to instead index code periodically and upload a refreshed index. Google uses such a scheduled job to refresh their monorepo's index twice a day.
 
@@ -260,7 +260,7 @@ One major take away for us was the concrete reinforcement that databases are a h
 
 Another major takeaway is that the cliché holds: computers do what you tell them to and nothing more. When debugging correctness and performance issues, it's good to _shed_ your previous mental model and re-assess its correctness as you dive deeper into your stack.
 
-Check out [Part 2](/articles/optimizing-a-code-intel-commit-graph-part-2/), in which we tackle additional scalability challenges.
+Check out [Part 2](/articles/optimizing-commit-graph-part-2), in which we tackle additional scalability challenges.
 
 ### More posts like this
 

@@ -273,7 +273,7 @@ The following table shows a complete timeline of the experimental pull request `
           <th><a href="https://github.com/efritz/sourcegraph/commit/e1b60d3" ><code>e1b60d3</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/db8b6dc" ><code>db8b6dc</code></a></th> <!-- NOTE -->
           <th><a href="https://github.com/efritz/sourcegraph/commit/821d4e6" ><code>821d4e6</code></a></th>
-          <th><a href="https://github.com/efritz/sourcegraph/commit/0d33896" ><code>0d33896</code></a></th>
+          <th><a href="https://github.com/efritz/sourcegraph/commit/0d338963da07522a623a5dadb5263eef806236ae"><code>0d33896</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/3094ee5" ><code>3094ee5</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/6e9896c" ><code>6e9896c</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/b35692c" ><code>b35692c</code></a></th>
@@ -302,7 +302,7 @@ The following table shows a complete timeline of the experimental pull request `
           <th><a href="https://github.com/efritz/sourcegraph/commit/7f99ee5f"><code>7f99ee5</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/35034a8" ><code>35034a8</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/34ce895" ><code>34ce895</code></a></th>
-          <th><a href="https://github.com/efritz/sourcegraph/commit/473b6a9" ><code>473b6a9</code></a></th>
+          <th><a href="https://github.com/efritz/sourcegraph/commit/473b6a9c1cc7e3d9bafa29bbb0c0abe905dcdf12"><code>473b6a9</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/f6438f4" ><code>f6438f4</code></a></th>
           <th><a href="https://github.com/efritz/sourcegraph/commit/a383837" ><code>a383837</code></a></th> <!-- NOTE -->
           <th><a href="https://github.com/efritz/sourcegraph/commit/f7b2939" ><code>f7b2939</code></a></th>

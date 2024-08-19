@@ -3,7 +3,7 @@ title = "Optimizing a code intelligence commit graph (Part 2)"
 slug = "optimizing-commit-graph-part-2"
 date = "2021-06-04"
 showpagemeta = true
-external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-commit-graph-part-2/"
+external = "https://about.sourcegraph.com/blog/optimizing-commit-graph-part-2/"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
 +++
@@ -13,13 +13,13 @@ tags = ["sourcegraph"]
     headline="We enabled Sourcegraph to resolve code intelligence requests for commits missing an index, but ran into scalability challenges when dealing with large commit graphs. Here's how we unearthed and resolved the problem."
 >}}
 
-In [Part 1 of this optimization story](/blog/optimizing-a-code-intel-commit-graph/), we detailed how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. The implementation lies completely within PostgreSQL, and the queries run with very low latency (< 1ms). We boldly claimed that our fears of scalability were no longer cause for concern.
+In [Part 1 of this optimization story](/articles/optimizing-commit-graph-part-1), we detailed how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. The implementation lies completely within PostgreSQL, and the queries run with very low latency (< 1ms). We boldly claimed that our fears of scalability were no longer cause for concern.
 
 Turns out that claim was a half-truth (if not a lie) as Sourcegraph solves the problem well, but only at a particular scale. There is an entire class of enterprise customers who could benefit from this feature as well, but the speed at which the code moves is a huge obstacle to overcome when calculating visible uploads on demand.
 
 Because our implementation relies on a graph traversal within PostgreSQL triggered frequently by user action, we need to limit the distance each query can travel in the commit graph. This is to guarantee that single requests are not taking a disproportionate amount of application or database memory and causing issues for other users. The introduction of this limit brings stability to the Sourcegraph instance by capping the maximum load a single query can put on the database. But there is a downside: there are many shapes of commit graphs that will fail to find a visible upload traversing a limited commit graph, even if the distance is not too large.
 
-In [Part 1](/articles/optimizing-a-code-intel-commit-graph/#Performance-improvements), we stopped tracking the distance between commits as a performance optimization. Because of this, we no longer have a way to limit by commit _distance_. Instead, we enforce a limit on the number of total commits seen during the traversal. This means that one query will travel a smaller distance on a commit graph with a large number of merge commits, and a larger distance on a commit graph that is mostly linear.
+In [Part 1](/articles/optimizing-commit-graph-part-1/#performance-improvements), we stopped tracking the distance between commits as a performance optimization. Because of this, we no longer have a way to limit by commit _distance_. Instead, we enforce a limit on the number of total commits seen during the traversal. This means that one query will travel a smaller distance on a commit graph with a large number of merge commits, and a larger distance on a commit graph that is mostly linear.
 
 The following Git commit graph illustrates this difference. Searching from commit `g`, we could find index data on commits `a` and `m`, both only two steps away. However, if we had a limit of 10, we would see only the commits directly adjacent to `g` and would hit our limit before expanding outwards.
 
@@ -440,7 +440,7 @@ And things _seem_ to be remaining calm...
 
 ## Lessons learned (part 2)
 
-In [Part 1](/articles/optimizing-a-code-intel-commit-graph/#Lessons-learned) we pointed out that databases are a hugely deep subject and knowing your tools deeply can get you fairly far in terms of performance. Unfortunately, with the wrong data model, it doesn't matter how fast you can read or write it from the storage layer. You're optimizing the wrong thing and missing the forest for the trees.
+In [Part 1](/articles/optimizing-commit-graph-part-1/#lessons-learned) we pointed out that databases are a hugely deep subject and knowing your tools deeply can get you fairly far in terms of performance. Unfortunately, with the wrong data model, it doesn't matter how fast you can read or write it from the storage layer. You're optimizing the wrong thing and missing the forest for the trees.
 
 In Part 2, we presented a fantastic way to "optimize the database" by reducing the size of our data set. Taking a step back away from the nitty-gritty details of an existing implementation to determine the shape of the data surrounding a problem can reveal much more straightforward and efficient ways to analyze and manipulate that data. This is especially true in a world with changing assumptions.
 
