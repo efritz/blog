@@ -6,7 +6,7 @@ tags = ["bugs"]
 showpagemeta = true
 +++
 
-As described in a [previous article](http://eric-fritz.com/articles/subtle-circular-import-bug/), [Sourcegraph](https://github.com/sourcegraph/sourcegraph)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. Requests to this service specify a repository name, which indicates the directory to perform the git command in, as well as the arguments that should be passed to the command. The [LSIF service](https://github.com/sourcegraph/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) needs to fetch commit ancestry data from gitserver, which it gets through a formatting the output of *git log*. The request payload looks like the following.
+As described in a [previous article](http://eric-fritz.com/articles/subtle-circular-import-bug/), [Sourcegraph](https://about.sourcegraph.com)'s main source of truth for all code data is *gitserver*, which is a sharded RPC service wrapping git commands. Requests to this service specify a repository name, which indicates the directory to perform the git command in, as well as the arguments that should be passed to the command. The [LSIF service](https://github.com/efritz/sourcegraph/blob/2f36af2a439722ac43fa05da6972e5ed4cf1fa76/lsif) needs to fetch commit ancestry data from gitserver, which it gets through a formatting the output of *git log*. The request payload looks like the following.
 
 ```json
 {
@@ -21,7 +21,7 @@ As described in a [previous article](http://eric-fritz.com/articles/subtle-circu
 }
 ```
 
-As described by [this issue](https://github.com/sourcegraph/sourcegraph/issues/5940), this code path reproducibly returns a subprocess error in the [HTTP response trailers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer) on another developer's machine.
+This code path reproducibly returns a subprocess error in the [HTTP response trailers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Trailer) on another developer's machine:
 
 ```json
 {
@@ -31,19 +31,14 @@ As described by [this issue](https://github.com/sourcegraph/sourcegraph/issues/5
 }
 ```
 
+Ensuring that we were running the same version of the code, I checked that it still worked for me locally. And it did. It also worked as I expected on a **second** machine of mine...
+
+{{< lightbox
+  src="/images/works-on-my-machine/issue.png"
+  alt="Differing outputs due to differing developer environments"
+  anchor="works-for-me-not-for-thee" >}}
+
 This isn't the first time I've encountered another developer's setup that broke assumptions I've made in code. Postgres environment variables and the existence of additional tables have bitten me in the past. Passwords with special characters in it have bitten me in the past. Installing different version of [protobufs](https://developers.google.com/protocol-buffers) have bitten me in the past. The list goes on.
-
-Ensuring that we were running the same version of the code, I checked that it still worked for me locally. And it did...
-
-```json
-{
-    "x-exec-error": "",
-    "x-exec-exit-status": "0",
-    "x-exec-stderr": ""
-}
-```
-
-...and it also did on a *second* machine of mine.
 
 Looking closer at the error, it appears that git is trying to invoke the *git* command, **which it doesn't have**, and tries to suggest the *init* command, which has the lowest [edit distance](https://en.wikipedia.org/wiki/Edit_distance). This is really strange, because this command *totally* works on my machines:
 
@@ -71,4 +66,4 @@ acdcb1f0c37ab494176d834177b235b1a81c53bf 0659088b7b1b103f03d498f0a14ad1e57d95f80
 
 I remembered my old habit of beginning a git command, spacing out, and then resuming my train of thought from the beginning. I fixed this via a [gitconfig alias](https://github.com/efritz/dotfiles/blob/370c182d553071579f727353c533ce1a13ea00e9/git/gitconfig#L47) (which is not original, see the [prior art](https://github.com/denysdovhan/dotfiles/blob/47f10069cce6448b175921c7deeb0db1ed7e5a11/home/.gitconfig#L30)). This alias collapses multiple leading *gits* into a single *git*. This alias did not exist on other developer machines (or in production).
 
-Turns out that the `args` field of the gitserver request was named `args` and not `command` for a reason. The issue was trivially fixed [here](https://github.com/sourcegraph/sourcegraph/pull/5941) and [here](https://github.com/sourcegraph/sourcegraph/pull/6548), and later ensured that I can't ever [add it back](https://github.com/sourcegraph/sourcegraph/pull/6549).
+Turns out that the `args` field of the gitserver request was named `args` and not `command` for a reason. The issue was trivially fixed [here](https://github.com/efritz/sourcegraph/commit/6981238440f3c6177127c7be6d8f8b4d076edd14) and [here](https://github.com/efritz/sourcegraph/commit/91a0eed71b9a58eb9e15d42383ef2f4da3eaeb70), and later ensured that I can't ever [add it back](https://github.com/efritz/sourcegraph/commit/67adefcd5c73c41e681d170969aeb99c912373d3).

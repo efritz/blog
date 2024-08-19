@@ -5,15 +5,16 @@ date = "2021-03-31"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/postgres-version-update/"
 icon = "sourcegraph"
+tags = ["sourcegraph"]
 +++
 
 As of Sourcegraph 3.27 (released [April 20, 2021](https://about.sourcegraph.com/blog/release/3.27)), we're updating the minimum supported version of Postgres from 9.6 to 12.
 
-**If you are maintaining an external database** and your Postgres version is older than Postgres 12, you will need to update your database instance prior to upgrading from Sourcegraph 3.26 to 3.27. See the [following instructions](https://docs.sourcegraph.com/admin/postgres#upgrading-postgresql) for a step-by-step guide.
+**If you are maintaining an external database** and your Postgres version is older than Postgres 12, you will need to update your database instance prior to upgrading from Sourcegraph 3.26 to 3.27. See the [following instructions](https://sourcegraph.com/docs/admin/postgres#upgrading-postgresql) for a step-by-step guide.
 
 **If you are using the Sourcegraph maintained Docker images,** your instance is already using an appropriate Postgres version and no action is needed on your part.
 
-Read the [documentation guide](https://docs.sourcegraph.com/admin/postgres#upgrading-postgresql) for instructions on how to upgrade PostgreSQL.
+Read the [documentation guide](https://sourcegraph.com/docs/admin/postgres#upgrading-postgresql) for instructions on how to upgrade PostgreSQL.
 
 ## Why does Sourcegraph 3.27 require Postgres 12?
 
@@ -47,7 +48,7 @@ Some classes of migrations are very difficult to do efficiently:
 - Concurrent index creation takes much longer, can be blocked for an arbitrary amount of time due to live transactions, and can fail requiring an operator to rebuild the index (cherry on top: reindex is not concurrent)
 - Data migrations over large tables can take an arbitrary amount of time
 
-[Sourcegraph 3.25](/blog/release/3.25/) introduced a mechanism for performing out-of-band migrations. Instead of being applied synchronously on application startup, out-of-band migrations are applied in the application background over a longer period of time.
+[Sourcegraph 3.25](https://sourcegraph.com/blog/release/3.25/) introduced a mechanism for performing out-of-band migrations. Instead of being applied synchronously on application startup, out-of-band migrations are applied in the application background over a longer period of time.
 
 Each migration is written in a generic way that allows it to be controlled by a global migration runner. This runner is responsible for controlling the throughput of the migration so that it does not require disproportionate memory or compute resources in the database or in the application.
 
@@ -139,7 +140,7 @@ Turns out it's pretty bad. Inserting 800k rows into the database with statement-
 
 In order to enable us to continue to scale and improve the performance of your Sourcegraph instance, we are bumping the minimum supported version of Postgres to unlock new features and performance enhancements.
 
-Once you plan to upgrade to Sourcegraph 3.27, you must first ensure that your database meets the new minimum version requirement of Postgres 12. See the [following instructions](https://docs.sourcegraph.com/admin/postgres#upgrading-postgresql) for a step-by-step guide.
+Once you plan to upgrade to Sourcegraph 3.27, you must first ensure that your database meets the new minimum version requirement of Postgres 12. See the [following instructions](https://sourcegraph.com/docs/admin/postgres#upgrading-postgresql) for a step-by-step guide.
 
 <!--
 <style>

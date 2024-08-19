@@ -38,14 +38,16 @@ COPY module.so  /app/module.so  # Build artifact
 
 Unfortunately, after a few weeks of inactivity on the project, integration tests failed with the following when run on a freshly built container (boring details omitted).
 
-    31037:M 08 Aug 09:04:04.384 # Redis 999.999.999 crashed by signal: 11
-    31037:M 08 Aug 09:04:04.384 # Crashed running the instuction at: 0x43a9ec
-    31037:M 08 Aug 09:04:04.384 # Accessing address: (nil)
-    31037:M 08 Aug 09:04:04.384 # Failed assertion: <no assertion failed>
+```bash
+31037:M 08 Aug 09:04:04.384 # Redis 999.999.999 crashed by signal: 11
+31037:M 08 Aug 09:04:04.384 # Crashed running the instuction at: 0x43a9ec
+31037:M 08 Aug 09:04:04.384 # Accessing address: (nil)
+31037:M 08 Aug 09:04:04.384 # Failed assertion: <no assertion failed>
 
-    ------ STACK TRACE ------
-    EIP:
-    ./redis-server *:6379(freeModuleObject+0xc)[0x43a9ec]
+------ STACK TRACE ------
+EIP:
+./redis-server *:6379(freeModuleObject+0xc)[0x43a9ec]
+```
 
 The module source was untouched since the last successful build. I consider Redis to be very high-quality software, so I naturally and immediately placed the blame squarely on myself. I discovered that I could reliably reproduce the error by deleting a key containing one of my module's objects. From this, I assumed there was an issue with a module object's free function. Maybe I was registering objects incorrectly with Redis and the old version just worked by happenstance. Maybe I was never freeing objects correctly before and I was just *unobservably* corrupting memory before the layout changed. Maybe I just thought I knew how manual memory management worked - God knows I've been spoiled by garbage collectors over the years.
 
@@ -104,7 +106,7 @@ RUN git clone "$CLONE_URL" && \
 
 ### Takeaways
 
-Container builds should be, as far as possible, *reproducible forever*. Re-building a container without a change to source should build the **exact** same container. Production image builds are not a place to fetch the latest for any external dependency - this has been [especially](https://glide.sh/) [problematic](https://github.com/golang/dep) [in Go](https://docs.google.com/document/d/1Bz5-UB7g2uPBdOx-rw5t9MxJwkfpx90cqG9AFL0JAYo/edit).
+Container builds should be, as far as possible, *reproducible forever*. Re-building a container without a change to source should build the **exact** same container. Production image builds are not a place to fetch the latest for any external dependency - this has been [especially](https://glide.sh/) [problematic](https://github.com/golang/dep) [in Go](https://docs.google.com/document/d/1Bz5-UB7g2uPBdOx-rw5t9MxJwkfpx90cqG9AFL0JAYo).
 
 Protect yourself from your API dependencies - even if it's for proof of concept. If you rely on your foundation being stable, make sure that you're not straddling the bleeding edge. Lock to stable versions (or ranges, if supported) and vet updates. Be aware of what's changing.
 

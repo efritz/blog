@@ -5,6 +5,7 @@ date = "2021-06-04"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-commit-graph-part-2/"
 icon = "sourcegraph"
+tags = ["sourcegraph"]
 +++
 
 {{< hero
@@ -18,7 +19,7 @@ Turns out that claim was a half-truth (if not a lie) as Sourcegraph solves the p
 
 Because our implementation relies on a graph traversal within PostgreSQL triggered frequently by user action, we need to limit the distance each query can travel in the commit graph. This is to guarantee that single requests are not taking a disproportionate amount of application or database memory and causing issues for other users. The introduction of this limit brings stability to the Sourcegraph instance by capping the maximum load a single query can put on the database. But there is a downside: there are many shapes of commit graphs that will fail to find a visible upload traversing a limited commit graph, even if the distance is not too large.
 
-In [Part 1](/blog/optimizing-a-code-intel-commit-graph/#Performance-improvements), we stopped tracking the distance between commits as a performance optimization. Because of this, we no longer have a way to limit by commit _distance_. Instead, we enforce a limit on the number of total commits seen during the traversal. This means that one query will travel a smaller distance on a commit graph with a large number of merge commits, and a larger distance on a commit graph that is mostly linear.
+In [Part 1](/articles/optimizing-a-code-intel-commit-graph/#Performance-improvements), we stopped tracking the distance between commits as a performance optimization. Because of this, we no longer have a way to limit by commit _distance_. Instead, we enforce a limit on the number of total commits seen during the traversal. This means that one query will travel a smaller distance on a commit graph with a large number of merge commits, and a larger distance on a commit graph that is mostly linear.
 
 The following Git commit graph illustrates this difference. Searching from commit `g`, we could find index data on commits `a` and `m`, both only two steps away. However, if we had a limit of 10, we would see only the commits directly adjacent to `g` and would hit our limit before expanding outwards.
 
@@ -44,7 +45,7 @@ In these circumstances, bounded traversals are a fundamental design flaw. To get
 
 In the same spirit, we eschew graph traversal at query time and calculate the set of visible uploads for each commit ahead of time (whenever the commit graph or set of uploads for a repository changes). This reduces the complexity of the query in the request path into a simple single-record lookup.
 
-This [change](https://github.com/sourcegraph/sourcegraph/issues/12098) was made in our 3.20 release and introduced 2 new tables: `lsif_nearest_uploads` and `lsif_dirty_repositories`.
+This change was made in our 3.20 release (over pull requests [#12402](https://github.com/efritz/sourcegraph/commit/8af9002ca940c8b064f32322ee717013040329a3), [#12404](https://github.com/efritz/sourcegraph/commit/5c42d6954211dde1e74d601602f9cedb51919212), [#12406](https://github.com/efritz/sourcegraph/commit/8031e562ca8d0f132584b485bbf4faa6cf01cc3c), [#12408](https://github.com/efritz/sourcegraph/commit/74f698b0c8fcb8cb247580580984cce550fed2c7), [#12411](https://github.com/efritz/sourcegraph/commit/a048f74c22466207b94d9ceffe49ec701763c5ab), and [#12422](https://github.com/efritz/sourcegraph/commit/3cd7ca975ba0c467fbbd2c0a8ea2603489c2d422)) and introduced 2 new tables: `lsif_nearest_uploads` and `lsif_dirty_repositories`.
 
 The `lsif_nearest_uploads` table stores what you would expect. For each commit that has a visible upload, there is a row in the table indicating the source commit, the identifier of the visible upload, and the distance between the source commit and the commit on which the upload is defined. Multiple uploads may be visible from a single commit as we look in both ancestor and descendant directions. There may also be multiple visible uploads in the case of different languages or different directories at index time, but we'll hand-wave around these particular details for now.
 
@@ -255,7 +256,7 @@ One of our large enterprise customers, who is also one of our earliest adopters 
 
 The precise code intelligence worker process, which converts LSIF data uploaded by the user into our internal representation and writes it to our code intelligence data store, was ballooning in memory as jobs were processed. The extra memory hunger was extreme enough that the workers were consistently crashing with an "out of memory" exception towards the end of each job. No job was completing successfully.
 
-After grabbing additional screenshots of our monitoring system, output to a few SQL queries, and a few pprof traces from the offending Go process, we proved that the culprit was [the function that determined the set of uploads visible at each commit](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@dc8beddf4066e30198c5ea368e6ee1092a6f4560/-/blob/enterprise/internal/codeintel/stores/dbstore/commit_graph.go#L37:6) and knew we needed to find a way to reduce the resident memory required to do so.
+After grabbing additional screenshots of our monitoring system, output to a few SQL queries, and a few pprof traces from the offending Go process, we proved that the culprit was [the function that determined the set of uploads visible at each commit](https://github.com/efritz/sourcegraph/blob/dc8beddf4066e30198c5ea368e6ee1092a6f4560/enterprise/internal/codeintel/stores/dbstore/commit_graph.go#L37) and knew we needed to find a way to reduce the resident memory required to do so.
 
 To give a sense of this user's scale:
 
@@ -267,7 +268,7 @@ While the commit graph itself was relatively small (the [k8s/k8s](https://github
 
 ## Memory reduction attempts
 
-As an emergency [first attempt to reduce memory usage](https://github.com/sourcegraph/sourcegraph/pull/16086), we were able to cut the amount of memory required to calculate visible uploads down by a factor of 4 (with the side effect of doubling the time it took to compute the commit graph). This was an acceptable trade-off, especially for a background process, and especially in a patch release meant to restore code intelligence to a high-volume private instance.
+As an emergency [first attempt to reduce memory usage](https://github.com/efritz/sourcegraph/commit/4e10e9f9a7a600d65dc9b24468073faad49e832d), we were able to cut the amount of memory required to calculate visible uploads down by a factor of 4 (with the side effect of doubling the time it took to compute the commit graph). This was an acceptable trade-off, especially for a background process, and especially in a patch release meant to restore code intelligence to a high-volume private instance.
 
 The majority of the memory was being taken up by the following `UploadMeta` structure, which was the bookkeeping metadata we tracked for each visible commit at each upload. The root and indexer fields denote the directory where the indexer was run and the name of the indexing tool, respectively. An index with a smaller commit distance can _shadow_ another only if these values are equivalent.
 
@@ -317,11 +318,11 @@ This made things **far** worse. In Sourcegraph 3.22, we moved the code that calc
 
 This made their entire instance unstable, and this series of events escalated us from a priority zero event to a [priority now](https://devblogs.microsoft.com/oldnewthing/20081121-00/?p=20123) event.
 
-We attacked the problem again, this time by ignoring large amounts of unneeded data. When we pull back the commit graph for a repository, it's unlikely that we need the _entire_ commit graph. There's little sense in filling out the visibility of the long tail of historic commits, especially as its distance to the oldest LSIF upload grows over time. Now, we [entirely ignore](https://github.com/sourcegraph/sourcegraph/pull/16140) the portion of the commit graph that existed _before_ the oldest known LSIF upload for that repository.
+We attacked the problem again, this time by ignoring large amounts of unneeded data. When we pull back the commit graph for a repository, it's unlikely that we need the _entire_ commit graph. There's little sense in filling out the visibility of the long tail of historic commits, especially as its distance to the oldest LSIF upload grows over time. Now, we [entirely ignore](https://github.com/efritz/sourcegraph/commit/6c9ea16c0f48a7bb7835580cb7f5db838102763e) the portion of the commit graph that existed _before_ the oldest known LSIF upload for that repository.
 
-In the same spirit, we can remove the explicit step of topologically sorting the commit graph in the application by instead [sorting it via the Git command](https://github.com/sourcegraph/sourcegraph/pull/16270). This is basically the same win as replacing a `sort` call in your webapp with an `ORDER BY` clause in your SQL query. This further reduces the required memory as we're no longer taking large amounts of stack space to traverse long chains of commits in the graph.
+In the same spirit, we can remove the explicit step of topologically sorting the commit graph in the application by instead [sorting it via the Git command](https://github.com/efritz/sourcegraph/commit/dc8beddf4066e30198c5ea368e6ee1092a6f4560). This is basically the same win as replacing a `sort` call in your webapp with an `ORDER BY` clause in your SQL query. This further reduces the required memory as we're no longer taking large amounts of stack space to traverse long chains of commits in the graph.
 
-Our [last change](https://github.com/sourcegraph/sourcegraph/pull/16368), however, was the real heavy hitter and comes in 2 parts.
+Our [last change](https://github.com/efritz/sourcegraph/commit/ec87b1b6fda006d38ad310ac59656b7e64c07b3c), however, was the real heavy hitter and comes in 2 parts.
 
 ### Part 1: Using a more compact data structure
 
@@ -384,9 +385,9 @@ Home stretch—we can do this. To summarize:
 1. The resources we require to produce the commit graph is no longer a problem, but
 1. The amount of data we're writing into PostgreSQL _is_ a problem.
 
-Our [final and successful effort](https://github.com/sourcegraph/sourcegraph/pull/16636) to fix these time and space issues attacked the problem, once again, in 2 parts.
+Our [final and successful effort](https://github.com/efritz/sourcegraph/commit/3644ecb646112ac151d04af4dd001e6b5d0e9f54) to fix these time and space issues attacked the problem, once again, in 2 parts.
 
-First, we've changed the commit graph traversal behavior to look only at ancestors. Since we started to ignore the bulk of the commit graph that existed before the first commit with LSIF data, looking into the _future_ for LSIF data now has limited applicability. Generally, users will be on the tip of a branch (either the default branch, or a feature branch if reviewing a pull request). We can still answer code intelligence queries for these commits, as they necessarily occur after _some_ LSIF data has been uploaded. Additionally, an unrelated [bug fix](https://github.com/sourcegraph/sourcegraph/pull/16733) caused descendant-direction traversals to increase memory usage. So at this point, it just seemed sensible to stop worrying about this reverse case, which was never truly necessary from a usability standpoint. Looking in one direction reduces the amount of data we need to store by about 50%.
+First, we've changed the commit graph traversal behavior to look only at ancestors. Since we started to ignore the bulk of the commit graph that existed before the first commit with LSIF data, looking into the _future_ for LSIF data now has limited applicability. Generally, users will be on the tip of a branch (either the default branch, or a feature branch if reviewing a pull request). We can still answer code intelligence queries for these commits, as they necessarily occur after _some_ LSIF data has been uploaded. Additionally, an unrelated [bug fix](https://github.com/efritz/sourcegraph/commit/935d69f08ac82d290a9c60db5e20aa3d701f2e93) caused descendant-direction traversals to increase memory usage. So at this point, it just seemed sensible to stop worrying about this reverse case, which was never truly necessary from a usability standpoint. Looking in one direction reduces the amount of data we need to store by about 50%.
 
 Second, we re-applied our [tricks](#Part-2-Ignoring-uninteresting-data) described in the previous section. We had good luck with throwing out huge amounts of data which we could efficiently recalculate when necessary, and save the resources that would otherwise be required to store them. This concept is known as [rematerialization](https://en.wikipedia.org/wiki/Rematerialization) in compiler circles, where values may be computed multiple times instead of storing and loading the already-computed value from memory. This is useful in the case where a load/store pair is more expensive than the computation itself, or if the load/stores would otherwise increase register pressure.
 
@@ -439,12 +440,12 @@ And things _seem_ to be remaining calm...
 
 ## Lessons learned (part 2)
 
-In [Part 1](/blog/optimizing-a-code-intel-commit-graph/#Lessons-learned) we pointed out that databases are a hugely deep subject and knowing your tools deeply can get you fairly far in terms of performance. Unfortunately, with the wrong data model, it doesn't matter how fast you can read or write it from the storage layer. You're optimizing the wrong thing and missing the forest for the trees.
+In [Part 1](/articles/optimizing-a-code-intel-commit-graph/#Lessons-learned) we pointed out that databases are a hugely deep subject and knowing your tools deeply can get you fairly far in terms of performance. Unfortunately, with the wrong data model, it doesn't matter how fast you can read or write it from the storage layer. You're optimizing the wrong thing and missing the forest for the trees.
 
 In Part 2, we presented a fantastic way to "optimize the database" by reducing the size of our data set. Taking a step back away from the nitty-gritty details of an existing implementation to determine the shape of the data surrounding a problem can reveal much more straightforward and efficient ways to analyze and manipulate that data. This is especially true in a world with changing assumptions.
 
 ### More posts like this
 
-- [A 5x reduction in RAM usage with Zoekt memory optimizations](/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
-- [How not to break a search engine or: What I learned about unglamorous engineering](/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)
-- [Avoiding the pitfalls of iteration-based development, explained in 5 pull requests](/blog/avoiding-the-pitfalls-of-iteration-based-development/)
+- [A 5x reduction in RAM usage with Zoekt memory optimizations](https://sourcegraph.com/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
+- [How not to break a search engine or: What I learned about unglamorous engineering](https://sourcegraph.com/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)
+- [Avoiding the pitfalls of iteration-based development, explained in 5 pull requests](https://sourcegraph.com/blog/avoiding-the-pitfalls-of-iteration-based-development/)

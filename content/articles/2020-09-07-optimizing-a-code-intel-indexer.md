@@ -5,9 +5,10 @@ date = "2020-09-07"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-indexer"
 icon = "sourcegraph"
+tags = ["sourcegraph"]
 +++
 
-We (Sourcegraph's [code intelligence team](https://handbook.sourcegraph.com/engineering/code-intelligence)) recently made Go [code intelligence](https://docs.sourcegraph.com/code_intelligence) faster, especially on very large repositories. For example, we cut the indexing time by 95% for the huge [Go AWS SDK](https://sourcegraph.com/github.com/aws/aws-sdk-go) repository, from 8 minutes to 24 seconds. Here's how we did it.
+We (Sourcegraph's Code Intelligence team) recently made Go [code intelligence](https://sourcegraph.com/docs/code-search/code-navigation/precise_code_navigation) faster, especially on very large repositories. For example, we cut the indexing time by 95% for the huge [Go AWS SDK](https://sourcegraph.com/github.com/aws/aws-sdk-go) repository, from 8 minutes to 24 seconds. Here's how we did it.
 
 ## Background: what is code intelligence?
 
@@ -42,7 +43,7 @@ So, after the improvements discussed here, how well do we index Go code at scale
 * Previously, it took nearly **8 minutes** to index the Go AWS SDK; it now takes only **24 seconds**.
 * Previously, it took nearly **7 hours** to index 56 million lines of code; it now takes under **20 minutes**.
 
-Indexing speed is _so_ important for code bases undergoing constant change. Stale, hours-old code intelligence on a monorepo at scale is about as useful as using a map of Pangea to find your way home. This is why the code intelligence team is dedicated to [increasing the efficiency of every part of the stack](https://about.sourcegraph.com/blog/optimizing-a-code-intel-backend) to make sure your map of the code is always accurate.
+Indexing speed is _so_ important for code bases undergoing constant change. Stale, hours-old code intelligence on a monorepo at scale is about as useful as using a map of Pangea to find your way home. This is why the code intelligence team is dedicated to [increasing the efficiency of every part of the stack](/articles/optimizing-a-code-intel-backend) to make sure your map of the code is always accurate.
 
 ## How we optimized it
 
@@ -187,4 +188,4 @@ Dropping the un-optimized v0.9.0 release from our data set, we get the following
 
 We're still working on improving performance so every language, every codebase, and every programmer gets fast, precise code intelligence. If you thought this post was interesting or valuable, we'd appreciate it if you'd share it with others!
 
-To read another optimization story similar to this one, see our previous discussion about optimizing the [code intelligence backend](/blog/optimizing-a-code-intel-backend/), which concentrates on reducing the latency of the part of the code intelligence indexing system that receives the data emitted by LSIF indexers like lsif-go.
+To read another optimization story similar to this one, see our previous discussion about optimizing the [code intelligence backend](/articles/optimizing-a-code-intel-backend/), which concentrates on reducing the latency of the part of the code intelligence indexing system that receives the data emitted by LSIF indexers like lsif-go.

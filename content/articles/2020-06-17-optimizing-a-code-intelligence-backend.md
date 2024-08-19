@@ -1,22 +1,23 @@
 +++
 title = "Optimizing a code intelligence backend"
-slug = "optimizing-backend"
+slug = "optimizing-a-code-intel-backend"
 date = "2020-06-17"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-backend"
 icon = "sourcegraph"
+tags = ["sourcegraph"]
 +++
 
 When it comes to developer tools, speed is a critical feature. The difference between a 100ms, 1s, and 10s delay fundamentally alters user psychology—it's the difference between coding at the speed of thought vs. losing focus as your mind wanders while waiting for the UI to respond.
 
-One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@95b315285814aded55089da22aba944cf19410c9/-/blob/cmd/frontend/internal/cli/serve_cmd.go?subtree=true#L115:6), [private Sourcegraph instances](https://docs.sourcegraph.com/#quickstart-guide), and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
+One of Sourcegraph's magic powers is its ability to provide compiler-accurate code navigation in completely web-based interfaces: [Sourcegraph.com](https://github.com/efritz/sourcegraph/tree/95b315285814aded55089da22aba944cf19410c9/cmd/frontend/internal/cli/serve_cmd.go#L115:6), private Sourcegraph instances, and on GitHub, GitLab, Bitbucket, and Phabricator via the [Sourcegraph browser extension](https://chrome.google.com/webstore/detail/sourcegraph/dgjhfomjieaadpoljlnidmbgkdffpack).
 
 {{< lightbox
   src="/images/external/shared/precise-xrepo-j2d.gif"
   alt="Cross-repository jump to definition"
   anchor="j2d" >}}
 
-While compiler-level accuracy is great, one painpoint has been performance on larger codebases. The desire for speed motivated our switch from language servers to use of the Language Server Index Format (LSIF). Indexing vastly improves query latency by precomputing the data needed to serve doc tooltips, go-to-definition, and find-references requests, without sacrificing accuracy. Since adding support for LSIF, we've continued to optimize our code navigation backend. In [Sourcegraph 3.16](/blog/sourcegraph-3.16#performance-improvements-for-precise-code-intelligence), we rewrote the LSIF processing backend from TypeScript to Go with the aim of optimizing performance. In [3.17](/blog/sourcegraph-3.17), we made good on these plans.
+While compiler-level accuracy is great, one painpoint has been performance on larger codebases. The desire for speed motivated our switch from language servers to use of the Language Server Index Format (LSIF). Indexing vastly improves query latency by precomputing the data needed to serve doc tooltips, go-to-definition, and find-references requests, without sacrificing accuracy. Since adding support for LSIF, we've continued to optimize our code navigation backend. In [Sourcegraph 3.16](https://sourcegraph.com/blog/sourcegraph-3.16#performance-improvements-for-precise-code-intelligence), we rewrote the LSIF processing backend from TypeScript to Go with the aim of optimizing performance. In [3.17](https://sourcegraph.com/blog/sourcegraph-3.17), we made good on these plans.
 
 With the guidance of the Go memory and CPU profiler, we implemented optimizations that fell into three areas:
 
@@ -69,7 +70,7 @@ The "middleman" nature of the API server when serving user requests was an artif
 
 The way we did this was a bit of a kludge. In essence, we wanted to eliminate an unnecessary network call between the precise code API server client (in the Sourcegraph frontend service) and the API server. However, we didn't want to have to write a bunch of new code to define an API service and client for the bundle manager directly, so what we did was we kept the existing API server and client as-is, but replaced the actual network calls with function calls to the HTTP handler functions directly.
 
-[In the code](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@bc072662500da3ce0bc7b5820bf0f63fb59182fb/-/blob/internal/codeintel/lsifserver/client/proxy.go#L40-46), we use the `httptest.NewRecorder` function to record the handler response, and then return this request to the caller as if it came from an actual over-the-network HTTP client call. Not the cleanest code in the world, but this addressed the immediate performance bottleneck and we were eager to move onto the others. In a separate pass, we were able to even further collapse this boundary and replace the fake HTTP server shim with direct function calls.
+[In the code](https://github.com/efritz/sourcegraph/tree/bc072662500da3ce0bc7b5820bf0f63fb59182fb/internal/codeintel/lsifserver/client/proxy.go#L40-46), we use the `httptest.NewRecorder` function to record the handler response, and then return this request to the caller as if it came from an actual over-the-network HTTP client call. Not the cleanest code in the world, but this addressed the immediate performance bottleneck and we were eager to move onto the others. In a separate pass, we were able to even further collapse this boundary and replace the fake HTTP server shim with direct function calls.
 
 ## Parallelization
 
@@ -109,13 +110,13 @@ In the implementation, we used channels as bounded queues to break up the parsin
   alt="concurrency diagram"
   anchor="concurrent-pipeline" >}}
 
-* The [unmarshaller goroutines](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@0eda838ebbe02021dd1739e3f92bc2fcd9577672/-/blob/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L65-72) read lines from an input channel, parse it, and place the result into an output element channel.
-* A [batcher goroutine](https://github.com/sourcegraph/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L75-L109) then consumes the items from the element channel in batches, reordering them by input ID to be consistent with the original order in the LSIF data.
-* After the batch receives the expected number of values from the channel, it [sends a signal](https://github.com/sourcegraph/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L95-L97) to the unmarshallers to free them to resume work. This signalling procedure ensures that no unmarshaller looks for work past the current batching window (which would be pointless and wasteful).
-* Each completed batch is then [passed](https://github.com/sourcegraph/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L104) to the correlator for processing.
+* The [unmarshaller goroutines](https://github.com/efritz/sourcegraph/tree/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L65-72) read lines from an input channel, parse it, and place the result into an output element channel.
+* A [batcher goroutine](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L75-L109) then consumes the items from the element channel in batches, reordering them by input ID to be consistent with the original order in the LSIF data.
+* After the batch receives the expected number of values from the channel, it [sends a signal](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L95-L97) to the unmarshallers to free them to resume work. This signalling procedure ensures that no unmarshaller looks for work past the current batching window (which would be pointless and wasteful).
+* Each completed batch is then [passed](https://github.com/efritz/sourcegraph/blob/0eda838ebbe02021dd1739e3f92bc2fcd9577672/cmd/precise-code-intel-worker/internal/correlation/lsif/lines/reader.go#L104) to the correlator for processing.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/1e83fa635ade825e39b41031b5bd5809cecc2a69#diff-d8ead48c93da52682080c1e083e3157fR1">`1e83fa6`</a>, reduced conversion time by 31%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/1e83fa635ade825e39b41031b5bd5809cecc2a69#diff-d8ead48c93da52682080c1e083e3157fR1">`1e83fa6`</a>, reduced conversion time by 31%.
 </div>
 
 ### Writing to SQLite in parallel
@@ -132,7 +133,7 @@ To complete a go-to-definition or find-references action, we first load the docu
 If we want to look up definitions or references by name, rather than cursor location, we can construct a partial moniker out of the name and look up definitions and references in the definition and reference data.
 
 We optimized the time it took to write the SQLite bundle by taking advantage of the structure of these 4 categories of data. Prior to 3.17, the worker process would start four goroutines, one for each category, and
-would sequentially [write batches](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@master/-/blob/internal/sqliteutil/batch_inserter.go)
+would sequentially [write batches](https://github.com/efritz/sourcegraph/blob/1e83fa635ade825e39b41031b5bd5809cecc2a69/internal/sqliteutil/batch_inserter.go)
 of data into the target table. The SQLite batcher inserter utility is about as fast as it can be: it
 sets the correct pragmas, uses a single transaction, and minimizes the number of commands by
 squeezing as many rows into each insert statement as possible.
@@ -150,7 +151,7 @@ To increase write throughput, we moved the parallelism into the writer layer. Af
   anchor="concurrency-after" >}}
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/7c99cd982e1c3a8e77f2a065f7ae6640a08ba5bb#diff-86711fd26a316ad73cedd5eb066b4c21R1">`7c99cd9`</a>, reduced conversion time by 10.43%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/7c99cd982e1c3a8e77f2a065f7ae6640a08ba5bb#diff-86711fd26a316ad73cedd5eb066b4c21R1">`7c99cd9`</a>, reduced conversion time by 10.43%.
 </div>
 
 ## Other code changes: doing _fewer_ things
@@ -180,17 +181,17 @@ The table below shows the number of definition and reference rows in each bundle
 Due to the reduced size of data, we are also able to insert more definition and references per SQL update query, further decreasing the overall time it takes to write a bundle. (SQLite imposes a hard insertion limit, [SQLITE\_MAX\_VARIABLE\_NUMBER](https://www.sqlite.org/limits.html).)
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/69bf52c2e3ef2655eb94ba6ed091f439c6c236b4#diff-87794b8e6825323e89453e637c6c6116R117">`69bf52c`</a>, reduced bundle sizes by 50%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/69bf52c2e3ef2655eb94ba6ed091f439c6c236b4#diff-87794b8e6825323e89453e637c6c6116R117">`69bf52c`</a>, reduced bundle sizes by 50%.
 </div>
 
 ### Faster, smaller serialization
 
 We replaced the gzipped JSON-encoded bundle payloads with gzipped [gob-encoded](https://golang.org/pkg/encoding/gob/) structures. This reduced heap allocations, reduced overall bundle size, and yielded small improvements in overall processing time.
 
-Most importantly, this allowed us to remove some tech debt caused by data structures that had evolved to become more complex over time. In particular, we used custom [replacers](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@a5232c14d15f1e18f6d20ae6d15e5c1fe68bb244/-/blob/lsif/src/encoding.ts#L99) to enable the serialization of TypeScript maps and sets, which we had to [replicate](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@f1644db9bbb75683fcc14e64ead9746338b38669/-/blob/internal/codeintel/bundles/serializer/default_serializer.go#L355-367) in the Go rewrite in order to continue reading previously generated bundle files.
+Most importantly, this allowed us to remove some tech debt caused by data structures that had evolved to become more complex over time. In particular, we used custom [replacers](github.com/efritz/sourcegraph/tree/a5232c14d15f1e18f6d20ae6d15e5c1fe68bb244/lsif/src/encoding.ts#L99) to enable the serialization of TypeScript maps and sets, which we had to [replicate](https://github.com/efritz/sourcegraph/tree/f1644db9bbb75683fcc14e64ead9746338b38669//internal/codeintel/bundles/serializer/default_serializer.go#L355-367) in the Go rewrite in order to continue reading previously generated bundle files.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/d17750ffd9aecafdc68fdeb9a6dbc7e62e876c5c#diff-baa2de1a12d5be3e15c550035933d4e5R1">`d17750f`</a>, reduced bundle sizes by 10%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/d17750ffd9aecafdc68fdeb9a6dbc7e62e876c5c#diff-baa2de1a12d5be3e15c550035933d4e5R1">`d17750f`</a>, reduced bundle sizes by 10%.
 </div>
 
 ### Empty slice allocations
@@ -214,7 +215,7 @@ rangePairs := make([]interface{}, 0, len(d.Ranges))
 In our case, rewriting empty slice allocations to have non-zero capacities did not make a huge impact on overall performance, but it was easy to do and yielded better readability by making the purpose of new empty slices clearer.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR19">`8a905ac`</a>, reduced conversion time by 9.35%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR19">`8a905ac`</a>, reduced conversion time by 9.35%.
 </div>
 
 ### Maps vs. structs
@@ -263,7 +264,7 @@ func (*jsonSerializer) MarshalDocumentData(d types.DocumentData) ([]byte, error)
 In Go, map values are allocated on the heap, while non-pointer struct instances are allocated on the stack. The switch from heap allocation to stack allocation for this data yielded substantial improvements in performance.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR25">`8a905ac`</a>, reduced conversion time by 9.35%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR25">`8a905ac`</a>, reduced conversion time by 9.35%.
 </div>
 
 ### Reducing data movement
@@ -311,7 +312,7 @@ for i := range locations {
 At runtime, this eliminates the need to copy the 216 bytes of each slice element into an intermediate `location` variable before copying it again into the activation record of the `resolveLocation` function call.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/d1f8cafdf952d8eeabadfd38f4ebae0050c06a11">`d1f8caf`</a>, reduced conversion time by 26.18%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/d1f8cafdf952d8eeabadfd38f4ebae0050c06a11">`d1f8caf`</a>, reduced conversion time by 26.18%.
 </div>
 
 ### Efficient JSON parsing
@@ -321,7 +322,7 @@ The Go standard library's JSON parser is reliable and has an easy-to-use API. Ho
 We looked at several other options for JSON parsing in Go ([easyjson](https://github.com/mailru/easyjson), [fastjson](https://github.com/valyala/fastjson), [ffjson](https://github.com/pquerna/ffjson)) before finally settling on json-iterator/go, a high-performance drop-in replacement for the standard library's `encoding/json` package. The low switching cost and the efficiency of decoding small structures (which are common in LSIF vertex and edge definitions) were the key considerations that motivated our choice.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/6b12b267574d1870664389e8840255af04a30b6d#diff-ab549083ae1ef9af86ec1fcc8dd1a8c8R15">`6b12b26`</a>, reduced conversion time by 19.02%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/6b12b267574d1870664389e8840255af04a30b6d#diff-ab549083ae1ef9af86ec1fcc8dd1a8c8R15">`6b12b26`</a>, reduced conversion time by 19.02%.
 </div>
 
 ### Avoid unnecessary disk writes
@@ -335,12 +336,12 @@ This disk-write turned out to be unnecessary, as we could simply pass the HTTP r
 This yielded a performance boost that became more significant the larger the codebase and corresponding LSIF data.
 
 <div type="alert success">
-  This update, implemented in <a href="https://github.com/sourcegraph/sourcegraph/commit/2eae464dcd21a4573cdafef167eabee99af773f1#diff-2978e84d13764ae85636a117d5e3e9d4R188">`2eae464`</a>, reduced conversion time by 20.13%.
+  This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/2eae464dcd21a4573cdafef167eabee99af773f1#diff-2978e84d13764ae85636a117d5e3e9d4R188">`2eae464`</a>, reduced conversion time by 20.13%.
 </div>
 
 ## Reviewing results
 
-The following chart shows the decrease in query latency while running our [integration test suite](https://github.com/sourcegraph/sourcegraph/tree/5f51043ad2130a1acdcfca8b969f907cd03a220d/internal/cmd/precise-code-intel-test) compared to the previous two Sourcegraph releases. The test suite is querying cross-repo definitions and references over three commits from [etcd-io/etcd](https://github.com/etcd-io/etcd), [pingcap/tidb](https://github.com/pingcap/tidb), and [distributedio/titan](https://github.com/distributedio/titan), and two commits from [uber-go/zap](https://github.com/uber-go/zap).
+The following chart shows the decrease in query latency while running our [integration test suite](https://github.com/efritz/sourcegraph/tree/5f51043ad2130a1acdcfca8b969f907cd03a220d/internal/cmd/precise-code-intel-test) compared to the previous two Sourcegraph releases. The test suite is querying cross-repo definitions and references over three commits from [etcd-io/etcd](https://github.com/etcd-io/etcd), [pingcap/tidb](https://github.com/pingcap/tidb), and [distributedio/titan](https://github.com/distributedio/titan), and two commits from [uber-go/zap](https://github.com/uber-go/zap).
 
 {{< lightbox
   src="/images/external/opt-backend/lsif-query-latency-317.png"
