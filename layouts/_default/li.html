@@ -12,7 +12,7 @@
 
         {{ if .Params.Mirror }}
           <span class="mirror">
-            <a href="{{ .Params.Mirror }}">{{ .Title }} <span class="small">(original date)</span></a>
+            <a href="/articles/{{ .Params.Mirror }}">{{ .Title }} <span class="small">(original date)</span></a>
           </span>
         {{ else if and (.Params.External) (not .Params.Slug) }}
           <a href="{{ .Params.External }}">{{ .Title }} <i class="fa fa-external-link external-link"></i></a>
