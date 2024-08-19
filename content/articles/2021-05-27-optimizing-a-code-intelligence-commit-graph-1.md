@@ -5,6 +5,7 @@ date = "2021-05-27"
 showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-a-code-intel-commit-graph/"
 icon = "sourcegraph"
+tags = ["sourcegraph"]
 +++
 
 {{< hero
@@ -12,7 +13,7 @@ icon = "sourcegraph"
   headline="We enabled Sourcegraph to respond to requests for commits missing a code intelligence index quickly and with precise results. Read about our journey."
 >}}
 
-Sourcegraph's [Code Intelligence](https://handbook.sourcegraph.com/engineering/code-intelligence) team builds tools and services that provide contextual information around code. These enable users to perform fast, comprehensive, and accurate code navigation, and to surface dependency relationships across projects, repositories, and languages. In this post I'll dive into how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. In [Part 2](/blog/optimizing-a-code-intel-commit-graph-part-2/), we'll cover how additional scalability concerns presented themselves and how we tackled them.
+Sourcegraph's Code Intelligence team builds tools and services that provide contextual information around code. These enable users to perform fast, comprehensive, and accurate code navigation, and to surface dependency relationships across projects, repositories, and languages. In this post I'll dive into how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. In [Part 2](/articles/optimizing-a-code-intel-commit-graph-part-2/), we'll cover how additional scalability concerns presented themselves and how we tackled them.
 
 Since the first version of Sourcegraph, precise code navigation has been a first-order concern. Its ability to provide compiler-accurate code navigation in a web-based interface is a superpower for our users.
 
@@ -22,7 +23,7 @@ Since the first version of Sourcegraph, precise code navigation has been a first
   anchor="j2d"
   caption="Cross-repository jump to definition from a use in sourcegraph/sourcegraph to a definition in gorilla/mux." >}}
 
-The [journey to our current implementation](/blog/evolution-of-the-precise-code-intel-backend/) began in February 2019 when we shifted our efforts from running Language Servers alongside Sourcegraph to pre-indexing source code via the Language Server Index Format (LSIF) and uploading it to Sourcegraph. This change introduced a new requirement of the user: they are now responsible for producing and uploading the LSIF index.
+The [journey to our current implementation](/articles/evolution-of-the-precise-code-intel-backend/) began in February 2019 when we shifted our efforts from running Language Servers alongside Sourcegraph to pre-indexing source code via the Language Server Index Format (LSIF) and uploading it to Sourcegraph. This change introduced a new requirement of the user: they are now responsible for producing and uploading the LSIF index.
 
 The method to produce an LSIF index is highly variable and depends on many factors. If a repository is not too large, a user may wish to create a new index on every commit in their CI. If a repository is very large (the monorepo case), or an organization has a large number of repositories, it may be better to instead index code periodically and upload a refreshed index. Google uses such a scheduled job to refresh their monorepo's index twice a day.
 
@@ -34,7 +35,7 @@ In order to plug this hole, we determine the set of nearby commits for which Sou
 
 ## Tracking cross-commit index visibility
 
-The first step in this process is to [track how commits of a repository relate to one another](https://github.com/sourcegraph/sourcegraph/pull/5691). Unfortunately, the service providing the code intelligence features was separated (by design) from the rest of the product. We had only recently [gained access to the Sourcegraph PostgreSQL database](https://github.com/sourcegraph/sourcegraph/pull/5740) used by the rest of the application, and no other team was tracking commit information. The source of truth for that data was another service called gitserver, which required both an RPC call and a subprocess to access.
+The first step in this process is to [track how commits of a repository relate to one another](https://github.com/efritz/sourcegraph/commit/34b51fff934f973900f3aa3a7b9b0886ceef5d18). Unfortunately, the service providing the code intelligence features was separated (by design) from the rest of the product. We had only recently [gained access to the Sourcegraph PostgreSQL database](https://github.com/efritz/sourcegraph/commit/9f0feb4b72828c06d5677986e9d96491cc72e17c) used by the rest of the application, and no other team was tracking commit information. The source of truth for that data was another service called gitserver, which required both an RPC call and a subprocess to access.
 
 Our initial stab at this problem was to introduce 2 new tables to PostgreSQL: `commits` and `lsif_data_markers`.
 
@@ -154,7 +155,7 @@ The following query plan shows an execution trace that visited around 100 commit
   anchor="query-plan-slow"
   caption="Query plan of a commit graph traversal visiting 100 commits." >}}
 
-[Adding additional indexes](https://github.com/sourcegraph/sourcegraph/pull/5946) to the `commits` table helped a bit, but did not fundamentally change the performance characteristics of the query. An even larger pathology was discovered in repositories with a large number of merge commits. In order to understand the performance issue, it's important first to understand how the recursive query evaluation works in the case of duplicates, which was initially unintuitive to us. Paraphrasing the [PostgreSQL documentation](https://www.postgresql.org/docs/13/queries-with.html), recursive queries are evaluated with the following steps (emphasis ours):
+[Adding additional indexes](https://github.com/efritz/sourcegraph/commit/7d54563a02d472215a176751051c619c88496174) to the `commits` table helped a bit, but did not fundamentally change the performance characteristics of the query. An even larger pathology was discovered in repositories with a large number of merge commits. In order to understand the performance issue, it's important first to understand how the recursive query evaluation works in the case of duplicates, which was initially unintuitive to us. Paraphrasing the [PostgreSQL documentation](https://www.postgresql.org/docs/13/queries-with.html), recursive queries are evaluated with the following steps (emphasis ours):
 
 1. Evaluate the non-recursive term and **discard duplicate rows**
 1. Insert rows into result set as well as a temporary working table
@@ -204,9 +205,9 @@ What we _wanted_ to happen was for the "duplicate rows" not to be inserted into 
 
 ---
 
-Our [first attempt to optimize this query](https://github.com/sourcegraph/sourcegraph/pull/5980) directly tackled the problem of duplicate rows in the worktable, as shown in the above example. This change simply removes the `distance` column from the lineage table expression. The "duplicates" that we now throw out are records for commits that have already been seen via a shorter path. This required that we move the limiting condition from table expression into the select, which changes the behavior very slightly (it now limits by working set size, not by distance, which was an acceptable trade-off for the performance increase).
+Our [first attempt to optimize this query](https://github.com/efritz/sourcegraph/commit/053e31d49e960e8f3c02df8334e9af450f1d9b21) directly tackled the problem of duplicate rows in the worktable, as shown in the above example. This change simply removes the `distance` column from the lineage table expression. The "duplicates" that we now throw out are records for commits that have already been seen via a shorter path. This required that we move the limiting condition from table expression into the select, which changes the behavior very slightly (it now limits by working set size, not by distance, which was an acceptable trade-off for the performance increase).
 
-[Additional efforts to optimize this query](https://github.com/sourcegraph/sourcegraph/pull/5984) were highly successful. The following chart compares the query latency of the original query (_quadratic_, blue) and the optimized query (_fast linear_, green), and we've _very clearly_ removed the term that was creating the quadratic behavior.
+[Additional efforts to optimize this query](https://github.com/efritz/sourcegraph/commit/516533b96b3686578da06a32eaa61fbf75c76f63) were highly successful. The following chart compares the query latency of the original query (_quadratic_, blue) and the optimized query (_fast linear_, green), and we've _very clearly_ removed the term that was creating the quadratic behavior.
 
 {{< lightbox
   src="https://user-images.githubusercontent.com/1387653/66709486-a9813900-ed22-11e9-9519-d9a9c098b37d.png"
@@ -259,10 +260,10 @@ One major take away for us was the concrete reinforcement that databases are a h
 
 Another major takeaway is that the cliché holds: computers do what you tell them to and nothing more. When debugging correctness and performance issues, it's good to _shed_ your previous mental model and re-assess its correctness as you dive deeper into your stack.
 
-Check out [Part 2](/blog/optimizing-a-code-intel-commit-graph-part-2/), in which we tackle additional scalability challenges.
+Check out [Part 2](/articles/optimizing-a-code-intel-commit-graph-part-2/), in which we tackle additional scalability challenges.
 
 ### More posts like this
 
-- [A 5x reduction in RAM usage with Zoekt memory optimizations](/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
-- [How not to break a search engine or: What I learned about unglamorous engineering](/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)
-- [Avoiding the pitfalls of iteration-based development, explained in 5 pull requests](/blog/avoiding-the-pitfalls-of-iteration-based-development/)
+- [A 5x reduction in RAM usage with Zoekt memory optimizations](https://sourcegraph.com/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
+- [How not to break a search engine or: What I learned about unglamorous engineering](https://sourcegraph.com/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)
+- [Avoiding the pitfalls of iteration-based development, explained in 5 pull requests](https://sourcegraph.com/blog/avoiding-the-pitfalls-of-iteration-based-development/)

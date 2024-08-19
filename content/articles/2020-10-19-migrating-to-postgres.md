@@ -6,25 +6,25 @@ tags = ["bugs"]
 showpagemeta = true
 +++
 
-At [Sourcegraph](https://github.com/sourcegraph/sourcegraph), we have recently decided to migrate code intelligence data that has historically been stored in thousands of SQLite databases on disk into a single Postgres instance. Long story short, we were running into some limits of writing a persistence layer over SQLite databases in a consistent way.
+At [Sourcegraph](https://about.sourcegraph.com), we have recently decided to migrate code intelligence data that has historically been stored in thousands of SQLite databases on disk into a single Postgres instance. Long story short, we were running into some limits of writing a persistence layer over SQLite databases in a consistent way.
 
 - We were unable to horizontally scale, as one database can only be opened by one backend at a time. We would need to implement a sharding mechanism in which data is spread out evenly across multiple machines, and requests could be routed to (one of) the backend(s) with that data.
 - We also had to maintain a symmetry between rows in the database (metadata) and the files on disk (actual data). This required a janitor process to run in the background to clean up data that was orphaned on the other side. This process would be additionally complicated if we were to shard data onto multiple disks.
 
-We noticed these problems were symptoms of [accidental complexity](http://faculty.salisbury.edu/~xswang/Research/Papers/SERelated/no-silver-bullet.pdf) within our system rather than essential complexity inherent in our problem domain. Moving this data into Postgres allowed us to reduce some operational concerns by unifying data access and allowed us to solve the problems we're actually getting paid to solve.
+We noticed these problems were symptoms of [accidental complexity](https://www.cs.unc.edu/techreports/86-020.pdf) within our system rather than essential complexity inherent in our problem domain. Moving this data into Postgres allowed us to reduce some operational concerns by unifying data access and allowed us to solve the problems we're actually getting paid to solve.
 
-See [this related article](https://about.sourcegraph.com/blog/evolution-of-the-precise-code-intel-backend/) how the architecture of the code intelligence backend services have evolved over the last year. This change is just a small aside in a much larger journey -- one that is just getting started.
+See [this related article](/articles/lsif-backend-evolution) how the architecture of the code intelligence backend services have evolved over the last year. This change is just a small aside in a much larger journey -- one that is just getting started.
 
 # Migrating
 
 The change wasn't terribly complex, but did involve several steps to ensure that we didn't fail requests unnecessarily by moving the data source out from under the server.
 
-1. Update the janitor process to understand Postgres as a data source, so that a missing file does not imply missing data. This is necessary so that we do not delete what the janitor sees as orphaned metadata for data that exists in Postgres but not on disk. [(#14468)](https://github.com/sourcegraph/sourcegraph/pull/14468)
-2. Update readers of SQLite to first read from Postgres, then fall back to the SQLite file on disk (if one exists). [(#13924)](https://github.com/sourcegraph/sourcegraph/pull/13924)
-3. Introduce a new background process that opens SQLite files on disk and writes the same data into Postgres. [(#13932)](https://github.com/sourcegraph/sourcegraph/pull/13932)
-4. Update writes to target Postgres instead of a SQLite database. [(#13946)](https://github.com/sourcegraph/sourcegraph/pull/13946)
+1. Update the janitor process to understand Postgres as a data source, so that a missing file does not imply missing data. This is necessary so that we do not delete what the janitor sees as orphaned metadata for data that exists in Postgres but not on disk. [(#14468)](https://github.com/efritz/sourcegraph/commit/188019693fa676543b0d09d4dd84448a4dded403)
+2. Update readers of SQLite to first read from Postgres, then fall back to the SQLite file on disk (if one exists). [(#13924)](https://github.com/efritz/sourcegraph/commit/7904337d9734a2f267a324c3298d79f42efa2a10)
+3. Introduce a new background process that opens SQLite files on disk and writes the same data into Postgres. [(#13932)](https://github.com/efritz/sourcegraph/commit/1abab1fc15116009492258762b997a566f3410f1)
+4. Update writes to target Postgres instead of a SQLite database. [(#13946)](https://github.com/efritz/sourcegraph/commit/b087440895eb92d4c9762e9bc09dd34123766d7b)
 
-Around this time, we had nearly a terabyte worth of SQLite files on disk that needed to be migrated. During a [feasibility study](https://docs.google.com/document/d/1Y9p29hK8xrPUTvBdWqP9uAHDg3JLV-HCaxsbCo9-YHQ) a few weeks prior, we found that the migration would take a bit over twelve hours when run on a moderately-sized GCP compute node -- not something that we could comfortably monitor within a single engineering shift.
+Around this time, we had nearly a terabyte worth of SQLite files on disk that needed to be migrated. During a [feasibility study](https://docs.google.com/document/d/1N7x44EX_qrLpsbIQ7uIGd1Q1nNZ_u--bNLUV0z5NZH8/edit?usp=sharing) a few weeks prior, we found that the migration would take a bit over twelve hours when run on a moderately-sized GCP compute node -- not something that we could comfortably monitor within a single engineering shift.
 
 I tend to rely heavily on experimentation and refactoring in order to develop a solid understanding of _what_ I'm actually trying to produce. For most of my day-job work, I will write a feature _to completion_ on a private experimental branch, then cut the changes up into smaller, more digestible chunks for peer review. I don't know how common this workflow is, but it works for me personally and allows me to hit a productivity and confidence sweet spot for work that necessarily spans multiple pull requests.
 
@@ -54,7 +54,7 @@ Looking at the other graph for the CloudSQL instance, we clearly had a problem w
 
 This graphs clearly identify the problem as being squarely in the inefficient-query bug space, but it still it took about two hours of chasing red herrings in a panicked state to find the root cause.
 
-I turns out that I had inadvertently created the new tables [without any indexes](https://github.com/sourcegraph/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
+I turns out that I had inadvertently created the new tables [without any indexes](https://github.com/efritz/sourcegraph/blob/9b0edb75ffda680a587bffa4e00ff5e6c41a90e7/migrations/codeintel/1000000001_init.up.sql).
 
 In my experimental branch, I was toying with the idea of using [postgres_fdw](https://about.gitlab.com/handbook/engineering/development/enablement/database/doc/fdw-sharding.html) to shard data across multiple code intelligence databases. We decided to punt on this feature for the time being, at which point I copied the _simple_ version of the schema without foreign partitions into a PR for review.
 
@@ -107,7 +107,7 @@ Time: 216613.982 ms (03:36.614)
 
 Temporarily bumping the `temp_file_limit` from 1G to 20G allowed us to create the remaining indexes. Once this was done, everything was beyond fine -- like there was never an issue at all. The resource graphs above show an immediate drop around 10AM, which is when the new indexes took effect.
 
-I would find out later that the duplicate data in the `lsif_data_metadata` was not actually due to duplicate inserts (as I had originally feared), but due to [write multiplication](https://github.com/sourcegraph/sourcegraph/pull/14536) in the parallelized bulk inserter. Easy fix. The last thing to do is to create another version of the indexes with the uniqueness property and drop the temporary one we made to staunch the bleeding.
+I would find out later that the duplicate data in the `lsif_data_metadata` was not actually due to duplicate inserts (as I had originally feared), but due to [write multiplication](https://github.com/efritz/sourcegraph/commit/1fb9c9a9a67e903e6328c92117964508106bb7f0) in the parallelized bulk inserter. Easy fix. The last thing to do is to create another version of the indexes with the uniqueness property and drop the temporary one we made to staunch the bleeding.
 
 # Lessons Learned
 
