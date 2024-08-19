@@ -579,9 +579,9 @@ img[alt=sourcegraph] {
   border-radius: 0.25rem;
 }
 
-.external-notice {
+.notice {
   margin: 1em 0;
-  padding: 1em 6em;
+  padding: 1em 0em;
   text-align: center;
   border-top: 1px solid;
   border-bottom: 1px solid;

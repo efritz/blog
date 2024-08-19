@@ -8,11 +8,7 @@ showpagemeta = true
 
 Towards the end of my mid-2019 job search, I was down to joining the Google Go team or Sourcegraph. Sourcegraph ultimately won due to cultural factors - the most important of which was the ability to **build 100% in the open**. All documents were public by default. Technical and product RFCs (and later PR/FAQs) were drafted, reviewed, and catalogued in a public Google Drive folder. All product implementation was done in public GitHub repositories.
 
-Today, the `sourcegraph/sourcegraph` repository went private. This is the final cleaving blow, following many other smaller chops, on the culture that made Sourcegraph an attractive place to work. It's a decision for a business from which I resigned, and therefore have no voice. But I still lament the rocky accessability of artifacts showing four years of genuine effort into a product that I loved (and miss the use of daily in my current role). [^1]
-
-[^1]: The original repository seems to have been frozen into `sourcegraph/legacy-sourcegraph` [^2], but I'm opting to bite the bullet now and move references to something completely under my control rather than kick then can down the road by referencing another repository that could suddenly disappear at any time.
-
-[^2]: So apparently they renamed it already.
+Today, the `sourcegraph/sourcegraph` repository went private. This is the final cleaving blow, following many other smaller chops, on the culture that made Sourcegraph an attractive place to work. It's a decision for a business from which I resigned, and therefore have no voice. But I still lament the rocky accessibility of artifacts showing four years of genuine effort into a product that I loved (and miss the use of daily in my current role).
 
 On the bright side, I've cemented my place on the insights leaderboard for the remainder of time.
 
@@ -21,6 +17,10 @@ On the bright side, I've cemented my place on the insights leaderboard for the r
     alt="Contributor leaderboard"
     anchor="insights" >}}
 
+<div class="notice">
+Sourcegraph has made their future development repository private, but it seems they've left a public snapshot available at <a href="https://github.com/sourcegraph/sourcegraph-public-snapshot"><code>sourcegraph/sourcegraph-public-snapshot</code></a> for the time being.
+</div>
+
 ## Keeping references alive
 
 Over my tenure at Sourcegraph I've done [a fair bit of writing](/tags/sourcegraph/) for the engineering blog, which I've inlined into this website for stable reference. It's interesting to see what people are trying to build and, for an engineer, how they're trying to build it. Much of my writing used links into relevant public code as a reference.
@@ -28,6 +28,10 @@ Over my tenure at Sourcegraph I've done [a fair bit of writing](/tags/sourcegrap
 All of these links are now broken.
 
 There's a common saying that [cool URIs don't change](https://www.w3.org/Provider/Style/URI). In a related sense, I have the hot take that _cool articles don't suddenly start rotting links_. I'm going to break at least **one** of these best practices, and I can't do anything about the first one. So I'll attempt to preserve as much information in this writing as possible by moving these links into a repository under my influence.
+
+<div class="notice">
+I'm opting to bite the bullet now and move references to something completely under my control rather than kick then can down the road by referencing another repository that _could_ suddenly disappear at any time. 
+</div>
 
 I had a feeling this would be a risk a while ago, so I had forked `sourcegraph/sourcegraph` into [`efritz/sourcegraph`](https://github.com/efritz/sourcegraph) in preparation. Given the fork, it should be easy enough job to do a global find-and-replace of one repository name with another at this point and mission accomplished, right?
 
