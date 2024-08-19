@@ -7,6 +7,7 @@ import (
 	"net/http"
 	stdurl "net/url"
 	"os"
+	"slices"
 	"sort"
 	"strings"
 	"sync"
@@ -28,12 +29,8 @@ func main() {
 }
 
 func mainErr(ctx context.Context) error {
-	externalURLs, err := collectExternalURLs(ctx, rootURL)
-	if err != nil {
-		return err
-	}
-
-	errors := collectDeadExternalURLs(ctx, externalURLs)
+	externalURLs, errors := collectExternalURLs(ctx, rootURL)
+	errors = append(errors, collectDeadExternalURLs(ctx, externalURLs)...)
 
 	if len(errors) > 0 {
 		var messages []string
@@ -48,18 +45,25 @@ func mainErr(ctx context.Context) error {
 	return nil
 }
 
-func collectExternalURLs(ctx context.Context, rootURL string) ([]string, error) {
+func collectExternalURLs(ctx context.Context, rootURL string) ([]string, []error) {
+	var errors []error
+	externalURLs := map[string]struct{}{}
+
 	visited := map[string]struct{}{}
 	var frontier []string
 	frontier = append(frontier, rootURL)
 
-	externalURLs := map[string]struct{}{}
-
 	for len(frontier) > 0 {
-		url := canonicalizeHref(frontier[0])
+		href := frontier[0]
 		frontier = frontier[1:]
 
-		if _, ok := visited[url]; url == "" || ok {
+		url, ok := canonicalizeHref(href)
+		if !ok {
+			errors = append(errors, fmt.Errorf("unexpected href: %q", href))
+			continue
+		}
+
+		if _, ok := visited[url]; ok || url == "" {
 			continue
 		}
 		visited[url] = struct{}{}
@@ -69,11 +73,11 @@ func collectExternalURLs(ctx context.Context, rootURL string) ([]string, error) 
 			continue
 		}
 
-		hrefs, err := visitURLAndExtractHrefs(ctx, url)
-		if err != nil {
-			return nil, fmt.Errorf("broken internal link: %s", err)
+		if hrefs, err := visitURLAndExtractHrefs(ctx, url); err != nil {
+			errors = append(errors, fmt.Errorf("broken internal link: %s", err))
+		} else {
+			frontier = append(frontier, hrefs...)
 		}
-		frontier = append(frontier, hrefs...)
 	}
 
 	var urls []string
@@ -82,7 +86,7 @@ func collectExternalURLs(ctx context.Context, rootURL string) ([]string, error) 
 	}
 	sort.Strings(urls)
 
-	return urls, nil
+	return urls, errors
 }
 
 func collectDeadExternalURLs(ctx context.Context, externalURLs []string) []error {
@@ -131,7 +135,13 @@ func visitURLAndExtractHrefs(ctx context.Context, url string) (hrefs []string, _
 func visitURL(ctx context.Context, url string, f func(io.Reader) error) error {
 	fmt.Printf("Reading %q...\n", url)
 
-	resp, err := http.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request for %q: %s", url, err)
+	}
+	req = req.WithContext(ctx)
+
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("failed to get %q: %s", url, err)
 	}
@@ -168,19 +178,31 @@ func extractHrefs(r io.Reader) (hrefs []string, _ error) {
 	return hrefs, nil
 }
 
-func canonicalizeHref(href string) string {
-	parsedURL, _ := stdurl.Parse(href)
-	if parsedURL.Scheme == "" {
-		parsedURL, _ = stdurl.Parse(baseURL + href)
+var ignoredHrefs = []string{
+	"javascript:void(0);",
+	"mailto:eric@eric-fritz.com",
+}
+
+func canonicalizeHref(href string) (string, bool) {
+	if href == "" || href[0] == '#' || slices.Contains(ignoredHrefs, href) {
+		return "", true
 	}
 
-	if parsedURL.Scheme != "https" {
-		return ""
+	if href != "" && href[0] == '/' {
+		href = baseURL + href
+	}
+	parsedURL, err := stdurl.Parse(href)
+	if err != nil {
+		return "", false
+	}
+
+	if parsedURL.Scheme != "http" && parsedURL.Scheme != "https" {
+		return "", false
 	}
 
 	parsedURL.Fragment = ""
 	parsedURL.RawQuery = ""
 	parsedURL.Path = strings.TrimSuffix(parsedURL.Path, "/")
 
-	return parsedURL.String()
+	return parsedURL.String(), true
 }
