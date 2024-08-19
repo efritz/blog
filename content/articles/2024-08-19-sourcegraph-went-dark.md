@@ -8,7 +8,9 @@ showpagemeta = true
 
 Towards the end of my mid-2019 job search, I was down to joining the Google Go team or Sourcegraph. Sourcegraph ultimately won due to cultural factors - the most important of which was the ability to **build 100% in the open**. All documents were public by default. Technical and product RFCs (and later PR/FAQs) were drafted, reviewed, and catalogued in a public Google Drive folder. All product implementation was done in public GitHub repositories.
 
-Today, the `sourcegraph/sourcegraph` repository went private. This is the final cleaving blow, following many other smaller chops, on the culture that made Sourcegraph an attractive place to work. It's a decision for a business from which I resigned, and therefore have no voice. But I still lament the loss of accessible artifacts showing four years of genuine effort into a product that I loved (and miss the use of daily in my current role).
+Today, the `sourcegraph/sourcegraph` repository went private. This is the final cleaving blow, following many other smaller chops, on the culture that made Sourcegraph an attractive place to work. It's a decision for a business from which I resigned, and therefore have no voice. But I still lament the rocky accessability of artifacts showing four years of genuine effort into a product that I loved (and miss the use of daily in my current role). [^1]
+
+[^1]: The original repository seems to have been frozen into `sourcegraph/sourcegraph-legacy`, but I'm opting to bite the bullet now and move references to something completely under my control rather than kick then can down the road by referencing another repository that could suddenly disappear at any time.
 
 On the bright side, I've cemented my place on the insights leaderboard for the remainder of time.
 
