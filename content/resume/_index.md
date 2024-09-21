@@ -14,7 +14,21 @@ A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is a
     meta="From 2023"
     >}}
 
-The Datastores team enables managed Postgres and Redis databases balancing power, flexibility, and ease of use for end users. Currently, my efforts are focused on reducing compute and storage costs for hosting as well as increasing intelligent observability of database usage and performance to aid developers in self-serving optimization of their own applications.
+Render is building a powerful, easy-to-use cloud platform to host anything online, from simple static sites to complex applications with dozens of microservices. I'm an engineer on the Datastores team, which delivers managed Postgres and Redis databases. My team is focused on building powerful, flexible tools that scale with our customers' needs with little effort from them. Render's Datastore products provide our customers optimization insights and advanced workflows when it becomes appropriate for them, without having to hire a DBA or operations team.
+
+My impact on the Datastores team (so far) includes:
+
+- **Dynamic configuration**: I introduced a system to apply Postgres configuration dynamically and individually to each user database instance. Previously, all configurations were static, regardless of plan size or usage patterns. Dynamic configuration allows the Postgres process to use the available CPU, memory, and disk resources more intelligently, enabling applications to utilize the instance more fully. Dynamic configuration also provides a foundation for Render employees to set instance-specific specific configuration. Additionally, the Render platform can automatically change configuration based on instance-specific usage.
+
+- **Alert automation**: We strive to completely eliminate alert conditions at their source, but it isn't always possible to ascribe a single solution over a fleet of databases with heterogeneous scale and workloads. Individual databases will sometimes enter conditions that need to be handled reactively (e.g., a user filling up their instance's disk or a WAL segment being dropped prior to replication under heavy and spiking load). To reduce engineering burden, I created a system that automatically responds to alerts triggered in our observability stack. This system leverages dynamic configuration where possible to reduce the occurrence of the same condition for a particular instance.
+
+- **Continuous testing**: Developing managed databases is a tricky business. While Render utilizes unit, integration, and end-to-end tests, it's impossible to exercise the full surface area of features within a CI pipeline. I created **Pulsegres**, a continuous testing framework, that maintains a set of long-lived Postgres instances with non-trivial scale. This system detects behavior-altering code changes that would not be identified using fresh, small end-to-end testing instances, and has reproduced odd behavior with our High-Availability offering before it affected customers on several occasions.
+
+- **Service links**: I led collaboration with product and design teams to develop and roadmap the Service Links project. Previously, users of Render would have to locate connection strings for the databases and manually add environment variables in their web service or cron jobs to connect them. This relationship is effectively _outside of Render's view_. Service links enable seamless, direct connection between compute and database resources on the Render platform. The Render platform now has greater observability about what apps connect to what database, a better view of a user's application topology, and gives a foundation for later finer-grained authorization and access controls.
+
+- **Heroku migrations**: Migrated several high-ARR customers from Heroku to Render, and automated the process to be repeatable with future migrations. The process involved a low-downtime switchover period that minimized the disruption to the customer's application, and opaquely handled a necessary reindexing step that occurs with locale mismatch (as Heroku and Render used different base operating systems). Without reindexing, queries involving an index with a stale locale may fail to retrieve data, which appears as data loss to the user. Reindexing was done intelligently, affecting the minimum number of indexes, and performed as much work as possible in parallel to minimize the time in which the indexes were invalid.
+
+- **Cost optimization**: Saved an estimated $480k in 2024 by optimizing Postgres backups by reducing cross-region data transfer and automating the periodic removal of backup data that was no longer necessary to retain.
 
 {{< /content >}}
 
@@ -23,7 +37,7 @@ The Datastores team enables managed Postgres and Redis databases balancing power
     meta="2019 to 2023"
     >}}
 
-I was a staff-level software engineer leading the Language Platform Tea (a subteam of Code Intelligence). Our team worked to provide fast and precise code intelligence to power code navigation operations such as cross-repository go-to-definition and global find-references. Most recently, we were expanding our scope to usefully provide precise code intelligence data to other product teams at Sourcegraph.
+I was a staff-level software engineer leading the Language Platform Team (a subteam of Code Intelligence). Our team worked to provide fast and precise code intelligence to power code navigation operations such as cross-repository go-to-definition and global find-references. Most recently, we were expanding our scope to usefully provide precise code intelligence data to other product teams at Sourcegraph.
 
 My goals for the platform revolved around increasing adoption of precise code intelligence by supporting an increasing number of languages, build systems, and project configurations in our [auto-indexing infrastructure](https://sourcegraph.com/docs/code_navigation/explanations/auto_indexing); and pivoting the current persistence and API structure from [LSIF](https://lsif.dev/) to [SCIP](https://scip.dev/), a code intelligence index format that we developed in early 2022 that unlocks the next generation of code intelligence features.
 
