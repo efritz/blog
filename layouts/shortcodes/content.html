@@ -1,11 +1,16 @@
 <article>
   <div class="row">
-    <div class="left">{{ .Get "meta" }}</div>
-
-    <div class="right">
+    <div class="left">
       <h4 {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>{{ .Get "title" | markdownify }}</h4>
+      {{ if .Get "sub" }}
+        <div class="sub muted">{{ .Get "sub" | markdownify }}</div>
+      {{ end }}
+    </div>
+    <div class="right">{{ .Get "meta" }}</div>
 
-      {{ .Inner | markdownify }}
+    <div class="clear">
+      {{ $opts := dict "display" "block" }}
+      {{ .Inner | .Page.RenderString $opts }}
     </div>
   </div>
 </article>

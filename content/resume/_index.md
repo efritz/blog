@@ -5,7 +5,9 @@ index = true
 
 ## Resume
 
-A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
+<div class="notice">
+A more concise <a href="/assets/papers/Fritz%20-%20Resume.pdf">printable version</a> of this resume is also available.
+</div>
 
 ### Work History
 
@@ -54,7 +56,7 @@ I have on occasion ventured from my home team to solve impactful or urgent probl
 {{< /content >}}
 
 {{< content
-    title="Mitel"
+    title="![mitel](/assets/images/logos/mitel.png) Mitel"
     meta="2015 to 2019"
     >}}
 
@@ -92,9 +94,8 @@ Developed an e-commerce and supply chain web application which streamline intera
 {{< content
     title="Ph.D. Computer Science"
     meta="2014 to 2018"
+    sub="University of Wisconsin - Milwaukee"
     >}}
-
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](https://uwm.edu/engineering/people/boyland-john/).
 
@@ -105,9 +106,8 @@ Abstract: _Program transformations that are able to rely on the presence of cano
 {{< content
     title="MS Computer Science"
     meta="2011 to 2013"
+    sub="University of Wisconsin &ndash; Milwaukee"
     >}}
-
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](https://uwm.edu/engineering/people/cheng-christine/).
 
@@ -120,11 +120,12 @@ RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
 {{< content
     title="BFA Film"
     meta="2007 to 2011"
+    sub="University of Wisconsin – Milwaukee"
     >}}
 
-{{% small %}}University of Wisconsin – Milwaukee{{% /small %}}
-
-I received a Bachelor of Fine Arts in undergrad studying film theory and production.
+<p>
+I received a Bachelor of Fine Arts in undergrad studying film theory and production. 
+</p>
 
 {{< /content >}}
 
@@ -150,16 +151,19 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
 
 {{< legend
     icon="check-square"
-    content="*created*: designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
+    title="created"
+    description="designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
     >}}
 
 {{< legend
     icon="square"
-    content="*instructed*: re-designed the coursework and lectures of an existing course"
+    title="instructed"
+    description="re-designed the coursework and lectures of an existing course"
     >}}
 
 {{< legend
     icon="square-o"
-    content="*assisted*: instructed labs, graded student work, prepared assignments"
+    title="assisted"
+    description="instructed labs, graded student work, prepared assignments"
     >}}
 {{< /content >}}

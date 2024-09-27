@@ -1,4 +1,4 @@
-<p class="small">
+<p class="legend muted">
   <i class="fa fa-{{ .Get "icon" }} class-legend"></i>
-  {{ .Get "content" | markdownify }}
+  <em>{{ .Get "title"  }}</em> : {{ .Get "description" | markdownify }}
 </p>

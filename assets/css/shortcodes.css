@@ -58,6 +58,10 @@ figure {
   margin-top: 5px;
 }
 
+.legend {
+  margin: 0;
+}
+
 /* Attachments
  * --------------------------------------------*/
 

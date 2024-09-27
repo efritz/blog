@@ -18,13 +18,9 @@
             <h2>Articles</h2>
 
             {{ range .Paginator.Pages.GroupByDate "2006" }}
-              <section class="article-group">
-                <div class="key">{{ .Key }}</div>
-
-                {{ range .Pages }}
-                  {{ .Render "li" }}
-                {{ end }}
-              </section>
+              {{ range .Pages }}
+                {{ .Render "li" }}
+              {{ end }}
             {{ end }}
           {{ else }}
             <h2>Articles about {{ .Title }}</h2>

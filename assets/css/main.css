@@ -8,7 +8,7 @@ html {
 body {
   line-height: 1.5em;
   color: rgba(0, 0, 0, 0.87);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   font-style: normal;
   font-family: 'Lato', sans-serif;
@@ -96,12 +96,6 @@ img {
   max-width: 100%;
 }
 
-.date {
-  margin: .8em 0;
-  font-size: 0.75em;
-  color: #999;
-}
-
 .footnotes {
   font-size: 0.75em;
   margin: 0 auto;
@@ -145,20 +139,17 @@ main {
 }
 
 .row .left {
-  width: 80px;
-  float: left;
-  text-align: right;
-  font-size: 0.75em;
-  color: #999;
-  vertical-align: top;
-  padding-top: .75em;
+  display: block;
 }
 
 .row .right {
-  display: block;
-  padding-left: 20px;
-  float: left;
-  width: calc(100% - 100px);
+  text-align: right;
+  color: #999;
+  margin: .5em 0;
+}
+
+.row .clear {
+  clear: both;
 }
 
 .article-header {
@@ -179,8 +170,6 @@ main {
 .left     { float: left;  }
 .right    { float: right; }
 .center   { text-align: center }
-.small    { font-size: 0.75em; }
-.squished { line-height: 80%; }
 
 /* Code
 * --------------------------------------------*/
@@ -416,15 +405,17 @@ html, body {
   .row .left {
     display: block;
     float: none;
-    text-align: left;
-    margin-bottom: -10px;
+    padding-right: inherit;
+    width: 100%;
   }
 
   .row .right {
     display: block;
     float: none;
-    padding-left: inherit;
-    width: 100%;
+    text-align: left;
+    margin: 0;
+    margin-top: -12.5px;
+    margin-bottom: 12.5 px;
   }
 
   pre {
@@ -541,10 +532,12 @@ html, body {
 * --------------------------------------------*/
 
 img[alt=render],
-img[alt=sourcegraph] {
+img[alt=sourcegraph],
+img[alt=mitel] {
   width: 20px;
   height: 20px;
-  padding-right: 5px;
+  margin-right: 5px;
+  margin-bottom: 2.5px;
   vertical-align: middle;
 }
 
@@ -589,5 +582,14 @@ img[alt=sourcegraph] {
 }
 
 .mirror a {
+  color: #999;
+}
+
+.sub {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.muted {
   color: #999;
 }

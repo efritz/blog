@@ -6,7 +6,9 @@ tags = []
 showpagemeta = true
 +++
 
-{{% small %}}To skip the fluff and get to the good stuff, see one of the sample configuration links in the [TL;DR](#sample-configurations).{{% /small %}}
+<div class="notice">
+To skip the fluff and get to the good stuff, see one of the sample configuration links in the <a href="#sample-configurations">TL;DR</a>.
+</div>
 
 Charon, as described in the [whitepaper](/papers#charon), is a cooperative system to enforce limits on behalf of users. For example, an HTTP API request can immediately return an [HTTP 429](https://httpstatuses.com/429) if the limiting system has a large number of recent requests from that user in its history. Although the request has already made it to the system, it can save an expensive database operation which is most certainly a more precious resource than front-end server cycles.
 
