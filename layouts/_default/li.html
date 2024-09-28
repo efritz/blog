@@ -1,10 +1,6 @@
 <article>
   <div class="row">
-    <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="left">
-      {{ .Date.Format .Site.Params.dateformat }}
-    </time>
-
-    <div class="right">
+    <div class="left">
       <h4>
         {{ if .Params.Icon }}
           <i class="fa fa-{{ .Params.Icon }} class-icon li-icon"></i>
@@ -12,7 +8,7 @@
 
         {{ if .Params.Mirror }}
           <span class="mirror">
-            <a href="/articles/{{ .Params.Mirror }}">{{ .Title }} <span class="small">(original date)</span></a>
+            <a href="/articles/{{ .Params.Mirror }}">{{ .Title }} (original date)</a>
           </span>
         {{ else if and (.Params.External) (not .Params.Slug) }}
           <a href="{{ .Params.External }}">{{ .Title }} <i class="fa fa-external-link external-link"></i></a>
@@ -21,5 +17,9 @@
         {{ end }}
       </h4>
     </div>
+
+    <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="right">
+      {{ .Date.Format .Site.Params.dateformat }}
+    </time>
   </div>
 </article>

@@ -1,9 +1,9 @@
 <header class="article-header">
   <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
 
-  <div class="float-container small">
+  <div class="float-container">
     <div class="left">
-      <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}">
+      <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="muted">
         {{ .Date.Format .Site.Params.dateformat }}
       </time>
     </div>

@@ -5,7 +5,9 @@ index = true
 
 ## Resume
 
-A [printable version](/assets/papers/Fritz%20-%20Resume.pdf) of this resume is also available.
+<div class="notice">
+A more concise <a href="/assets/papers/Fritz%20-%20Resume.pdf">printable version</a> of this resume is also available.
+</div>
 
 ### Work History
 
@@ -54,7 +56,7 @@ I have on occasion ventured from my home team to solve impactful or urgent probl
 {{< /content >}}
 
 {{< content
-    title="Mitel"
+    title="![mitel](/assets/images/logos/mitel.png) Mitel"
     meta="2015 to 2019"
     >}}
 
@@ -77,6 +79,7 @@ I was the primary author the following infrastructure and developer experience p
 {{< lightbox src="/images/resume/deposition-products.png" anchor="deposition" >}}
 
 - **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
+
 {{< /content >}}
 
 {{< content
@@ -85,6 +88,7 @@ I was the primary author the following infrastructure and developer experience p
     >}}
 
 Developed an e-commerce and supply chain web application which streamline interactions between jewelry consumers, retailers, and suppliers. Major projects include a consumer-facing jewelry collection showcase and a retail (brick-and-mortar) location management system. Primary technologies include ASP.NET MVC using C# and MSSQL.
+
 {{< /content >}}
 
 ### Education
@@ -92,9 +96,8 @@ Developed an e-commerce and supply chain web application which streamline intera
 {{< content
     title="Ph.D. Computer Science"
     meta="2014 to 2018"
+    sub="University of Wisconsin - Milwaukee"
     >}}
-
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My dissertation, [Waddle - Always-Canonical Intermediate Representation](/papers#dissertation), was supervised by [John Boyland](https://uwm.edu/engineering/people/boyland-john/).
 
@@ -105,9 +108,8 @@ Abstract: _Program transformations that are able to rely on the presence of cano
 {{< content
     title="MS Computer Science"
     meta="2011 to 2013"
+    sub="University of Wisconsin &ndash; Milwaukee"
     >}}
-
-{{% small %}}University of Wisconsin &ndash; Milwaukee{{% /small %}}
 
 My thesis, *Optimizing the RedPrairie Distance Cache*, was supervised by [Christine Cheng](https://uwm.edu/engineering/people/cheng-christine/).
 
@@ -120,11 +122,12 @@ RedPrairie was acquired by [JDA Software Group, Inc](https://jda.com) in 2012.
 {{< content
     title="BFA Film"
     meta="2007 to 2011"
+    sub="University of Wisconsin – Milwaukee"
     >}}
 
-{{% small %}}University of Wisconsin – Milwaukee{{% /small %}}
-
-I received a Bachelor of Fine Arts in undergrad studying film theory and production.
+<p>
+I received a Bachelor of Fine Arts in undergrad studying film theory and production. 
+</p>
 
 {{< /content >}}
 
@@ -135,6 +138,7 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
     meta="2011 to 2016"
     >}}
 
+{{% div class="legend-table" %}}
 - {{% icon "check-square resume-icon" %}} CompSci **658 / 790** -- iOS Programming
 - {{% icon "check-square resume-icon" %}} CompSci **482**       -- Server-side Internet Programming
 - {{% icon "check-square resume-icon" %}} CompSci **481**       -- Rich Internet Applications
@@ -147,19 +151,24 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
 - {{% icon "square-o     resume-icon" %}} CompSci **315**       -- Assembly Language Programming
 - {{% icon "square-o     resume-icon" %}} CompSci **201**       -- Introduction to Computer Programming
 - {{% icon "square-o     resume-icon" %}} CompSci **150**       -- Survey of Computer Science
+{{% /div %}}
 
-{{< legend
-    icon="check-square"
-    content="*created*: designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
-    >}}
+<div class="legend muted">
+    <div class="legend-row">
+        <span>{{% icon "check-square" %}}</span>
+        <span><strong>created</strong></span>
+        <span>designed pilot course the first semester this course was offered</span>
+    </div>
+    <div class="legend-row">
+        <span>{{% icon "square" %}}</span>
+        <span><strong>instructed</strong></span>
+        <span>re-designed the coursework and lectures of an existing course</span>
+    </div>
+    <div class="legend-row">
+        <span>{{% icon "square-o" %}}</span>
+        <span><strong>assisted</strong></span>
+        <span>instructed labs, graded student work, prepared assignments</span>
+    </div>
+</div>
 
-{{< legend
-    icon="square"
-    content="*instructed*: re-designed the coursework and lectures of an existing course"
-    >}}
-
-{{< legend
-    icon="square-o"
-    content="*assisted*: instructed labs, graded student work, prepared assignments"
-    >}}
 {{< /content >}}
