@@ -79,6 +79,7 @@ I was the primary author the following infrastructure and developer experience p
 {{< lightbox src="/images/resume/deposition-products.png" anchor="deposition" >}}
 
 - **Domo** is an S3-aware HTTP proxy layer in front of Ceph Object Store which allows for automatic, instantaneous failover to a remote data center when the local Ceph cluster is slow or unresponsive. The server synchronizes clusters across data centers on write requests so that a write to any data center will (eventually) become globally consistent.
+
 {{< /content >}}
 
 {{< content
@@ -87,6 +88,7 @@ I was the primary author the following infrastructure and developer experience p
     >}}
 
 Developed an e-commerce and supply chain web application which streamline interactions between jewelry consumers, retailers, and suppliers. Major projects include a consumer-facing jewelry collection showcase and a retail (brick-and-mortar) location management system. Primary technologies include ASP.NET MVC using C# and MSSQL.
+
 {{< /content >}}
 
 ### Education
@@ -136,6 +138,7 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
     meta="2011 to 2016"
     >}}
 
+{{% div class="legend-table" %}}
 - {{% icon "check-square resume-icon" %}} CompSci **658 / 790** -- iOS Programming
 - {{% icon "check-square resume-icon" %}} CompSci **482**       -- Server-side Internet Programming
 - {{% icon "check-square resume-icon" %}} CompSci **481**       -- Rich Internet Applications
@@ -148,22 +151,24 @@ I received a Bachelor of Fine Arts in undergrad studying film theory and product
 - {{% icon "square-o     resume-icon" %}} CompSci **315**       -- Assembly Language Programming
 - {{% icon "square-o     resume-icon" %}} CompSci **201**       -- Introduction to Computer Programming
 - {{% icon "square-o     resume-icon" %}} CompSci **150**       -- Survey of Computer Science
+{{% /div %}}
 
-{{< legend
-    icon="check-square"
-    title="created"
-    description="designed the syllabus, focus, coursework, and lectures the first semester this course was offered"
-    >}}
+<div class="legend muted">
+    <div class="legend-row">
+        <span>{{% icon "check-square" %}}</span>
+        <span><strong>created</strong></span>
+        <span>designed pilot course the first semester this course was offered</span>
+    </div>
+    <div class="legend-row">
+        <span>{{% icon "square" %}}</span>
+        <span><strong>instructed</strong></span>
+        <span>re-designed the coursework and lectures of an existing course</span>
+    </div>
+    <div class="legend-row">
+        <span>{{% icon "square-o" %}}</span>
+        <span><strong>assisted</strong></span>
+        <span>instructed labs, graded student work, prepared assignments</span>
+    </div>
+</div>
 
-{{< legend
-    icon="square"
-    title="instructed"
-    description="re-designed the coursework and lectures of an existing course"
-    >}}
-
-{{< legend
-    icon="square-o"
-    title="assisted"
-    description="instructed labs, graded student work, prepared assignments"
-    >}}
 {{< /content >}}

@@ -17,18 +17,20 @@
           {{ if eq .Title "Articles" }}
             <h2>Articles</h2>
 
-            {{ range .Paginator.Pages.GroupByDate "2006" }}
-              {{ range .Pages }}
+            <div class="articles">
+              {{ range .Paginator.Pages.GroupByDate "2006" }}
+                {{ range .Pages }}
+                  {{ .Render "li" }}
+                {{ end }}
+              {{ end }}
+            {{ else }}
+              <h2>Articles about {{ .Title }}</h2>
+
+              {{ range .Paginator.Pages }}
                 {{ .Render "li" }}
               {{ end }}
             {{ end }}
-          {{ else }}
-            <h2>Articles about {{ .Title }}</h2>
-
-            {{ range .Paginator.Pages }}
-              {{ .Render "li" }}
-            {{ end }}
-          {{ end }}
+          </div>
         {{ end }}
       </div>
 

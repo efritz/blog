@@ -48,18 +48,42 @@ figure {
 /* Resume
  * --------------------------------------------*/
 
-.class-legend,
+.legend-table ul {
+  list-style-type: none;
+}
+
 .class-icon {
   color: #2a7ae2;
 }
 
 .resume-icon {
-  float: right;
-  margin-top: 5px;
+  /* float: right;
+  margin-top: 5px; */
+  margin-right: 5px;
 }
 
 .legend {
   margin: 0;
+}
+
+.legend-row span:nth-child(1) {
+  display: inline-block;
+  width: 20px;
+}
+
+.legend-row span:nth-child(2) {
+  display: inline-block;
+}
+
+.legend-row span:nth-child(2)::after {
+  content: '-';
+  padding-left: 5px;
+}
+
+@media (max-width: 640px) {
+  .legend-row span:nth-child(3) {
+    display: block;
+  }
 }
 
 /* Attachments

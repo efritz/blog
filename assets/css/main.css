@@ -377,7 +377,7 @@ html, body {
     padding-right: 20px;
   }
 
-  main p {
+  main {
     text-align: left;
   }
 
@@ -592,4 +592,8 @@ img[alt=mitel] {
 
 .muted {
   color: #999;
+}
+
+.articles article:hover {
+  background-color: #dbeaf0;
 }
