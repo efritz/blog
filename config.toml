@@ -21,22 +21,28 @@ paginate = 1000
 [params]
   author = 'Eric Fritz'
   dateformat = '01.02.2006'
-  index_page = '/articles/'
+  index_page = '/'
 
 [params.social]
   email = 'eric@eric-fritz.com'
   github = 'efritz'
 
 [[menu.main]]
+  name = 'about'
+  identifier = 'about'
+  weight = 100
+  url = '/'
+
+[[menu.main]]
   name = 'articles'
   identifier = 'articles'
-  weight = 100
+  weight = 200
   url = '/articles/'
 
 [[menu.main]]
   name = 'papers'
   identifier = 'papers'
-  weight = 200
+  weight = 300
   url = '/papers/'
 
 [[menu.main]]
@@ -44,3 +50,9 @@ paginate = 1000
   identifier = 'resume'
   weight = 400
   url = '/resume/'
+
+[[menu.main]]
+  name = 'consulting'
+  identifier = 'consulting'
+  weight = 500
+  url = '/consulting/'
