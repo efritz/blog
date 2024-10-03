@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+}
+
+#controls {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#numDots {
+    width: 60px;
+    margin-right: 10px;
+}
+
+#canvasContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.canvasWrapper {
+    width: 32%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+canvas {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
