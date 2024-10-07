@@ -199,17 +199,11 @@ code {
 }
 
 .highlight {
-  margin: 0 0 0 -35px;
   border-top: 2px solid #f0f2f3;
   border-bottom: 2px solid #f0f2f3;
 
   font-family: "Source Code Pro", monospace;
-  padding: 3px;
   font-size: .9em;
-}
-
-.highlight > div {
-  margin: 0 25px;
 }
 
 .highlight > pre {
