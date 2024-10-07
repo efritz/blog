@@ -98,6 +98,9 @@ img {
 
 .footnotes {
   font-size: 0.75em;
+}
+
+.footnotes p {
   margin: 0 auto;
 }
 
