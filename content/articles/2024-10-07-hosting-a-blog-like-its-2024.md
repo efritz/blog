@@ -287,7 +287,7 @@ And this minimal config comes with a killer feature that my previous stack lacke
 
 Previously, if I wanted to share a sneak-peek of content to some audience before publication, I would have to send them a link to the raw markdown file. Or, more presumptively, ask them to build and run the entire site locally. With pull request previews, I get a unique `.onrender.com` URL resolvable by anyone that I can send out for feedback within a minute of pushing to my repository.
 
-{{< lightbox src="/images/static-sites/prs.png" anchor="Automatic preview environments for PRs" >}}
+{{< lightbox src="/images/static-sites/preview.png" anchor="Automatic preview environments for PRs" >}}
 
 My over-exuberance for hard-coding the `eric-fritz.com` domain name into asset paths caused a small snag. This meant that although the _content_ would be built into the preview, it would still try to pull images and stylesheets from whatever the live version was hosting. This would cause new images to break and changes to styling to be omitted from the rendered preview. Thankfully, this was an easy fix with a small amendment to the build script:
 
