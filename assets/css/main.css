@@ -591,6 +591,10 @@ img[alt=mitel] {
   color: #999;
 }
 
+.articles article {
+  padding: 0 10px;
+}
+
 .articles article:hover {
   background-color: #dbeaf0;
 }

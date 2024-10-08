@@ -26,9 +26,11 @@
             {{ else }}
               <h2>Articles about {{ .Title }}</h2>
 
-              {{ range .Paginator.Pages }}
-                {{ .Render "li" }}
-              {{ end }}
+              <div class="articles">
+                {{ range .Paginator.Pages }}
+                  {{ .Render "li" }}
+                {{ end }}
+              </div>
             {{ end }}
           </div>
         {{ end }}
