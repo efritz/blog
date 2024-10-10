@@ -1,7 +1,7 @@
 +++
 title = "Schema Design - Part 3: NoSQL"
 slug = "schema-design-nosql"
-date = "2020-01-02T00:00:00-00:00"
+date = "2024-10-08T00:00:00-00:00"
 tags = ["schema-design", "nosql"]
 showpagemeta = true
 +++
@@ -40,13 +40,13 @@ The following is a small set of sample data of the Manhunt DynamoDB table. It de
 
 In each row of this visualization there is an emphasized **field name** along with the `value`. The field name is how the value is interpreted once it comes back from the database, despite being stored by the generic keys `PK`, `SK`, `GSI1PK`, etc. Notice that the meanings of these values are overloaded for the same column in different rows: the partition key value for row 1 is a search identifier, but in row 2 it is a contact identifier instead. Assigning application-specific meaning to these columns on a row-by-row basis is the trick for fitting your application data into a single table.
 
-{{< lightbox src="/images/manhunt-schema.png" anchor="manhunt-schema" >}}
+{{< lightbox src="/images/schema-design/manhunt-schema.png" anchor="manhunt-schema" >}}
 
 This table shows four kinds of entities: *contact* (rows 5 and 6), *contactMethod* (rows 2, 3, and 7), *search* (rows 9 and 10), and *searchAttempt* (rows 1, 4, and 8). Additional fields for each entity are not shown for brevity. A contact method row has additional un-indexed fields to denote the contact method type, the destination, the number of seconds to wait for attempting to use this method, and a enabled/disabled flag. A search row has additional un-indexed fields for the search metadata and data about the search's resolution or cancellation. A search attempt row has additional un-indexed fields for the denormalized contact method data used for the attempt, the timestamp of the attempt, and whether/how the user responded.
 
 Additionally, each row has an `entityType` field (omitted here) that holds the name of the entity the row represents. This is used to ensure application consistency on queries so that a 404 can be returned when requesting a search with the id of a contact entity, instead of failing to deserialize the row into an incompatible struct. This is not strictly necessary, but is a low-cost solution to making API endpoints a bit more ergonomic in these edge cases.
 
-{{< lightbox src="/images/manhunt-schema-relations.png" anchor="manhunt-schema-relations" >}}
+{{< lightbox src="/images/schema-design/manhunt-schema-relations.png" anchor="manhunt-schema-relations" >}}
 
 Each row has a very limited number of *slots* to put values by which the row can be queried. In order to discuss which values were chosen, let's take a deeper look into row 10, along with a few of the rows that share the same field and value pairs. Row 10 represents a search entity for the contact represented by row 5. Rows 1 and 4 represent an attempt of the search.
 

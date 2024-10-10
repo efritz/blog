@@ -1,7 +1,7 @@
 +++
 title = "Schema Design - Part 1: Trigger-based SQL"
 slug = "schema-design-sql"
-date = "2020-01-02T00:00:00-00:00"
+date = "2024-10-08T00:00:00-00:00"
 tags = ["schema-design", "sql"]
 showpagemeta = true
 +++
@@ -17,7 +17,7 @@ TODO
 [earlier post](https://eric-fritz.com/articles/easy-peasy-sql-audit-tables/)
 
 
-{{< lightbox src="/images/deposition-schema.png" anchor="deposition-schema" >}}
+{{< lightbox src="/images/schema-design/deposition-schema.png" anchor="deposition-schema" >}}
 
 TODO - After insert, update, delete on builds:
 
