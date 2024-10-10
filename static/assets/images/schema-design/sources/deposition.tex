@@ -1,0 +1,142 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{calc,positioning,shapes.multipart,shapes}   
+
+\definecolor{cA}{HTML}{646FA9}
+\definecolor{cB}{HTML}{49A9B4}
+\definecolor{cC}{HTML}{6BCD69}
+\definecolor{cD}{HTML}{9B9C78}
+\definecolor{cE}{HTML}{CBA18C}
+\definecolor{cF}{HTML}{C4737C}
+\definecolor{cG}{HTML}{DBDBDB}
+\definecolor{cX}{HTML}{6A0DAD}
+
+\begin{document}
+\tikzset{basic/.style={
+  draw,
+  rectangle split,
+  rectangle split parts=2,
+  minimum width=8cm,
+  text width=7cm,
+  align=left,
+  font=\ttfamily
+  }
+}      
+\begin{tikzpicture}
+  \node[basic, rectangle split part fill={cA,white}] (products) {
+    products
+
+    \nodepart{second}
+    name: char \hfill PK \\
+    team\_id: integer \hfill PK \\
+    %
+    \color{cX}
+    active: boolean \\
+    active\_flagged: boolean \\
+    deploy\_flagged: boolean \\
+    deployed: boolean \\
+    flagged: boolean
+  };
+
+  \node[basic,rectangle split part fill={cB,white},below=2cm of products] (builds) {
+    builds
+
+    \nodepart{second}
+    version: char \hfill PK \\
+    build\_token: char \hfill PK \\
+    \color{cA}
+    product\_name: char \hfill PK \\
+    product\_team\_id: integer \hfill PK \\
+    \color{black}
+    phantom: boolean \\
+    build\_datetime: timestamp \\
+    triggered\_by\_user\_id: integer \\
+    %
+    \color{cX}
+    active: boolean \\
+    deployed: boolean \\
+    flagged: boolean \\
+    last\_deploy\_datetime: timestamp
+  };
+    
+  \node[basic,rectangle split part fill={cE,white},below=2cm of builds] (build_deployments) {
+    build\_deployments
+
+    \nodepart{second}
+    deployment\_token: char \hfill PK \\
+    deploy\_datetime: timestamp \\
+    \color{cB}
+    build\_version: char \\
+    build\_token: char \\
+    build\_product\_name: char \\
+    build\_team\_id: integer \\
+    \color{black}
+    triggered\_by\_user\_id: integer
+  };
+    
+  \node[basic,rectangle split part fill={cF,white},right=2cm of builds] (build_dependency_versions) {
+    build\_dependency\_versions
+
+    \nodepart{second}
+    \color{cB}
+    build\_version: char \hfill PK \\
+    build\_token: char \hfill PK \\
+    build\_product\_name: char \hfill PK \\
+    build\_team\_id: integer \hfill PK \\
+    \color{cD}
+    dependency\_version\_version: char \hfill PK \\
+    dependency\_version\_name: char \hfill PK \\
+    dependency\_version\_source: char \hfill PK
+  };
+  
+  \node[basic,rectangle split part fill={cD,white},right=2cm of build_dependency_versions] (dependency_versions) {
+    dependency\_versions
+
+    \nodepart{second}
+    version: char \hfill PK \\
+    \color{cC}
+    dependency\_name: char \hfill PK \\
+    dependency\_source: char \hfill PK \\
+    \color{black}
+    lookup\_hash: char
+  };
+
+  \node[basic,rectangle split part fill={cC,white},above=2cm of dependency_versions] (dependencies) {
+    dependencies
+
+    \nodepart{second}
+    name: char \hfill PK \\
+    source: char \hfill PK \\
+    lookup\_hash: char \\
+    %
+    \color{cX}
+    flagged: boolean
+  };
+        
+  \node[basic,rectangle split part fill={cG,white},below=2cm of dependency_versions] (dependency_version_flags) {
+    dependency\_version\_flags
+
+    \nodepart{second}
+    depencency\_version\_flag\_id: integer \hfill PK \\
+    description: char \\
+    apply\_globally: boolean \\
+    flag\_datetime: timestamp \\
+    dependency\_version\_flag\_id: integer \\
+    \color{cD}
+    dependency\_version\_version: char \\
+    dependency\_version\_name: char \\
+    dependency\_version\_source: char \\
+    \color{black}
+    team\_id: integer \\
+    reported\_by\_user\_id: integer
+  };
+  
+    
+  \draw[-latex] ([yshift=0pt]$(builds.north)$) -- ([yshift=0pt]$(products.south)$);
+  \draw[-latex] ([yshift=0pt]$(build_deployments.north)$) -- ([yshift=0pt]$(builds.south)$);
+  \draw[-latex] ([yshift=0pt]$(build_dependency_versions.west)$) -- ([yshift=0pt]$(builds.east)$);
+  \draw[-latex] ([yshift=0pt]$(build_dependency_versions.east)$) -- ([yshift=0pt]$(dependency_versions.west)$);
+  \draw[-latex] ([yshift=0pt]$(dependency_version_flags.north)$) -- ([yshift=0pt]$(dependency_versions.south)$);
+  \draw[-latex] ([yshift=0pt]$(dependency_versions.north)$) -- ([yshift=0pt]$(dependencies.south)$);
+\end{tikzpicture}
+\end{document}
