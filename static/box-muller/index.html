@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Box-Muller Transform Visualization</title>
+    <link rel="stylesheet" href="/box-muller/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Box-Muller Transform Visualization</h1>
+        <div class="hint">Click and drag on any chart to visualize how data is related.</div>
+
+        <div id="canvasContainer">
+            <div class="canvasWrapper">
+                <h2 class="chartTitle">Uniform Distribution</h2>
+                <div class="hint">Random cartesian points (U₁, U₂) where U₁,U₂ ∈ [0, 1]</div>
+                <div class="uniform-controls">
+                    <div class="slider-container full-width">
+                        <label for="numDots">Number of points: <span id="numDotsValue">5000</span></label>
+                        <input type="range" id="numDots" min="1" max="10000" value="5000">
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="uniformCanvas"></canvas>
+                </div>
+            </div>
+            <div class="canvasWrapper">
+                <h2 class="chartTitle">Polar Coordinates</h2>
+                <div class="hint">Projection of cartesian points to polar coordinates</div>
+                <div class="polar-controls">
+                    <div class="theta-formula">θ = U₂ * 2π</div>
+                    <div class="dropdown-container">
+                        <label for="rChoice"><span class="legend">r = </span></label>
+                        <select id="rChoice" name="r"></select>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="polarCanvas"></canvas>
+                </div>
+            </div>
+
+            <div class="canvasWrapper" id="distributionWrapper">
+                <h2 class="chartTitle">Value Distribution</h2>
+                <div class="hint">Projection of polar coordinates to scalar values</div>
+                <div class="distribution-controls">
+                    <div class="dropdown-container">
+                        <label for="nChoice"><span class="legend">n = </span></label>
+                        <select id="nChoice" name="n">
+                            <option value="" selected>Select an expression</option>
+                        </select>
+                    </div>
+                    <div id="distributionControls">
+                        <div class="slider-row">
+                            <div class="slider-container">
+                                <label for="mean">Mean (μ): <span id="meanValue">0</span></label>
+                                <input type="range" id="mean" min="-1000" max="1000" step="1" value="0">
+                            </div>
+                            <div class="slider-container">
+                                <label for="stddev">SD (σ): <span id="stddevValue">1</span></label>
+                                <input type="range" id="stddev" min="0.1" max="1000" step="0.1" value="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="distributionCanvas"></canvas>
+                    <div id="noExpressionMessage" class="no-expression-message">No scalar expression selected</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/box-muller/script.js"></script>
+</body>
+</html>

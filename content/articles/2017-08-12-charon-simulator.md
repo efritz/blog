@@ -40,13 +40,13 @@ After launching a simulator, request to use a resource by pressing (or spamming)
 
 #### Simple
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,30,0', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
+<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator?tiers=5,1,30,0', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
 
 This simple configuration contains only a single tier. A domain is allowed five requests per second. Unlike [token bucket](https://en.wikipedia.org/wiki/Leaky_bucket) schemes, a domain's past inactivity does not influence current or future limiting decisions: five requests is all you will ever get in that second.
 
 #### Penalties
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,1,0,50,5,5,15', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
+<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator?tiers=5,1,1,0,50,5,5,15', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
 
 In order to correct the deficiency of the scheme above, we apply a second tier with a much larger limit. Domains that experience a burst of requests will not be denied unfairly. However, we must protect the system as a whole and cannot allow a domain to burst into a higher rate tier *without consequence*. In exchange for a higher rate limit *now*, the domain gives up the ability to have a higher rate limit in the future (for a period of time).
 
@@ -54,13 +54,13 @@ In this configuration, a user in the second tier can maintain its high-frequency
 
 #### Punishment
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,1,0,1,15,15,0', 'Tier Configuration - Punishment', 'width=900,height=500')">Run the Simulator</a>
+<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator?tiers=5,1,1,0,1,15,15,0', 'Tier Configuration - Punishment', 'width=900,height=500')">Run the Simulator</a>
 
 Perhaps *bursty* request behavior is detrimental to your system and frequent requests signify a client of malintent. In this scenario, you would want to deny such clients future access to critical resources. This can be done by making a *prison tier*. Such a tier, once entered, has a very long active period and a very low limit. Once a user bursts into this tier, they are trapped without the ability to make a grantable request for as long as the tier is active.
 
 #### Batch Processing
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=50,60,60,3540', 'Tier Configuration - Batch Processing', 'width=900,height=500')">Run the Simulator</a>
+<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator?tiers=50,60,60,3540', 'Tier Configuration - Batch Processing', 'width=900,height=500')">Run the Simulator</a>
 
 Lastly, many systems run periodically but spend the vast majority of their time idle. Take a reporting system, for example, that is meant to run once every day at the same time and will typically only make requests to an API for a ten-minute span. A tier can be configured to have a fairly generous limit within that window, and the cooldown can last for the remainder of the twenty-four hours.
 
