@@ -1,5 +1,5 @@
-let CANVAS_WIDTH  = 750;
-let CANVAS_HEIGHT = 200;
+let CANVAS_WIDTH;
+let CANVAS_HEIGHT;
 
 let NOW_MARGIN = 50;
 let NOW_BUFFER = 30;
@@ -95,7 +95,7 @@ function draw(canvas, timestamp, log, configs, id) {
     }
 
     drawNow(canvas, timestamp);
-    drawStatusText(canvas, log, configs, timestamp);
+    updateStatusText(log, configs, timestamp);
 }
 
 function clear(canvas) {
@@ -118,17 +118,10 @@ function drawNow(canvas, timestamp) {
         strokeStyle: '#000',
     });
 
-    canvas.drawText({
-        text: Math.floor(timestamp / 100),
-        x: CANVAS_WIDTH - NOW_MARGIN,
-        y: NOW_BUFFER / 2,
-        fontSize: 12,
-        fillStyle: '#000',
-        fontFamily: 'Trebuchet MS, sans-serif',
-    });
+    $('#timestamp').text(Math.floor(timestamp / 100));
 }
 
-function drawStatusText(canvas, log, configs, timestamp) {
+function updateStatusText(log, configs, timestamp) {
     let activeIndex = log.activeTier(configs, timestamp);
     var hitsInWindow = 0;
 
@@ -139,23 +132,14 @@ function drawStatusText(canvas, log, configs, timestamp) {
         hitsInWindow = activeTier.hitsInWindow;
     }
 
-    let lines = [`Active Tier: ${activeIndex + 1}`];
+    let activeTierText = `Active Tier: ${activeIndex + 1}`;
 
     if (activeIndex >= 0) {
-        lines.push(`Limit for Window: ${configs[activeIndex].limit} hits/${configs[activeIndex].window / 100 == 1 ? 'second' : `${configs[activeIndex].window / 100} seconds`}`);
+        activeTierText += `, Limit for Window: ${configs[activeIndex].limit} hits/${configs[activeIndex].window / 100 == 1 ? 'second' : `${configs[activeIndex].window / 100} seconds`}`;
     }
 
-    lines.push(`Hits in Window: ${hitsInWindow}`);
-
-    canvas.drawText({
-        text: lines.join(', '),
-        x: 0,
-        y: NOW_BUFFER / 2 - 5,
-        fontSize: 12,
-        fillStyle: '#000',
-        fontFamily: 'Trebuchet MS, sans-serif',
-        fromCenter: false,
-    });
+    $('#active-tier').text(activeTierText);
+    $('#hits-in-window').text(`Hits in Window: ${hitsInWindow}`);
 }
 
 function drawSegment(canvas, timestamp, tier, lo, hi, color) {
@@ -289,7 +273,16 @@ function getTierTop(tier) {
     return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_SPACE * (tier - 1);
 }
 
-$(document).ready(function() {
-    CANVAS_WIDTH = window.innerWidth - 20;
+function resizeCanvas() {
+    const container = $('#canvas').parent();
+    CANVAS_WIDTH = container.width();
+    CANVAS_HEIGHT = container.height();
     $('#canvas').attr('width', CANVAS_WIDTH);
+    $('#canvas').attr('height', CANVAS_HEIGHT);
+    configUpdated();
+}
+
+$(document).ready(function() {
+    resizeCanvas();
+    $(window).resize(resizeCanvas);
 });

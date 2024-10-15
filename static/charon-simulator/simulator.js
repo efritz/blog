@@ -3,17 +3,18 @@ var ratelog = new RateLog();
 
 function addRow(limit, window, active, cooldown) {
     var row = $('<tr />');
+    row.append($('<td class="tier-number"></td>'));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + limit + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + window + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + active + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + cooldown + '">')));
 
-    var deleter = $('<button type="button" class="btn btn-sm btn-danger">');
-    deleter.append($('<span class="delete fa fa-trash"></span>'));
+    var deleter = $('<span class="delete fa fa-trash"></span>');
     deleter.click(onDelete);
     row.append($('<td />').append(deleter));
     $('#tiers tbody').append(row);
     row.find('input').change(validateConfig);
+    updateTierNumbers();
     validateConfig();
 }
 
@@ -50,12 +51,30 @@ function validateConfig() {
 }
 
 function onDelete(event) {
-    $(event.target).parent().parent().remove();
+    $(event.target).closest('tr').remove();
+    updateTierNumbers();
     validateConfig();
 }
 
 function applyHit() {
-    ratelog.addHit(configs, Date.now() / 10, parseInt($('#min-hits').val()), parseInt($('#max-hits').val()));
+    var requestType = $('input[name="request-type"]:checked').val();
+    var minHits, maxHits;
+
+    if (requestType === 'single') {
+        minHits = maxHits = 1;
+    } else {
+        var sliderValues = $('#hits-slider').slider('values');
+        minHits = sliderValues[0];
+        maxHits = sliderValues[1];
+    }
+
+    ratelog.addHit(configs, Date.now() / 10, minHits, maxHits);
+}
+
+function updateTierNumbers() {
+    $('#tiers tbody tr').each(function(index) {
+        $(this).find('.tier-number').text('Tier #' + (index + 1));
+    });
 }
 
 $(document).ready(function() {
@@ -69,7 +88,33 @@ $(document).ready(function() {
     $('#tiers input').change(validateConfig);
 
     loadInitialTiers();
+    updateTierNumbers();
     validateConfig();
+
+    // Initialize the slider
+    $('#hits-slider').slider({
+        range: true,
+        min: 1,
+        max: 20,
+        values: [1, 5],
+        slide: function(event, ui) {
+            $('#min-hits-value').text(ui.values[0]);
+            $('#max-hits-value').text(ui.values[1]);
+            $('input[name="request-type"][value="batch"]').next().html('Make between ' + ui.values[0] + ' and ' + ui.values[1] + ' requests');
+        }
+    });
+
+    // Handle radio button changes
+    $('input[name="request-type"]').change(function() {
+        if ($(this).val() === 'single') {
+            $('#batch-controls').hide();
+        } else {
+            $('#batch-controls').show();
+        }
+    });
+
+    // Initialize batch request label
+    $('input[name="request-type"][value="batch"]').next().html('Make between 1 and 5 requests');
 });
 
 $(document).ready(function() {

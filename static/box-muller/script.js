@@ -3,29 +3,6 @@ const numBuckets = 50;
 const uniformChartMargin = { top: 20, right: 20, bottom: 40, left: 40 };
 const distributionChartMargin = { top: 20, right: 20, bottom: 60, left: 60 };
 
-const nChoices = {
-    'theta': {
-        label: 'μ + σ * [θ]',
-        value: (theta, r) => theta,
-    },
-    'cosTheta': {
-        label: 'μ + σ * [cos(θ)]',
-        value: (theta, r) => Math.cos(theta),
-    },
-    'r': {
-        label: 'μ + σ * [r]',
-        value: (theta, r) => r,
-    },
-    'thetaR': {
-        label: 'μ + σ * [r * θ]',
-        value: (theta, r) => r * theta,
-    },
-    'n': {
-        label: 'μ + σ * [r * cos(θ)]',
-        value: (theta, r) => r * Math.cos(theta),
-    },
-};
-
 const rChoices = {
     'u1': {
         label: 'U₁',
@@ -59,11 +36,52 @@ const rChoices = {
     },
 };
 
-function valuesForDot(dot, rChoice, nChoice) {
-    const theta = 2 * Math.PI * dot.u2;
+const thetaChoices = {
+    'U2': {
+        label: 'U₂',
+        value: u2 => u2,
+        inverse: theta => theta,
+    },
+    'pi': {
+        label: 'U₂ * π',
+        value: u2 => u2 * Math.PI,
+        inverse: theta => theta / Math.PI,
+    },
+    '2pi': {
+        label: 'U₂ * 2π',
+        value: u2 => u2 * 2 * Math.PI,
+        inverse: theta => theta / (2 * Math.PI),
+    },
+}
+
+const nChoices = {
+    'theta': {
+        label: 'μ + σ * [θ]',
+        value: (r, theta) => theta,
+    },
+    'cosTheta': {
+        label: 'μ + σ * [cos(θ)]',
+        value: (r, theta) => Math.cos(theta),
+    },
+    'r': {
+        label: 'μ + σ * [r]',
+        value: (r, theta) => r,
+    },
+    'thetaR': {
+        label: 'μ + σ * [r * θ]',
+        value: (r, theta) => r * theta,
+    },
+    'cosThetaR': {
+        label: 'μ + σ * [r * cos(θ)]',
+        value: (r, theta) => r * Math.cos(theta),
+    },
+};
+
+function valuesForDot(dot, rChoice, thetaChoice, nChoice) {
     const r = rChoices[rChoice].value(dot.u1 === 1 ? (1 - epsilon) : dot.u1);
-    const n = nChoice === '' ? NaN : nChoices[nChoice].value(theta, r);
-    return { theta, r, n };
+    const theta = thetaChoices[thetaChoice].value(dot.u2);
+    const n = nChoice === '' ? NaN : nChoices[nChoice].value(r, theta);
+    return { r, theta, n };
 }
 
 function generateUniformDots(n) {
@@ -83,6 +101,13 @@ function populateSelectOptions() {
         }));
     });
 
+    Object.entries(thetaChoices).forEach(([key, value]) => {
+        $('#thetaChoice').append($('<option>', {
+            value: key,
+            text: value.label
+        }));
+    });
+
     Object.entries(nChoices).forEach(([key, value]) => {
         $('#nChoice').append($('<option>', {
             value: key,
@@ -91,10 +116,11 @@ function populateSelectOptions() {
     });
 
     $('#rChoice').val('sqrtLnU12');
-    $('#nChoice').val('');
+    $('#thetaChoice').val('2pi');
+    $('#nChoice').val('cosThetaR');
 }
 
-function newColorCalculator(dots, rChoice, nChoice, highlightedBar) {
+function newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar) {
     if (nChoice === '') {
         return (index) => {
             const dot = dots[index];
@@ -104,7 +130,7 @@ function newColorCalculator(dots, rChoice, nChoice, highlightedBar) {
         }
     }
 
-    const values = dots.map(dot => valuesForDot(dot, rChoice, nChoice)).map(({ n }) => n);
+    const values = dots.map(dot => valuesForDot(dot, rChoice, thetaChoice, nChoice)).map(({ n }) => n);
 
     const min = Math.min(...values);
     const max = Math.max(...values);
@@ -131,14 +157,14 @@ function drawAllGraphs(
     $uniformCanvas,
     $polarCanvas,
     $distributionCanvas,
-    dots, rChoice, nChoice, userDot, highlightedBar
+    dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar
 ) {
-    drawUniformDots($uniformCanvas, $uniformCanvas.getContext('2d'), dots, rChoice, nChoice, userDot, highlightedBar);
-    drawPolarDots($polarCanvas, $polarCanvas.getContext('2d'), dots, rChoice, nChoice, userDot, highlightedBar);
-    drawDistributionChart($distributionCanvas, $distributionCanvas.getContext('2d'), dots, rChoice, nChoice, userDot, highlightedBar);
+    drawUniformDots($uniformCanvas, $uniformCanvas.getContext('2d'), dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar);
+    drawPolarDots($polarCanvas, $polarCanvas.getContext('2d'), dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar);
+    drawDistributionChart($distributionCanvas, $distributionCanvas.getContext('2d'), dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar);
 }
 
-function drawUniformDots($canvas, ctx, dots, rChoice, nChoice, userDot, highlightedBar) {
+function drawUniformDots($canvas, ctx, dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar) {
     const canvasWidth = $canvas.width;
     const canvasHeight = $canvas.height;
     const chartWidth = canvasWidth - uniformChartMargin.left - uniformChartMargin.right;
@@ -169,7 +195,7 @@ function drawUniformDots($canvas, ctx, dots, rChoice, nChoice, userDot, highligh
     ctx.restore();
 
     // Draw dots
-    const calculateColor = newColorCalculator(dots, rChoice, nChoice, highlightedBar,);
+    const calculateColor = newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar,);
 
     dots.forEach((dot, index) => {
         const x = uniformChartMargin.left + dot.u1 * chartWidth;
@@ -240,7 +266,7 @@ function drawUniformDots($canvas, ctx, dots, rChoice, nChoice, userDot, highligh
     ctx.restore();
 }
 
-function drawPolarDots($canvas, ctx, dots, rChoice, nChoice, userDot, highlightedBar) {
+function drawPolarDots($canvas, ctx, dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar) {
     const fullWidth = $canvas.width;
     const fullHeight = $canvas.height;
     const centerX = fullWidth / 2;
@@ -272,10 +298,10 @@ function drawPolarDots($canvas, ctx, dots, rChoice, nChoice, userDot, highlighte
     }
 
     // Draw dots
-    const calculateColor = newColorCalculator(dots, rChoice, nChoice, highlightedBar);
+    const calculateColor = newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar);
 
     dots.forEach((dot, index) => {
-        const { theta, r } = valuesForDot(dot, rChoice, nChoice);
+        const { r, theta } = valuesForDot(dot, rChoice, thetaChoice, nChoice);
         const x = centerX + r * Math.cos(theta) * maxRadius / 3;
         const y = centerY - r * Math.sin(theta) * maxRadius / 3;
 
@@ -289,7 +315,7 @@ function drawPolarDots($canvas, ctx, dots, rChoice, nChoice, userDot, highlighte
 
     // Draw the user dot in black
     if (userDot) {
-        const { theta, r } = valuesForDot(userDot, rChoice, nChoice);
+        const { r, theta } = valuesForDot(userDot, rChoice, thetaChoice, nChoice);
         const x = centerX + r * Math.cos(theta) * maxRadius / 3;
         const y = centerY - r * Math.sin(theta) * maxRadius / 3;
 
@@ -329,7 +355,7 @@ function drawPolarDots($canvas, ctx, dots, rChoice, nChoice, userDot, highlighte
     }
 }
 
-function drawDistributionChart($canvas, ctx, dots, rChoice, nChoice, userDot, highlightedBar) {
+function drawDistributionChart($canvas, ctx, dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar) {
     const canvasWidth = $canvas.width;
     const canvasHeight = $canvas.height;
     const chartWidth = canvasWidth - distributionChartMargin.left - distributionChartMargin.right;
@@ -342,7 +368,7 @@ function drawDistributionChart($canvas, ctx, dots, rChoice, nChoice, userDot, hi
     const userMean = parseFloat($('#mean').val());
     const userStddev = parseFloat($('#stddev').val());
 
-    const transform = (dot) => userMean + userStddev * valuesForDot(dot, rChoice, nChoice).n;
+    const transform = (dot) => userMean + userStddev * valuesForDot(dot, rChoice, thetaChoice, nChoice).n;
     const values = dots.map(transform);
 
     let userValue = null;
@@ -521,7 +547,7 @@ function updateCoordinates(
     $uniformCanvas,
     $polarCanvas,
     $distributionCanvas,
-    rChoice, nChoice,
+    rChoice, thetaChoice, nChoice,
     event, targetCanvas,
 ) {
     const rect = targetCanvas.getBoundingClientRect();
@@ -561,7 +587,7 @@ function updateCoordinates(
 
         const r = Math.sqrt(dx * dx + dy * dy) / maxRadius * 3;
         const u1 = rChoices[rChoice].inverse(r);
-        const u2 = theta / (2 * Math.PI);
+        const u2 = thetaChoices[thetaChoice].inverse(theta);
         if (0 <= u1 && u1 < 1 - epsilon && 0 <= u2 && u2 < 1 - epsilon) {
             return {
                 userDot: { u1, u2 },
@@ -597,19 +623,22 @@ function setupCanvasListeners(
     callback,
 ) {
     function addCanvasListeners(canvas) {
-        canvas.addEventListener('mousedown', () => {
-            $(document).on('mousemove', (event) => {
-                const { rChoice, nChoice } = choices();
+        canvas.addEventListener('mousedown', (event) => {
+            const update = (event) => {
+                const { rChoice, thetaChoice, nChoice } = choices();
                 const { userDot, highlightedBar} = updateCoordinates(
                     $uniformCanvas,
                     $polarCanvas,
                     $distributionCanvas,
-                    rChoice, nChoice,
+                    rChoice, thetaChoice, nChoice,
                     event, canvas,
                 );
 
                 callback(userDot, highlightedBar);
-            });
+            };
+
+            update(event);
+            $(document).on('mousemove', update);
         });
 
         canvas.addEventListener('mouseleave', () => {
@@ -629,8 +658,9 @@ function setupCanvasListeners(
 
 $(document).ready(() => {
     populateSelectOptions();
-    let nChoice = $('#nChoice').val();
     let rChoice = $('#rChoice').val();
+    let thetaChoice = $('#thetaChoice').val();
+    let nChoice = $('#nChoice').val();
 
     let dots = [];
     let userDot = null;
@@ -644,8 +674,18 @@ $(document).ready(() => {
         $uniformCanvas,
         $polarCanvas,
         $distributionCanvas,
-        dots, rChoice, nChoice, userDot, highlightedBar,
+        dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar,
     );
+
+    $('#rChoice').on('change', () => {
+        rChoice = $('#rChoice').val();
+        drawGraphs();
+    });
+
+    $('#thetaChoice').on('change', () => {
+        thetaChoice = $('#thetaChoice').val();
+        drawGraphs();
+    });
 
     $('#nChoice').on('change', () => {
         nChoice = $('#nChoice').val();
@@ -663,11 +703,6 @@ $(document).ready(() => {
         drawGraphs();
     });
 
-    $('#rChoice').on('change', () => {
-        rChoice = $('#rChoice').val();
-        drawGraphs();
-    });
-
     setupDynamicCanvas(
         $uniformCanvas,
         $polarCanvas,
@@ -679,7 +714,7 @@ $(document).ready(() => {
         $uniformCanvas,
         $polarCanvas,
         $distributionCanvas,
-        () => ({ rChoice, nChoice }),
+        () => ({ rChoice, thetaChoice, nChoice }),
         (_userDot, _highlightedBar) => {
             if (userDot !== _userDot || highlightedBar !== _highlightedBar) {
                 userDot = _userDot;

@@ -23,8 +23,8 @@ input[type="range"] {
 }
 
 h1 {
+    margin: 0;
     text-align: center;
-    margin-bottom: 5px;
 }
 
 /* Helper classes */
@@ -34,17 +34,39 @@ h1 {
     vertical-align: middle;
 }
 
+.description {
+    text-align: justify;
+    color: #333;
+    padding: 10px 0;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+a.footnote {
+    text-decoration: none;
+}
+
+.footnotes {
+    text-align: justify;
+    color: #333;
+    padding: 10px 0;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .hint {
     font-size: 0.9em;
     font-style: italic;
     color: #666;
-    margin-bottom: 20px;
     text-align: center;
+    padding: 10px 0;
+    line-height: 1.5;
 }
 
 .chartTitle {
-    margin-top: 0;
-    margin-bottom: 5px;
+    margin: 0;
     font-size: 1.2em;
 }
 
@@ -57,6 +79,7 @@ h1 {
     color: #666;
     text-align: center;
     padding: 20px;
+    display: none;
 }
 
 /* Canvases */
@@ -74,6 +97,7 @@ canvas {
     justify-content: space-between;
     width: 100%;
     align-items: stretch;
+    margin-top: 20px;
 }
 
 .canvasWrapper {
@@ -119,7 +143,6 @@ canvas {
     background-color: #f0f0f0;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 10px;
     flex: 0 0 auto;
 }
 
@@ -131,9 +154,7 @@ canvas {
 }
 
 .polar-controls .theta-formula {
-    text-align: left;
-    margin-bottom: 10px;
-    font-weight: bold;
+    margin-top: 10px;
 }
 
 .polar-controls .dropdown-container {
@@ -156,11 +177,6 @@ canvas {
     display: block;
     margin-bottom: 10px;
     text-align: left;
-}
-
-#distributionControls,
-#distributionCanvas {
-    display: none;
 }
 
 /* Slider controls */
@@ -230,7 +246,7 @@ canvas {
     #canvasContainer {
         justify-content: space-around;
     }
-    
+
     .canvasWrapper {
         width: 48%;
     }
