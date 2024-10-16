@@ -274,17 +274,9 @@ function getTierTop(tier) {
 
 function resizeCanvas() {
     const numTiers = $('#tiers tbody tr').length;
-    
     CANVAS_WIDTH = window.innerWidth;
     CANVAS_HEIGHT = Math.min(400, numTiers * 100);
-    console.log({ CANVAS_WIDTH, CANVAS_HEIGHT });
     $('.canvasWrapper .canvas-container').css('height', CANVAS_HEIGHT + 'px');
-    // const canvas = $('#canvas')[0];
-    // canvas.height = CANVAS_HEIGHT;
-    // canvas.width = canvas.offsetWidth;
-
-    // CANVAS_WIDTH = container.width();
-    // CANVAS_HEIGHT = container.height();
     $('#canvas').attr('width', CANVAS_WIDTH);
     $('#canvas').attr('height', CANVAS_HEIGHT);
     configUpdated();
