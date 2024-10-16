@@ -2,85 +2,101 @@
 
 <html lang="en">
 <head>
-  <title>Charon Simulator</title>
-
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/charon-simulator/styles.css">
+    <meta charset="UTF-8">
+    <title>Charon (Rate Limiting) Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/charon-simulator/styles.css">
 </head>
 
 <body>
-  <div id="container">
-    <div class="row">
-      <div id="canvas-info">
-        <div id="status-text">
-          <span id="active-tier"></span>
-          <span id="hits-in-window"></span>
+    <div id="container">
+        <h1>Charon (Rate Limiting) Simulator</h1>
+        <div class="description">
+            <p>
+                <a href="TODO">Charon</a> is a rate limiting system with a unique <strong>bursting</strong> algorithm.
+            </p>
+            <p>
+                TODO: Add more description about the Charon system and how this simulator works.
+            </p>
         </div>
-        <div id="timestamp"></div>
-      </div>
-      <div id="canvas-container">
-        <canvas id="canvas"></canvas>
-      </div>
-    </div>
 
-    <div class="form-group row controls-row">
-      <div class="button-container">
-        <button id="hit" class="btn btn-primary">
-          Make request
-          <span class="hint">(or press spacebar)</span>
-        </button>
-      </div>
-      <div class="slider-container">
-        <div class="request-type">
-          <label>
-            <input type="radio" name="request-type" value="single" checked> Make one request
-          </label>
-          <label>
-            <input type="radio" name="request-type" value="batch"> Make [n, m] requests
-          </label>
-        </div>
-        <div id="batch-controls" style="display: none;">
-          <div class="slider-wrapper">
-            <div id="hits-values">
-              <span id="min-hits-value">1</span> - <span id="max-hits-value">5</span>
+        <hr />
+
+        <div class="tier-section">
+            <h2>Rate Limiting Tiers</h2>
+            <div class="help-text">
+                <p><strong>Limit:</strong> The maximum number of requests allowed within the window.</p>
+                <p><strong>Window:</strong> The time period (in seconds) over which the limit is applied.</p>
+                <p><strong>Active Time:</strong> The duration (in seconds) the tier remains active after being triggered.</p>
+                <p><strong>Cooldown Time:</strong> The waiting period (in seconds) after the active time before the tier can be triggered again.</p>
             </div>
-            <div id="hits-slider"></div>
-          </div>
+            <table id="tiers" class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Limit</th>
+                        <th>Window</th>
+                        <th>Active Time</th>
+                        <th>Cooldown Time</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            </div>
+
+        <div class="controls-section">
+            <div class="form-group controls-row">
+                <div class="button-container">
+                    <button id="add" type="button" class="btn btn-success">
+                        <i class="fas fa-plus-circle"></i> Add New Tier
+                    </button>
+                </div>
+                <div class="button-container">
+                    <button id="hit" class="btn btn-primary">
+                        Make request
+                        <span class="hint">(or press spacebar)</span>
+                    </button>
+                </div>
+                <div class="slider-container">
+                    <div class="request-type">
+                        <label>
+                            <input type="radio" name="request-type" value="single" checked> Make one request
+                        </label>
+                        <label>
+                            <input type="radio" name="request-type" value="batch"> Make [n, m] requests
+                        </label>
+                    </div>
+                    <div id="batch-controls" style="display: none;">
+                        <div class="slider-wrapper">
+                            <div id="hits-values">
+                                <span id="min-hits-value">1</span> - <span id="max-hits-value">5</span>
+                            </div>
+                            <div id="hits-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div id="canvasContainer">
+            <div class="canvasWrapper">
+                <div id="canvas-info">
+                    <span id="active-tier"></span>
+                    <span id="hits-in-window"></span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="row">
-      <table id="tiers" class="table">
-        <thead>
-          <tr>
-            <th>Tier</th>
-            <th>Limit</th>
-            <th>Window</th>
-            <th>Active Time</th>
-            <th>Cooldown Time</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="row">
-      <div class="col-12 text-right">
-        <button id="add" type="button" class="btn btn-success">
-          <span class="fa fa-plus-circle"></span> Add New Tier
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
-  <script type="text/javascript" src="/charon-simulator/log.js"></script>
-  <script type="text/javascript" src="/charon-simulator/render.js"></script>
-  <script type="text/javascript" src="/charon-simulator/simulator.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
+    <script type="text/javascript" src="/charon-simulator/log.js"></script>
+    <script type="text/javascript" src="/charon-simulator/render.js"></script>
+    <script type="text/javascript" src="/charon-simulator/simulator.js"></script>
 </body>
 </html>

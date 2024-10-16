@@ -1,15 +1,14 @@
-let CANVAS_WIDTH;
-let CANVAS_HEIGHT;
+let CANVAS_WIDTH;  // dynamic
+let CANVAS_HEIGHT; // dynamic
+let TIER_HEIGHT;   // dynamic
+let TIER_PADDING;  // dynamic
 
-let NOW_MARGIN = 50;
-let NOW_BUFFER = 30;
-let TIER_HEIGHT = 20;
-let TIER_SPACE = 5;
-let TIER_BORDER = 5;
+let TIER_BUFFER = 5;
 let TIER_MARGIN = 20;
 
 function configUpdated() {
-    TIER_HEIGHT = (CANVAS_HEIGHT - TIER_MARGIN - NOW_BUFFER - TIER_SPACE * (configs.length - 2)) / configs.length;
+    TIER_HEIGHT = (CANVAS_HEIGHT - (TIER_MARGIN * 2) - TIER_BUFFER * (configs.length - 2)) / configs.length;
+    TIER_PADDING = TIER_HEIGHT / 6;
 }
 
 function draw(canvas, timestamp, log, configs, id) {
@@ -38,7 +37,7 @@ function draw(canvas, timestamp, log, configs, id) {
 
             if (i == 0) {
                 canvas.drawRect({
-                    x: CANVAS_WIDTH - NOW_MARGIN - d,
+                    x: CANVAS_WIDTH - d,
                     y: getTierTop(i) + TIER_HEIGHT / 4,
                     width: d - e,
                     height: TIER_HEIGHT / 2,
@@ -49,7 +48,7 @@ function draw(canvas, timestamp, log, configs, id) {
             }
 
             canvas.drawRect({
-                x: CANVAS_WIDTH - NOW_MARGIN - e,
+                x: CANVAS_WIDTH - e,
                 y: getTierTop(i) + TIER_HEIGHT / 4,
                 width: e,
                 height: TIER_HEIGHT / 2,
@@ -111,9 +110,9 @@ function clear(canvas) {
 
 function drawNow(canvas, timestamp) {
     canvas.drawLine({
-        x1: CANVAS_WIDTH - NOW_MARGIN,
-        y1: NOW_BUFFER,
-        x2: CANVAS_WIDTH - NOW_MARGIN,
+        x1: CANVAS_WIDTH,
+        y1: 0,
+        x2: CANVAS_WIDTH,
         y2: CANVAS_HEIGHT,
         strokeStyle: '#000',
     });
@@ -144,10 +143,10 @@ function updateStatusText(log, configs, timestamp) {
 
 function drawSegment(canvas, timestamp, tier, lo, hi, color) {
     canvas.drawRect({
-        x: CANVAS_WIDTH - NOW_MARGIN - timestamp + lo,
-        y: getTierTop(tier) + TIER_BORDER,
+        x: CANVAS_WIDTH - timestamp + lo,
+        y: getTierTop(tier) + TIER_PADDING,
         width: hi - lo,
-        height: TIER_HEIGHT - TIER_BORDER * 2,
+        height: TIER_HEIGHT - TIER_PADDING * 2,
         fillStyle: color,
         strokeStyle: '#000',
         fromCenter: false,
@@ -158,7 +157,7 @@ function drawHit(canvas, timestamp, tier, hit, id) {
     let r = hit.count + 2;
 
     canvas.drawArc({
-        x: CANVAS_WIDTH - NOW_MARGIN - timestamp + hit.timestamp - r,
+        x: CANVAS_WIDTH - timestamp + hit.timestamp - r,
         y: getTierTop(tier) + TIER_HEIGHT / 2 - r,
         radius: r,
         fillStyle: hit.count == 0 ? '#f00' : (id == hit.id ? '#fff' : '#999'),
@@ -168,7 +167,7 @@ function drawHit(canvas, timestamp, tier, hit, id) {
 }
 
 function drawRejection(canvas, timestamp, tier, rejection, id) {
-    let x = CANVAS_WIDTH - NOW_MARGIN - timestamp + rejection.timestamp;
+    let x = CANVAS_WIDTH - timestamp + rejection.timestamp;
     let y = getTierTop(tier) + TIER_HEIGHT / 2;
     let r = 3;
 
@@ -192,7 +191,7 @@ function drawRejection(canvas, timestamp, tier, rejection, id) {
 }
 
 function drawBurst(canvas, timestamp, tier, time, weight, targetWeight) {
-    let x = CANVAS_WIDTH - NOW_MARGIN - timestamp + time;
+    let x = CANVAS_WIDTH - timestamp + time;
     let y1 = getTierTop(tier + 0) + TIER_HEIGHT / 2 - (weight + 2);
     let y2 = getTierTop(tier + 1) + TIER_HEIGHT / 2 + (targetWeight + 2);
 
@@ -215,7 +214,7 @@ function drawHitTime(canvas, timestamp, time, weight, tiers) {
         return;
     }
 
-    let x = CANVAS_WIDTH - NOW_MARGIN - (timestamp - time);
+    let x = CANVAS_WIDTH - (timestamp - time);
     let y = getTierTop(tiers) + TIER_HEIGHT;
 
     canvas.drawText({
@@ -270,13 +269,22 @@ function collectHits(log) {
 }
 
 function getTierTop(tier) {
-    return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_SPACE * (tier - 1);
+    return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_BUFFER * (tier - 1);
 }
 
 function resizeCanvas() {
-    const container = $('#canvas').parent();
-    CANVAS_WIDTH = container.width();
-    CANVAS_HEIGHT = container.height();
+    const numTiers = $('#tiers tbody tr').length;
+    
+    CANVAS_WIDTH = window.innerWidth;
+    CANVAS_HEIGHT = Math.min(400, numTiers * 100);
+    console.log({ CANVAS_WIDTH, CANVAS_HEIGHT });
+    $('.canvasWrapper .canvas-container').css('height', CANVAS_HEIGHT + 'px');
+    // const canvas = $('#canvas')[0];
+    // canvas.height = CANVAS_HEIGHT;
+    // canvas.width = canvas.offsetWidth;
+
+    // CANVAS_WIDTH = container.width();
+    // CANVAS_HEIGHT = container.height();
     $('#canvas').attr('width', CANVAS_WIDTH);
     $('#canvas').attr('height', CANVAS_HEIGHT);
     configUpdated();

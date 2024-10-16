@@ -3,15 +3,17 @@ var ratelog = new RateLog();
 
 function addRow(limit, window, active, cooldown) {
     var row = $('<tr />');
-    row.append($('<td class="tier-number"></td>'));
+    var tierCell = $('<td class="tier-number"></td>');
+    var tierNumber = $('<span class="tier-text"></span>');
+    var deleter = $('<span class="delete fa fa-trash"></span>');
+    deleter.click(onDelete);
+    tierCell.append(tierNumber).append(deleter);
+    row.append(tierCell);
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + limit + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + window + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + active + '">')));
     row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + cooldown + '">')));
 
-    var deleter = $('<span class="delete fa fa-trash"></span>');
-    deleter.click(onDelete);
-    row.append($('<td />').append(deleter));
     $('#tiers tbody').append(row);
     row.find('input').change(validateConfig);
     updateTierNumbers();
@@ -50,10 +52,16 @@ function validateConfig() {
     configUpdated();
 }
 
+function onAdd() {
+    addRow(5, 5, 5, 0);
+    resizeCanvas();
+}
+
 function onDelete(event) {
     $(event.target).closest('tr').remove();
     updateTierNumbers();
     validateConfig();
+    resizeCanvas();
 }
 
 function applyHit() {
@@ -73,23 +81,20 @@ function applyHit() {
 
 function updateTierNumbers() {
     $('#tiers tbody tr').each(function(index) {
-        $(this).find('.tier-number').text('Tier #' + (index + 1));
+        $(this).find('.tier-text').text('Tier #' + (index + 1));
     });
 }
 
 $(document).ready(function() {
     $('#hit').click(applyHit);
-
-    $('#add').click(function() {
-        addRow(5, 5, 5, 0);
-    });
-
+    $('#add').click(onAdd);
     $('.delete').click(onDelete);
     $('#tiers input').change(validateConfig);
 
     loadInitialTiers();
     updateTierNumbers();
     validateConfig();
+    resizeCanvas();
 
     // Initialize the slider
     $('#hits-slider').slider({
@@ -118,8 +123,9 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $(document).keyup(function(event) {
+    $(document).keydown(function(event) {
         if (event.keyCode == 32) {
+            event.preventDefault();
             applyHit();
         }
     });
