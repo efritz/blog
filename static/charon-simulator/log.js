@@ -12,7 +12,7 @@ function BTConfig(limit, window, active, cooldown) {
 function BurstTier() {
     this.hits = [];
     this.rejections = [];
-    this.entry = 0;
+    this.activePeriods = [];
     this.hitsInWindow = 0;
     this.fallen = 0;
 }
@@ -24,6 +24,11 @@ BurstTier.prototype.normalize = function(i, config, timestamp) {
     } else {
         this.trim(config, timestamp);
     }
+
+    // Clean up old active periods
+    this.activePeriods = this.activePeriods.filter(period => 
+        period.end === null || period.end + config.cooldown > timestamp - 3000
+    );
 
     // Trim hits (to save memory)
     while (this.fallen > 0 && this.hits[0].timestamp < timestamp - 3000) {
@@ -38,20 +43,23 @@ BurstTier.prototype.normalize = function(i, config, timestamp) {
 }
 
 BurstTier.prototype.enter = function(timestamp) {
-    this.entry = timestamp;
+    this.activePeriods.push({ start: timestamp, end: null });
 }
 
 BurstTier.prototype.state = function(config, timestamp) {
-    if (this.entry > 0 && this.entry <= timestamp) {
-        if (timestamp <= this.entry + config.active) {
-            return STATE_ACTIVE;
+    if (this.activePeriods.length > 0) {
+        let lastPeriod = this.activePeriods[this.activePeriods.length - 1];
+        if (lastPeriod.end === null) {
+            if (timestamp <= lastPeriod.start + config.active) {
+                return STATE_ACTIVE;
+            } else {
+                lastPeriod.end = lastPeriod.start + config.active;
+            }
         }
-
-        if (timestamp <= this.entry + config.active + config.cooldown) {
+        if (timestamp <= lastPeriod.end + config.cooldown) {
             return STATE_COOLDOWN;
         }
     }
-
     return STATE_INACTIVE;
 }
 

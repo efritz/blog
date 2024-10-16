@@ -24,16 +24,31 @@ function draw(canvas, timestamp, log, configs, id) {
     }
 
     for (var i = 0; i < log.tiers.length; i++) {
-        let a = log.tiers[i].entry;
-        let b = log.tiers[i].entry + configs[i].active;
-        let c = log.tiers[i].entry + configs[i].active + configs[i].cooldown;
+        // Draw all historic active periods
+        log.tiers[i].activePeriods.forEach(period => {
+            let start = period.start;
+            let end = period.end || timestamp;
+            drawSegment(canvas, timestamp, i, start, end, '#ddd');
+        });
 
-        drawSegment(canvas, timestamp, i, a, b, '#0f0');
-        drawSegment(canvas, timestamp, i, b, c, '#f00');
+        // Draw current active and cooldown periods
+        let currentState = log.tiers[i].state(configs[i], timestamp);
+        if (currentState !== STATE_INACTIVE) {
+            let lastPeriod = log.tiers[i].activePeriods[log.tiers[i].activePeriods.length - 1];
+            let a = lastPeriod.start;
+            let b = a + configs[i].active;
+            let c = b + configs[i].cooldown;
+
+            if (currentState === STATE_ACTIVE) {
+                drawSegment(canvas, timestamp, i, a, b, '#0f0');
+            } else if (currentState === STATE_COOLDOWN) {
+                drawSegment(canvas, timestamp, i, b, c, '#f00');
+            }
+        }
 
         if (log.activeTier(configs, timestamp) == i) {
             let d = configs[i].window;
-            let e = Math.min(timestamp - a, d);
+            let e = Math.min(timestamp - log.tiers[i].activePeriods[log.tiers[i].activePeriods.length - 1].start, d);
 
             if (i == 0) {
                 canvas.drawRect({
