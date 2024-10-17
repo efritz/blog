@@ -55,24 +55,26 @@
                 <div class="button-container">
                     <button id="hit" class="btn btn-primary">
                         Make request
-                        <span class="hint">(or press spacebar)</span>
+                        <span>(or press spacebar)</span>
                     </button>
                 </div>
                 <div class="slider-container">
                     <div class="request-type">
                         <label>
-                            <input type="radio" name="request-type" value="single" checked> Make one request
+                            <input type="radio" name="request-type" value="single" checked> Single request
                         </label>
                         <label>
-                            <input type="radio" name="request-type" value="batch"> Make [n, m] requests
+                            <input type="radio" name="request-type" value="batch"> Batch request
                         </label>
                     </div>
                     <div id="batch-controls" style="display: none;">
                         <div class="slider-wrapper">
                             <div id="hits-values">
-                                <span id="min-hits-value">1</span> - <span id="max-hits-value">5</span>
+                                Min=<span id="min-hits-value">1</span>, Max=<span id="max-hits-value">5</span>
                             </div>
-                            <div id="hits-slider"></div>
+                            <div id="hits-wrapper">
+                                <div id="hits-slider"></div>
+                            </div>
                         </div>
                     </div>
                 </div>

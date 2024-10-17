@@ -22,6 +22,10 @@ h2 {
     font-size: 1.2em;
 }
 
+#hit, #add {
+    height: 60px;
+}
+
 .description {
     text-align: justify;
     color: #333;
@@ -115,26 +119,7 @@ input[type="range"] {
     min-width: 300px;
 }
 
-@media (max-width: 991px) {
-    .controls-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .button-container {
-        margin-right: 0;
-        margin-bottom: 15px;
-        width: 100%;
-    }
-
-    .button-container button {
-        width: 100%;
-    }
-
-    .slider-container {
-        width: 100%;
-    }
-}
+/* Styles moved to the new media query */
 
 .request-type {
     display: flex;
@@ -164,7 +149,7 @@ input[type="range"] {
     white-space: nowrap;
 }
 
-#hits-slider {
+#hits-wrapper {
     flex: 1;
     min-width: 200px;
 }
@@ -251,12 +236,7 @@ input[type="range"] {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-}
-
-.tier-text {
-    flex: 1;
-    margin-right: 10px;
+    justify-content: space-evenly;
 }
 
 .delete {
@@ -270,17 +250,7 @@ input[type="range"] {
     color: #a71d2a;
 }
 
-@media (max-width: 575px) {
-    .tier-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .tier-text {
-        margin-right: 0;
-        margin-bottom: 5px;
-    }
-}
+/* Styles moved to the new media query */
 
 /* Slider styles */
 .slider-wrapper {
@@ -321,30 +291,7 @@ input[type="range"] {
     width: auto;
 }
 
-/* Adjust the table layout for better responsiveness */
-@media (max-width: 1200px) {
-    .table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-}
-
-@media (max-width: 991px) {
-    .slider-wrapper {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .label-wrapper {
-        margin-right: 0;
-        margin-bottom: 5px;
-    }
-
-    input[type="range"] {
-        width: 100%;
-    }
-}
+/* Styles moved to the new media query */
 
 /* Delete styles moved to the tier-number section */
 
@@ -367,42 +314,50 @@ input[type="range"] {
 }
 
 /* Responsive styles */
-@media (max-width: 991px) {
-    .controls-row {
-        flex-direction: column;
-        align-items: stretch;
+@media (max-width: 1156px) {
+    .table {
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
     }
 
-    .button-container {
+    .label-wrapper {
         margin-right: 0;
-        margin-bottom: 15px;
-        width: 100%;
-    }
-
-    #hit {
-        width: 100%;
-        text-align: center;
+        margin-bottom: 5px;
     }
 
     .slider-container {
         align-items: stretch;
     }
+
+    td .slider-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
 
-@media (max-width: 575px) {
-    .button-container {
+@media (max-width: 860px) {
+    .request-type {
+        display: block;
+        text-align: center;
+    }
+
+    .controls-row {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
     }
 
-    .hint {
-        margin-left: 0;
-        margin-top: 5px;
-    }
-
-    #add {
+    .button-container, #hit, #add,
+    input[type="range"] {
         width: 100%;
     }
+
+    .button-container {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    #hit {
+        text-align: center;
+    }
 }
-
-
