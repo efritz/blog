@@ -4,10 +4,12 @@ var ratelog = new RateLog();
 function addRow(limit, window, active, cooldown) {
     var row = $('<tr />');
     var tierCell = $('<td class="tier-number"></td>');
+    var tierWrapper = $('<div class="tier-wrapper"></div>');
     var tierNumber = $('<span class="tier-text"></span>');
     var deleter = $('<span class="delete fa fa-trash"></span>');
     deleter.click(onDelete);
-    tierCell.append(tierNumber).append(deleter);
+    tierWrapper.append(tierNumber).append(deleter);
+    tierCell.append(tierWrapper);
     row.append(tierCell);
 
     function createSliderCell(value, min, max, step, format) {
