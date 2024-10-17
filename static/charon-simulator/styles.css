@@ -143,15 +143,27 @@ input[type="range"] {
 }
 
 #hits-values {
-    flex: 0 0 auto;
-    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-width: 120px;
+    margin-right: 20px;
     font-size: 14px;
     white-space: nowrap;
+    font-weight: bold;
 }
 
 #hits-wrapper {
     flex: 1;
     min-width: 200px;
+}
+
+#hits-slider {
+    width: 100%;
 }
 
 /* Button styles */
@@ -303,6 +315,11 @@ input[type="range"] {
     margin-bottom: 10px;
     font-size: 14px;
     width: 100%;
+}
+
+#min-hits-value,
+#max-hits-value {
+    padding: 0 3px;
 }
 
 #hits-in-window {
