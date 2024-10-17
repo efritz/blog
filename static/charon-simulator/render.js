@@ -23,6 +23,8 @@ function draw(canvas, timestamp, log, configs, id) {
         drawOutline(canvas, i, log.activeTier(configs, timestamp) == i);
     }
 
+    let activeIndex = log.activeTier(configs, timestamp);
+
     for (var i = 0; i < log.tiers.length; i++) {
         // Draw all historic active periods
         log.tiers[i].activePeriods.forEach(period => {
@@ -40,7 +42,7 @@ function draw(canvas, timestamp, log, configs, id) {
             let c = b + configs[i].cooldown;
 
             if (currentState === STATE_ACTIVE) {
-                drawSegment(canvas, timestamp, i, a, b, '#0f0');
+                drawSegment(canvas, timestamp, i, a, b, i === activeIndex ? '#0f0' : '#ddd');
             } else if (currentState === STATE_COOLDOWN) {
                 drawSegment(canvas, timestamp, i, b, c, '#f00');
             }
