@@ -4,17 +4,18 @@ let TIER_HEIGHT;   // dynamic
 let TIER_PADDING;  // dynamic
 
 let TIER_BUFFER = 5;
-let TIER_MARGIN = 25;
+let TIER_TOP_MARGIN = 30;
+let TIER_BOTTOM_MARGIN = 25;
 
 function configUpdated() {
-    TIER_HEIGHT = (CANVAS_HEIGHT - (TIER_MARGIN * 2) - TIER_BUFFER * (configs.length - 2)) / configs.length;
+    TIER_HEIGHT = (CANVAS_HEIGHT - TIER_TOP_MARGIN - TIER_BOTTOM_MARGIN - TIER_BUFFER * (configs.length - 2)) / configs.length;
     TIER_PADDING = TIER_HEIGHT / 6;
 }
 
 function draw(canvas, timestamp, log, configs, id) {
     clear(canvas);
-
     drawSecondLines(canvas, timestamp);
+    drawLegend(canvas);
 
     let times = collectHits(log);
     for (var k in times) {
@@ -46,7 +47,7 @@ function draw(canvas, timestamp, log, configs, id) {
             let lastPeriod = log.tiers[i].activePeriods[log.tiers[i].activePeriods.length - 1];
             let a = lastPeriod.start;
             let b = a + configs[i].active;
-            drawSegment(canvas, timestamp, i, a, b, '#aaf');
+            drawSegment(canvas, timestamp, i, a, b, i === activeIndex ? '#aaf' : '#ddd');
         }
 
         if (log.activeTier(configs, timestamp) == i) {
@@ -123,6 +124,8 @@ function draw(canvas, timestamp, log, configs, id) {
         let bracketY = getTierTop(activeIndex) + TIER_HEIGHT / 4 - 25; // Raise the bracket to touch the top of the rectangle
         drawWindowBracket(canvas, config.window, Math.min(elapsedTime, config.window), bracketY);
     }
+
+    // Legend is already drawn at the top
 }
 
 function clear(canvas) {
@@ -161,7 +164,7 @@ function drawSecondLines(canvas, timestamp) {
 
         canvas.drawLine({
             x1: x,
-            y1: 0,
+            y1: TIER_TOP_MARGIN,
             x2: x,
             y2: CANVAS_HEIGHT,
             strokeStyle: isLabeled ? '#aaa' : '#ddd',
@@ -363,7 +366,7 @@ function collectHits(log) {
 }
 
 function getTierTop(tier) {
-    return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_BUFFER * (tier - 1);
+    return CANVAS_HEIGHT - TIER_BOTTOM_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_BUFFER * (tier - 1);
 }
 
 function drawWindowBracket(canvas, windowSize, currentWidth, y) {
@@ -405,11 +408,86 @@ function drawWindowBracket(canvas, windowSize, currentWidth, y) {
 function resizeCanvas() {
     const numTiers = $('#tiers tbody tr').length;
     CANVAS_WIDTH = window.innerWidth;
-    CANVAS_HEIGHT = Math.min(400, numTiers * 100);
+    CANVAS_HEIGHT = Math.min(400, numTiers * 100) + 30; // Add 30px for legend at the top
     $('.canvasWrapper .canvas-container').css('height', CANVAS_HEIGHT + 'px');
     $('#canvas').attr('width', CANVAS_WIDTH);
     $('#canvas').attr('height', CANVAS_HEIGHT);
     configUpdated();
+}
+
+function drawLegend(canvas) {
+    const ctx = canvas[0].getContext('2d');
+    ctx.font = '12px Arial, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#000';
+
+    canvas.drawText({
+        text: '',
+        x: 0,
+        y: 0,
+        fontSize: 12,
+        fillStyle: '#000',
+        fontFamily: 'Arial, sans-serif',
+        align: 'middle',
+        baseline: 'middle'
+    });
+
+    let x = 20;
+
+    // Granted request
+    canvas.drawArc({
+        x: x,
+        y: 10,
+        radius: 5,
+        fillStyle: '#0f0',
+        strokeStyle: '#000'
+    });
+    ctx.fillText('Grant', x + 10, 12);
+
+    x += 60;
+
+    // Rejected request
+    canvas.drawLine({
+        x1: x - 5,
+        y1: 10 - 5,
+        x2: x + 5,
+        y2: 10 + 5,
+        strokeStyle: '#f00'
+    });
+    canvas.drawLine({
+        x1: x - 5,
+        y1: 10 + 5,
+        x2: x + 5,
+        y2: 10 - 5,
+        strokeStyle: '#f00'
+    });
+    ctx.fillText('Rejection', x + 10, 12);
+    
+    x += 80;
+
+    // Active period
+    canvas.drawRect({
+        x: x,
+        y: 10,
+        width: 10,
+        height: 10,
+        fillStyle: '#aaf',
+        strokeStyle: '#000'
+    });
+    ctx.fillText('Active Period', x + 10, 12);
+
+    x += 100;
+
+    // Cooldown period
+    canvas.drawRect({
+        x: x,
+        y: 10,
+        width: 10,
+        height: 10,
+        fillStyle: '#fdd',
+        strokeStyle: '#000'
+    });
+    ctx.fillText('Cooldown Period', x + 10, 12);
 }
 
 $(document).ready(function() {
