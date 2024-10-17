@@ -14,6 +14,8 @@ function configUpdated() {
 function draw(canvas, timestamp, log, configs, id) {
     clear(canvas);
 
+    drawSecondLines(canvas, timestamp);
+
     let times = collectHits(log);
     for (var k in times) {
         drawHitTime(canvas, timestamp, k, times[k], log.tiers.length);
@@ -23,9 +25,15 @@ function draw(canvas, timestamp, log, configs, id) {
         drawOutline(canvas, i, log.activeTier(configs, timestamp) == i);
     }
 
-    drawSecondLines(canvas, timestamp);
-
+    // Draw the window bracket for the active tier
     let activeIndex = log.activeTier(configs, timestamp);
+    if (activeIndex >= 0) {
+        let activeTier = log.tiers[activeIndex];
+        let config = configs[activeIndex];
+        let lastPeriodStart = activeTier.activePeriods.length > 0 ? activeTier.activePeriods[activeTier.activePeriods.length - 1].start : timestamp;
+        let elapsedTime = timestamp - lastPeriodStart;
+        drawWindowBrace(canvas, config.window, Math.min(elapsedTime, config.window));
+    }
 
     for (var i = 0; i < log.tiers.length; i++) {
         // Draw all historic active periods
@@ -365,6 +373,37 @@ function collectHits(log) {
 
 function getTierTop(tier) {
     return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_BUFFER * (tier - 1);
+}
+
+function drawWindowBrace(canvas, windowSize, currentWidth) {
+    const braceHeight = 20;
+    const ctx = canvas[0].getContext('2d');
+    ctx.font = '12px Arial, sans-serif';
+    
+    const startX = CANVAS_WIDTH - windowSize;
+    
+    // Draw the horizontal line
+    canvas.drawLine({
+        x1: CANVAS_WIDTH - currentWidth,
+        y1: braceHeight,
+        x2: CANVAS_WIDTH,
+        y2: braceHeight,
+        strokeStyle: '#000',
+        strokeWidth: 2
+    });
+    
+    // Add the label
+    const label = `Window (${windowSize / 100}s)`;
+    canvas.drawText({
+        fillStyle: '#000',
+        x: startX + windowSize / 2,
+        y: braceHeight / 2,
+        text: label,
+        fontSize: 12,
+        fontFamily: 'Arial, sans-serif',
+        align: 'center',
+        baseline: 'middle'
+    });
 }
 
 function resizeCanvas() {
