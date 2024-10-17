@@ -358,14 +358,6 @@ input[type="range"] {
     width: 100%;
 }
 
-#active-tier {
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: bold;
-}
-
 #hits-in-window {
     text-align: right;
     white-space: nowrap;

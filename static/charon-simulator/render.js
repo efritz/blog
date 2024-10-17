@@ -33,24 +33,18 @@ function draw(canvas, timestamp, log, configs, id) {
             drawSegment(canvas, timestamp, i, start, end, '#ddd');
         });
 
-        // Draw all historic cooldown periods
+        // Draw all cooldown periods (historic and current)
         log.tiers[i].cooldownPeriods.forEach(period => {
             drawSegment(canvas, timestamp, i, period.start, period.end, '#fdd');
         });
 
-        // Draw current active and cooldown periods
+        // Draw current active period
         let currentState = log.tiers[i].state(configs[i], timestamp);
-        if (currentState !== STATE_INACTIVE) {
+        if (currentState === STATE_ACTIVE) {
             let lastPeriod = log.tiers[i].activePeriods[log.tiers[i].activePeriods.length - 1];
             let a = lastPeriod.start;
             let b = a + configs[i].active;
-            let c = b + configs[i].cooldown;
-
-            if (currentState === STATE_ACTIVE) {
-                drawSegment(canvas, timestamp, i, a, b, i === activeIndex ? '#0f0' : '#ddd');
-            } else if (currentState === STATE_COOLDOWN) {
-                drawSegment(canvas, timestamp, i, b, c, '#f00');
-            }
+            drawSegment(canvas, timestamp, i, a, b, i === activeIndex ? '#0f0' : '#ddd');
         }
 
         if (log.activeTier(configs, timestamp) == i) {
@@ -145,22 +139,30 @@ function drawNow(canvas, timestamp) {
 function updateStatusText(log, configs, timestamp) {
     let activeIndex = log.activeTier(configs, timestamp);
     var hitsInWindow = 0;
+    var windowSize = 0;
+    var timeLeftInTier = 0;
 
     if (activeIndex >= 0) {
         let activeTier = log.tiers[activeIndex];
+        let config = configs[activeIndex];
 
-        activeTier.trim(configs[activeIndex], timestamp);
+        activeTier.trim(config, timestamp);
         hitsInWindow = activeTier.hitsInWindow;
+        windowSize = config.limit;
+        
+        if (activeTier.activePeriods.length > 0) {
+            let lastPeriod = activeTier.activePeriods[activeTier.activePeriods.length - 1];
+            let elapsedTime = timestamp - lastPeriod.start;
+            timeLeftInTier = Math.max(0, (config.active - elapsedTime) / 100);
+        }
     }
-
-    let activeTierText = `Active Tier: ${activeIndex + 1}`;
 
     if (activeIndex >= 0) {
-        activeTierText += `, Limit for Window: ${configs[activeIndex].limit} hits/${configs[activeIndex].window / 100 == 1 ? 'second' : `${configs[activeIndex].window / 100} seconds`}`;
+        let activeTierSeconds = configs[activeIndex].active / 100;
+        $('#hits-in-window').text(`${hitsInWindow}/${windowSize} requests in current window (${timeLeftInTier.toFixed(1)}/${activeTierSeconds.toFixed(1)}s active time remaining)`);
+    } else {
+        $('#hits-in-window').text('No requests in window');
     }
-
-    $('#active-tier').text(activeTierText);
-    $('#hits-in-window').text(`Hits in Window: ${hitsInWindow}`);
 }
 
 function drawSegment(canvas, timestamp, tier, lo, hi, color) {
