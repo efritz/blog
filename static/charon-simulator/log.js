@@ -13,6 +13,7 @@ function BurstTier() {
     this.hits = [];
     this.rejections = [];
     this.activePeriods = [];
+    this.cooldownPeriods = [];
     this.hitsInWindow = 0;
     this.fallen = 0;
 }
@@ -25,9 +26,27 @@ BurstTier.prototype.normalize = function(i, config, timestamp) {
         this.trim(config, timestamp);
     }
 
-    // Clean up old active periods
-    this.activePeriods = this.activePeriods.filter(period => 
-        period.end === null || period.end + config.cooldown > timestamp - 3000
+    // Clean up old active periods and add cooldown periods
+    this.activePeriods = this.activePeriods.filter(period => {
+        if (period.end === null) {
+            return true;
+        }
+        if (period.end + config.cooldown > timestamp - 3000) {
+            // Add cooldown period if it's not already added
+            if (!this.cooldownPeriods.some(cp => cp.start === period.end)) {
+                this.cooldownPeriods.push({
+                    start: period.end,
+                    end: period.end + config.cooldown
+                });
+            }
+            return true;
+        }
+        return false;
+    });
+
+    // Clean up old cooldown periods
+    this.cooldownPeriods = this.cooldownPeriods.filter(period =>
+        period.end > timestamp - 3000
     );
 
     // Trim hits (to save memory)
@@ -54,9 +73,17 @@ BurstTier.prototype.state = function(config, timestamp) {
                 return STATE_ACTIVE;
             } else {
                 lastPeriod.end = lastPeriod.start + config.active;
+                // Add new cooldown period
+                this.cooldownPeriods.push({
+                    start: lastPeriod.end,
+                    end: lastPeriod.end + config.cooldown
+                });
             }
         }
-        if (timestamp <= lastPeriod.end + config.cooldown) {
+    }
+    // Check if in cooldown state
+    for (let i = this.cooldownPeriods.length - 1; i >= 0; i--) {
+        if (timestamp <= this.cooldownPeriods[i].end) {
             return STATE_COOLDOWN;
         }
     }

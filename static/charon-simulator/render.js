@@ -33,6 +33,11 @@ function draw(canvas, timestamp, log, configs, id) {
             drawSegment(canvas, timestamp, i, start, end, '#ddd');
         });
 
+        // Draw all historic cooldown periods
+        log.tiers[i].cooldownPeriods.forEach(period => {
+            drawSegment(canvas, timestamp, i, period.start, period.end, '#fdd');
+        });
+
         // Draw current active and cooldown periods
         let currentState = log.tiers[i].state(configs[i], timestamp);
         if (currentState !== STATE_INACTIVE) {
