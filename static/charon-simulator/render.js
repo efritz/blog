@@ -46,7 +46,7 @@ function draw(canvas, timestamp, log, configs, id) {
             let lastPeriod = log.tiers[i].activePeriods[log.tiers[i].activePeriods.length - 1];
             let a = lastPeriod.start;
             let b = a + configs[i].active;
-            drawSegment(canvas, timestamp, i, a, b, i === activeIndex ? '#0f0' : '#ddd');
+            drawSegment(canvas, timestamp, i, a, b, '#aaf');
         }
 
         if (log.activeTier(configs, timestamp) == i) {
@@ -59,7 +59,7 @@ function draw(canvas, timestamp, log, configs, id) {
                     y: getTierTop(i) + TIER_HEIGHT / 4,
                     width: d - e,
                     height: TIER_HEIGHT / 2,
-                    fillStyle: '#f99',
+                    fillStyle: 'rgba(0, 0, 0, 0)', // Clear fill
                     strokeStyle: '#000',
                     fromCenter: false,
                 });
@@ -265,7 +265,7 @@ function drawHit(canvas, timestamp, tier, hit, id) {
         x: CANVAS_WIDTH - timestamp + hit.timestamp - r,
         y: getTierTop(tier) + TIER_HEIGHT / 2 - r,
         radius: r,
-        fillStyle: hit.count == 0 ? '#f00' : (id == hit.id ? '#fff' : '#999'),
+        fillStyle: hit.count == 0 ? '#f00' : (id == hit.id ? '#0f0' : '#999'), // Changed '#fff' to '#0f0' for green
         strokeStyle: '#000',
         fromCenter: false,
     });
@@ -333,17 +333,6 @@ function drawHitTime(canvas, timestamp, time, weight, tiers) {
 }
 
 function drawOutline(canvas, i, isActive) {
-    if (isActive) {
-        canvas.drawRect({
-            x: 0,
-            y: getTierTop(i),
-            width: CANVAS_WIDTH,
-            height: TIER_HEIGHT,
-            fillStyle: '#aaf',
-            fromCenter: false,
-        });
-    }
-
     canvas.drawRect({
         x: 0,
         y: getTierTop(i),
