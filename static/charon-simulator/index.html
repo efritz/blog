@@ -11,30 +11,33 @@
 
 <body>
     <div id="container">
-        <h1>Charon (Rate Limiting) Simulator</h1>
-        <div class="description">
-            <p>
-                <a href="TODO">Charon</a> is a rate limiting system with a unique <strong>bursting</strong> algorithm.
-            </p>
-            <p>
-                TODO: Add more description about the Charon system and how this simulator works.
-            </p>
-        </div>
+        <h1>Charon Simulator</h1>
 
-        <hr />
+        <div class="description-section">
+            <div class="collapsible-section">
+                <h3 class="collapsible-header">Charon (Rate Limiter) <span class="toggle-icon">▼</span></h3>
+                <div class="collapsible-content description">
+                    <p>
+                        <a href="TODO">Charon</a> is a rate limiting system with a unique <strong>bursting</strong> algorithm.
+                    </p>
 
-        <div class="tier-section">
-            <div class="help-text">
-                <dl>
-                    <dt>Limit:</dt>
-                    <dd>The maximum number of requests allowed within the window.</dd>
-                    <dt>Window:</dt>
-                    <dd>The time period (in seconds) over which the limit is applied.</dd>
-                    <dt>Active Time:</dt>
-                    <dd>The duration (in seconds) the tier remains active after being triggered.</dd>
-                    <dt>Cooldown Time:</dt>
-                    <dd>The waiting period (in seconds) after the active time before the tier can be triggered again.</dd>
-                </dl>
+                    <p>
+                        TODO: Add more description about the Charon system and how this simulator works.
+                    </p>
+
+                    <div class="help-text">
+                        <dl>
+                            <dt>Limit:</dt>
+                            <dd>The maximum number of requests allowed within the window.</dd>
+                            <dt>Window:</dt>
+                            <dd>The time period (in seconds) over which the limit is applied.</dd>
+                            <dt>Active Time:</dt>
+                            <dd>The duration (in seconds) the tier remains active after being triggered.</dd>
+                            <dt>Cooldown Time:</dt>
+                            <dd>The waiting period (in seconds) after the active time before the tier can be triggered again.</dd>
+                        </dl>
+                    </div>
+                </div>
             </div>
             <table id="tiers" class="table">
                 <thead>
@@ -52,8 +55,6 @@
                 <i class="fas fa-plus-circle"></i> Add New Tier
             </button>
         </div>
-
-        <hr />
 
         <div id="canvasContainer">
             <div class="canvasWrapper">

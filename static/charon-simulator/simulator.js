@@ -171,6 +171,14 @@ $(document).ready(function() {
     $('#tiers').on('input', 'input[type="range"]', validateConfig);
     updateAddButton(); // Call this to set the initial state of the button
 
+    // Add collapsible functionality
+    $('.collapsible-header').click(function() {
+        $(this).next('.collapsible-content').slideToggle();
+        $(this).find('.toggle-icon').text(function(_, text) {
+            return text === '▼' ? '▲' : '▼';
+        });
+    });
+
     loadInitialTiers();
     updateTierNumbers();
     validateConfig();
@@ -213,4 +221,8 @@ $(document).ready(function() {
     setInterval(function() {
         draw($('#canvas'), Date.now() / 10, ratelog, configs);
     }, 30);
+
+    // Initially expand the sections
+    $('.collapsible-content').show();
+    $('.toggle-icon').text('▼');
 });
