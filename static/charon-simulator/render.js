@@ -23,6 +23,8 @@ function draw(canvas, timestamp, log, configs, id) {
         drawOutline(canvas, i, log.activeTier(configs, timestamp) == i);
     }
 
+    drawSecondLines(canvas, timestamp);
+
     let activeIndex = log.activeTier(configs, timestamp);
 
     for (var i = 0; i < log.tiers.length; i++) {
@@ -131,9 +133,53 @@ function drawNow(canvas, timestamp) {
         x2: CANVAS_WIDTH,
         y2: CANVAS_HEIGHT,
         strokeStyle: '#000',
+        strokeWidth: 2
     });
 
     $('#timestamp').text(Math.floor(timestamp / 100));
+}
+
+function drawSecondLines(canvas, timestamp) {
+    const secondWidth = 100; // 100 units = 1 second
+    const numSeconds = Math.ceil(CANVAS_WIDTH / secondWidth);
+    const ctx = canvas[0].getContext('2d');
+    ctx.font = '10px Arial, sans-serif';
+
+    for (let i = 0; i < numSeconds; i++) {
+        const x = CANVAS_WIDTH - i * secondWidth;
+        const isLabeled = i % 5 === 0 || i === 0;
+
+        canvas.drawLine({
+            x1: x,
+            y1: 0,
+            x2: x,
+            y2: CANVAS_HEIGHT,
+            strokeStyle: isLabeled ? '#aaa' : '#ddd',
+            strokeWidth: isLabeled ? 1.5 : 1
+        });
+
+        // Add text label for every 5th second
+        if (isLabeled) {
+            let label = i === 0 ? 'now' :
+                        i === 5 ? '5s ago' : 
+                        i === 10 ? '10s ago' : 
+                        `${i}s ago`;
+
+            const textWidth = ctx.measureText(label).width;
+            const textX = x - textWidth;
+
+            canvas.drawText({
+                fillStyle: '#444',
+                x: textX,
+                y: CANVAS_HEIGHT - 3,
+                text: label,
+                fontSize: 10,
+                fontFamily: 'Arial, sans-serif',
+                align: 'left',
+                baseline: 'bottom'
+            });
+        }
+    }
 }
 
 function formatTimeRemaining(seconds) {
