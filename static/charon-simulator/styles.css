@@ -22,7 +22,7 @@ h2 {
     font-size: 1.2em;
 }
 
-#hit, #add {
+#hit {
     height: 60px;
 }
 
@@ -33,6 +33,13 @@ h2 {
     line-height: 1.5;
     max-width: 800px;
     margin: 0 auto;
+}
+
+.tier-section {
+    text-align: justify;
+    color: #333;
+    padding: 10px 0;
+    line-height: 1.5;
 }
 
 /* Canvas styles */
@@ -99,6 +106,7 @@ input[type="range"] {
     background-color: #f0f0f0;
     padding: 20px;
     border-radius: 5px;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -124,7 +132,6 @@ input[type="range"] {
 .request-type {
     display: flex;
     justify-content: flex-start;
-    margin-bottom: 10px;
 }
 
 .request-type label {
@@ -198,30 +205,76 @@ input[type="range"] {
 /* Table styles */
 .tier-section {
     margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.tier-section .button-container {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.tier-section > *:not(.table) {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .help-text {
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 5px;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 20px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.help-text p {
-    margin: 0 0 10px 0;
-    font-size: 14px;
-    line-height: 1.4;
+.help-text dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 20px;
+    margin: 0;
 }
 
-.help-text p:last-child {
-    margin-bottom: 0;
+.help-text dt {
+    font-weight: bold;
+    color: #007bff;
+    text-align: right;
+}
+
+.help-text dd {
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.help-text dd:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+@media (max-width: 600px) {
+    .help-text dl {
+        grid-template-columns: 1fr;
+    }
+
+    .help-text dt {
+        text-align: left;
+        padding-top: 10px;
+    }
+
+    .help-text dt:first-child {
+        padding-top: 0;
+    }
 }
 
 .table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .table th {
@@ -364,7 +417,7 @@ input[type="range"] {
         align-items: stretch;
     }
 
-    .button-container, #hit, #add,
+    .button-container, #hit,
     input[type="range"] {
         width: 100%;
     }

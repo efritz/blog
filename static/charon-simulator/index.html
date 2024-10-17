@@ -24,12 +24,17 @@
         <hr />
 
         <div class="tier-section">
-            <h2>Rate Limiting Tiers</h2>
             <div class="help-text">
-                <p><strong>Limit:</strong> The maximum number of requests allowed within the window.</p>
-                <p><strong>Window:</strong> The time period (in seconds) over which the limit is applied.</p>
-                <p><strong>Active Time:</strong> The duration (in seconds) the tier remains active after being triggered.</p>
-                <p><strong>Cooldown Time:</strong> The waiting period (in seconds) after the active time before the tier can be triggered again.</p>
+                <dl>
+                    <dt>Limit:</dt>
+                    <dd>The maximum number of requests allowed within the window.</dd>
+                    <dt>Window:</dt>
+                    <dd>The time period (in seconds) over which the limit is applied.</dd>
+                    <dt>Active Time:</dt>
+                    <dd>The duration (in seconds) the tier remains active after being triggered.</dd>
+                    <dt>Cooldown Time:</dt>
+                    <dd>The waiting period (in seconds) after the active time before the tier can be triggered again.</dd>
+                </dl>
             </div>
             <table id="tiers" class="table">
                 <thead>
@@ -43,15 +48,24 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <button id="add" type="button" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Add New Tier
+            </button>
+        </div>
+
+        <div id="canvasContainer">
+            <div class="canvasWrapper">
+                <div id="canvas-info">
+                    <span id="hits-in-window"></span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                </div>
             </div>
+        </div>
 
         <div class="controls-section">
             <div class="form-group controls-row">
-                <div class="button-container">
-                    <button id="add" type="button" class="btn btn-success">
-                        <i class="fas fa-plus-circle"></i> Add New Tier
-                    </button>
-                </div>
                 <div class="button-container">
                     <button id="hit" class="btn btn-primary">
                         Make request
@@ -61,10 +75,10 @@
                 <div class="slider-container">
                     <div class="request-type">
                         <label>
-                            <input type="radio" name="request-type" value="single" checked> Single request
+                            <input type="radio" name="request-type" value="single" checked> Make single request
                         </label>
                         <label>
-                            <input type="radio" name="request-type" value="batch"> Batch request
+                            <input type="radio" name="request-type" value="batch"> Reserve multiple requests
                         </label>
                     </div>
                     <div id="batch-controls" style="display: none;">
@@ -81,17 +95,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="canvasContainer">
-            <div class="canvasWrapper">
-                <div id="canvas-info">
-                    <span id="hits-in-window"></span>
-                </div>
-                <div class="canvas-container">
-                    <canvas id="canvas"></canvas>
                 </div>
             </div>
         </div>
