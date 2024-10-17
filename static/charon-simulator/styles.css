@@ -268,14 +268,31 @@ input[type="range"] {
     margin-right: 10px;
 }
 
+/* Specific style for the limit label */
+.table td:nth-child(2) .label-wrapper {
+    min-width: 120px;
+}
+
 .slider-label {
     font-size: 14px;
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
     font-weight: bold;
 }
 
 input[type="range"] {
     flex-grow: 1;
     width: auto;
+}
+
+/* Adjust the table layout for better responsiveness */
+@media (max-width: 1200px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }
 
 @media (max-width: 991px) {

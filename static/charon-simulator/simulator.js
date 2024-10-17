@@ -25,6 +25,11 @@ function addRow(limit, window, active, cooldown) {
         
         slider.on('input', function() {
             updateSliderLabel($(this), format);
+            if (format === 'ns') {
+                // Update limit label when window changes
+                var row = $(this).closest('tr');
+                updateSliderLabel(row.find('input[type="range"]:eq(0)'), 'n/s');
+            }
             validateConfig();
         });
         return cell;
@@ -44,12 +49,36 @@ function addRow(limit, window, active, cooldown) {
 }
 
 function updateSliderLabel(slider, format) {
-    var value = slider.val();
+    var value = parseInt(slider.val());
     var label = slider.siblings('.label-wrapper').find('.slider-label');
     if (format === 'n/s') {
-        label.text(value + '/s');
+        var row = slider.closest('tr');
+        var windowValue = parseInt(row.find('input[type="range"]:eq(1)').val());
+        label.text(value + ' per ' + formatTime(windowValue));
     } else {
-        label.text(value + 's');
+        label.text(formatTime(value));
+    }
+}
+
+function formatTime(value) {
+    if (value < 60) {
+        return value + 's';
+    } else if (value < 3600) {
+        var minutes = Math.floor(value / 60);
+        var seconds = value % 60;
+        if (seconds === 0) {
+            return minutes + 'm';
+        } else {
+            return minutes + 'm' + seconds + 's';
+        }
+    } else {
+        var hours = Math.floor(value / 3600);
+        var remainingMinutes = Math.floor((value % 3600) / 60);
+        if (remainingMinutes === 0) {
+            return hours + 'h';
+        } else {
+            return hours + 'h' + remainingMinutes + 'm';
+        }
     }
 }
 
