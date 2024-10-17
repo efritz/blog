@@ -120,6 +120,19 @@ function onAdd() {
     addRow(5, 5, 5, 0);
     resizeCanvas();
     validateConfig();
+    updateAddButton();
+}
+
+function updateAddButton() {
+    var tierCount = $('#tiers tbody tr').length;
+    var addButton = $('#add');
+    if (tierCount >= 4) {
+        addButton.prop('disabled', true);
+        addButton.html('No more than four tiers allowed');
+    } else {
+        addButton.prop('disabled', false);
+        addButton.html('<i class="fas fa-plus-circle"></i> Add New Tier');
+    }
 }
 
 function onDelete(event) {
@@ -127,6 +140,7 @@ function onDelete(event) {
     updateTierNumbers();
     validateConfig();
     resizeCanvas();
+    updateAddButton();
 }
 
 function applyHit() {
@@ -155,6 +169,7 @@ $(document).ready(function() {
     $('#add').click(onAdd);
     $('.delete').click(onDelete);
     $('#tiers').on('input', 'input[type="range"]', validateConfig);
+    updateAddButton(); // Call this to set the initial state of the button
 
     loadInitialTiers();
     updateTierNumbers();

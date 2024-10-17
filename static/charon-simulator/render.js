@@ -136,6 +136,29 @@ function drawNow(canvas, timestamp) {
     $('#timestamp').text(Math.floor(timestamp / 100));
 }
 
+function formatTimeRemaining(seconds) {
+    seconds = Math.ceil(seconds);
+    if (seconds < 60) {
+        return seconds + 's';
+    } else if (seconds < 3600) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes}m${remainingSeconds > 0 ? remainingSeconds + 's' : ''}`;
+    } else {
+        const hours = Math.floor(seconds / 3600);
+        const remainingMinutes = Math.floor((seconds % 3600) / 60);
+        const remainingSeconds = seconds % 60;
+        let result = `${hours}h`;
+        if (remainingMinutes > 0 || remainingSeconds > 0) {
+            result += `${remainingMinutes}m`;
+        }
+        if (remainingSeconds > 0) {
+            result += `${remainingSeconds}s`;
+        }
+        return result;
+    }
+}
+
 function updateStatusText(log, configs, timestamp) {
     let activeIndex = log.activeTier(configs, timestamp);
     var hitsInWindow = 0;
@@ -159,7 +182,9 @@ function updateStatusText(log, configs, timestamp) {
 
     if (activeIndex >= 0) {
         let activeTierSeconds = configs[activeIndex].active / 100;
-        $('#hits-in-window').text(`${hitsInWindow}/${windowSize} requests in current window (${timeLeftInTier.toFixed(1)}/${activeTierSeconds.toFixed(1)}s active time remaining)`);
+        let formattedTimeLeft = formatTimeRemaining(timeLeftInTier);
+        let formattedTotalTime = formatTimeRemaining(activeTierSeconds);
+        $('#hits-in-window').text(`${hitsInWindow}/${windowSize} requests in current window (${formattedTimeLeft}/${formattedTotalTime} active time remaining)`);
     } else {
         $('#hits-in-window').text('No requests in window');
     }
