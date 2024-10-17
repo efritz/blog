@@ -40,7 +40,7 @@ function addRow(limit, window, active, cooldown) {
     row.append(createSliderCell(limit, 1, 1000, 1, 'n/s'));
     row.append(createSliderCell(window, 1, 3600, 1, 'ns'));
     row.append(createSliderCell(active, 1, 3600, 1, 'ns'));
-    row.append(createSliderCell(cooldown, 1, 3600, 1, 'ns'));
+    row.append(createSliderCell(cooldown, 0, 3600, 1, 'ns')); // Changed min value to 0 for cooldown
 
     $('#tiers tbody').append(row);
     row.find('input[type="range"]').each(function() {

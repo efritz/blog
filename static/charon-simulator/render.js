@@ -4,7 +4,7 @@ let TIER_HEIGHT;   // dynamic
 let TIER_PADDING;  // dynamic
 
 let TIER_BUFFER = 5;
-let TIER_MARGIN = 20;
+let TIER_MARGIN = 25;
 
 function configUpdated() {
     TIER_HEIGHT = (CANVAS_HEIGHT - (TIER_MARGIN * 2) - TIER_BUFFER * (configs.length - 2)) / configs.length;
@@ -25,15 +25,7 @@ function draw(canvas, timestamp, log, configs, id) {
         drawOutline(canvas, i, log.activeTier(configs, timestamp) == i);
     }
 
-    // Draw the window bracket for the active tier
     let activeIndex = log.activeTier(configs, timestamp);
-    if (activeIndex >= 0) {
-        let activeTier = log.tiers[activeIndex];
-        let config = configs[activeIndex];
-        let lastPeriodStart = activeTier.activePeriods.length > 0 ? activeTier.activePeriods[activeTier.activePeriods.length - 1].start : timestamp;
-        let elapsedTime = timestamp - lastPeriodStart;
-        drawWindowBrace(canvas, config.window, Math.min(elapsedTime, config.window));
-    }
 
     for (var i = 0; i < log.tiers.length; i++) {
         // Draw all historic active periods
@@ -121,6 +113,16 @@ function draw(canvas, timestamp, log, configs, id) {
 
     drawNow(canvas, timestamp);
     updateStatusText(log, configs, timestamp);
+
+    // Draw the window bracket for the active tier
+    if (activeIndex >= 0) {
+        let activeTier = log.tiers[activeIndex];
+        let config = configs[activeIndex];
+        let lastPeriodStart = activeTier.activePeriods.length > 0 ? activeTier.activePeriods[activeTier.activePeriods.length - 1].start : timestamp;
+        let elapsedTime = timestamp - lastPeriodStart;
+        let bracketY = getTierTop(activeIndex) + TIER_HEIGHT / 4 - 25; // Raise the bracket to touch the top of the rectangle
+        drawWindowBracket(canvas, config.window, Math.min(elapsedTime, config.window), bracketY);
+    }
 }
 
 function clear(canvas) {
@@ -151,7 +153,7 @@ function drawSecondLines(canvas, timestamp) {
     const secondWidth = 100; // 100 units = 1 second
     const numSeconds = Math.ceil(CANVAS_WIDTH / secondWidth);
     const ctx = canvas[0].getContext('2d');
-    ctx.font = '10px Arial, sans-serif';
+    ctx.font = '12px Arial, sans-serif';
 
     for (let i = 0; i < numSeconds; i++) {
         const x = CANVAS_WIDTH - i * secondWidth;
@@ -181,7 +183,7 @@ function drawSecondLines(canvas, timestamp) {
                 x: textX,
                 y: CANVAS_HEIGHT - 3,
                 text: label,
-                fontSize: 10,
+                fontSize: 12,
                 fontFamily: 'Arial, sans-serif',
                 align: 'left',
                 baseline: 'bottom'
@@ -375,29 +377,34 @@ function getTierTop(tier) {
     return CANVAS_HEIGHT - TIER_MARGIN - TIER_HEIGHT * (tier + 1) - TIER_BUFFER * (tier - 1);
 }
 
-function drawWindowBrace(canvas, windowSize, currentWidth) {
-    const braceHeight = 20;
+function drawWindowBracket(canvas, windowSize, currentWidth, y) {
+    const bracketHeight = 20;
+    const textHeight = 15;
+    const endLineLength = 10;
     const ctx = canvas[0].getContext('2d');
     ctx.font = '12px Arial, sans-serif';
     
-    const startX = CANVAS_WIDTH - windowSize;
+    const startX = CANVAS_WIDTH - currentWidth;
+    const endX = CANVAS_WIDTH;
+    const midX = (startX + endX) / 2;
     
-    // Draw the horizontal line
-    canvas.drawLine({
-        x1: CANVAS_WIDTH - currentWidth,
-        y1: braceHeight,
-        x2: CANVAS_WIDTH,
-        y2: braceHeight,
-        strokeStyle: '#000',
-        strokeWidth: 2
-    });
+    // Draw the bracket
+    ctx.beginPath();
+    ctx.moveTo(startX, y + bracketHeight);
+    ctx.lineTo(startX, y + bracketHeight - endLineLength);
+    ctx.lineTo(endX, y + bracketHeight - endLineLength);
+    ctx.lineTo(endX, y + bracketHeight);
+    
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 2;
+    ctx.stroke();
     
     // Add the label
     const label = `Window (${windowSize / 100}s)`;
     canvas.drawText({
         fillStyle: '#000',
-        x: startX + windowSize / 2,
-        y: braceHeight / 2,
+        x: midX,
+        y: y + bracketHeight - textHeight - 5,
         text: label,
         fontSize: 12,
         fontFamily: 'Arial, sans-serif',
