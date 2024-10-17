@@ -9,15 +9,48 @@ function addRow(limit, window, active, cooldown) {
     deleter.click(onDelete);
     tierCell.append(tierNumber).append(deleter);
     row.append(tierCell);
-    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + limit + '">')));
-    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + window + '">')));
-    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + active + '">')));
-    row.append($('<td />').append($('<input type="number" class="form-control form-control-sm" min="0" value="' + cooldown + '">')));
+
+    function createSliderCell(value, min, max, step, format) {
+        var cell = $('<td />');
+        var wrapper = $('<div class="slider-wrapper"></div>');
+        var labelWrapper = $('<div class="label-wrapper"></div>');
+        var label = $('<span class="slider-label"></span>');
+        var slider = $('<input type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '">');
+        labelWrapper.append(label);
+        wrapper.append(labelWrapper).append(slider);
+        cell.append(wrapper);
+        
+        // Set initial label text
+        updateSliderLabel(slider, format);
+        
+        slider.on('input', function() {
+            updateSliderLabel($(this), format);
+            validateConfig();
+        });
+        return cell;
+    }
+
+    row.append(createSliderCell(limit, 1, 1000, 1, 'n/s'));
+    row.append(createSliderCell(window, 1, 3600, 1, 'ns'));
+    row.append(createSliderCell(active, 1, 3600, 1, 'ns'));
+    row.append(createSliderCell(cooldown, 1, 3600, 1, 'ns'));
 
     $('#tiers tbody').append(row);
-    row.find('input').change(validateConfig);
+    row.find('input[type="range"]').each(function() {
+        updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
+    });
     updateTierNumbers();
     validateConfig();
+}
+
+function updateSliderLabel(slider, format) {
+    var value = slider.val();
+    var label = slider.siblings('.label-wrapper').find('.slider-label');
+    if (format === 'n/s') {
+        label.text(value + '/s');
+    } else {
+        label.text(value + 's');
+    }
 }
 
 function loadInitialTiers() {
@@ -44,7 +77,7 @@ function loadInitialTiers() {
 function validateConfig() {
     configs = [];
     $('#tiers tbody tr').each(function(i, c) {
-        configs.push(new BTConfig(...$(c).find('input').map(function(i, v) {
+        configs.push(new BTConfig(...$(c).find('input[type="range"]').map(function(i, v) {
             return $(v).val();
         })));
     });
@@ -55,6 +88,7 @@ function validateConfig() {
 function onAdd() {
     addRow(5, 5, 5, 0);
     resizeCanvas();
+    validateConfig();
 }
 
 function onDelete(event) {
@@ -89,7 +123,7 @@ $(document).ready(function() {
     $('#hit').click(applyHit);
     $('#add').click(onAdd);
     $('.delete').click(onDelete);
-    $('#tiers input').change(validateConfig);
+    $('#tiers').on('input', 'input[type="range"]', validateConfig);
 
     loadInitialTiers();
     updateTierNumbers();
