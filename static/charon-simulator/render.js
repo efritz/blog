@@ -392,10 +392,14 @@ function drawWindowBracket(canvas, windowSize, currentWidth, y) {
     ctx.stroke();
     
     // Add the label
-    const label = `Window (${windowSize / 100}s)`;
+    const formattedTime = formatTimeRemaining(windowSize / 100);
+    const label = `Window (${formattedTime})`;
+    const textWidth = ctx.measureText(label).width;
+    let textX = Math.max(midX, CANVAS_WIDTH / 2 + textWidth / 2);
+    
     canvas.drawText({
         fillStyle: '#000',
-        x: midX,
+        x: textX,
         y: y + bracketHeight - textHeight - 5,
         text: label,
         fontSize: 12,
