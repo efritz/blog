@@ -37,7 +37,7 @@ input[type="range"] {
 .description {
     text-align: justify;
     color: #333;
-    padding: 10px 0;
+    padding: 10px;
     line-height: 1.5;
     max-width: 800px;
     margin: 0 auto;
@@ -80,6 +80,49 @@ a.footnote {
     text-align: center;
     padding: 20px;
     display: none;
+}
+
+/* Collapsible section styles */
+
+.collapsible-section {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.collapsible-header {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    margin: 0;
+}
+
+.collapsible-header:hover {
+    background-color: #e0e0e0;
+}
+
+.collapsible-content {
+    padding: 10px;
+    background-color: #fff;
+}
+
+.toggle-icon {
+    font-size: 12px;
+}
+
+.description-section {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /* Canvases */

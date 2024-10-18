@@ -657,6 +657,14 @@ function setupCanvasListeners(
 }
 
 $(document).ready(() => {
+    // Add collapsible functionality
+    $('.collapsible-header').click(function() {
+        $(this).next('.collapsible-content').slideToggle();
+        $(this).find('.toggle-icon').text(function(_, text) {
+            return text === '▼' ? '▲' : '▼';
+        });
+    });
+
     populateSelectOptions();
     let rChoice = $('#rChoice').val();
     let thetaChoice = $('#thetaChoice').val();
@@ -752,4 +760,8 @@ $(document).ready(() => {
 
     generateDots();
     drawGraphs();
+
+    // Initially expand the description section
+    $('.collapsible-content').show();
+    $('.toggle-icon').text('▼');
 });
