@@ -424,73 +424,61 @@ function drawLegend(canvas) {
     ctx.textBaseline = 'middle';
     ctx.fillStyle = '#000';
 
-    canvas.drawText({
-        text: '',
-        x: 0,
-        y: 0,
-        fontSize: 12,
-        fillStyle: '#000',
-        fontFamily: 'Arial, sans-serif',
-        align: 'middle',
-        baseline: 'middle'
+    const legendItems = [
+        { type: 'arc', fillStyle: '#0f0', strokeStyle: '#000', text: 'Granted' },
+        { type: 'cross', strokeStyle: '#f00', text: 'Rejected' },
+        { type: 'rect', fillStyle: '#aaf', strokeStyle: '#000', text: 'Tier is active' },
+        { type: 'rect', fillStyle: '#fdd', strokeStyle: '#000', text: 'Tier is in cooldown' }
+    ];
+
+    const itemWidth = 120;
+    const totalWidth = itemWidth * legendItems.length;
+    let x = (CANVAS_WIDTH - totalWidth) / 2;
+
+    legendItems.forEach(item => {
+        switch(item.type) {
+            case 'arc':
+                canvas.drawArc({
+                    x: x + 5,
+                    y: 8,
+                    radius: 5,
+                    fillStyle: item.fillStyle,
+                    strokeStyle: item.strokeStyle
+                });
+                break;
+
+            case 'cross':
+                canvas.drawLine({
+                    x1: x,
+                    y1: 4,
+                    x2: x + 10,
+                    y2: 14,
+                    strokeStyle: item.strokeStyle
+                });
+                canvas.drawLine({
+                    x1: x,
+                    y1: 14,
+                    x2: x + 10,
+                    y2: 4,
+                    strokeStyle: item.strokeStyle
+                });
+                break;
+
+            case 'rect':
+                canvas.drawRect({
+                    x: x,
+                    y: 9,
+                    width: 10,
+                    height: 10,
+                    fillStyle: item.fillStyle,
+                    strokeStyle: item.strokeStyle
+                });
+                break;
+        }
+
+        ctx.fillText(item.text, x + 15, 10);
+        x += itemWidth;
     });
-
-    let x = 20;
-
-    // Granted request
-    canvas.drawArc({
-        x: x,
-        y: 10,
-        radius: 5,
-        fillStyle: '#0f0',
-        strokeStyle: '#000'
-    });
-    ctx.fillText('Grant', x + 10, 12);
-
-    x += 60;
-
-    // Rejected request
-    canvas.drawLine({
-        x1: x - 5,
-        y1: 10 - 5,
-        x2: x + 5,
-        y2: 10 + 5,
-        strokeStyle: '#f00'
-    });
-    canvas.drawLine({
-        x1: x - 5,
-        y1: 10 + 5,
-        x2: x + 5,
-        y2: 10 - 5,
-        strokeStyle: '#f00'
-    });
-    ctx.fillText('Rejection', x + 10, 12);
-    
-    x += 80;
-
-    // Active period
-    canvas.drawRect({
-        x: x,
-        y: 10,
-        width: 10,
-        height: 10,
-        fillStyle: '#aaf',
-        strokeStyle: '#000'
-    });
-    ctx.fillText('Active Period', x + 10, 12);
-
-    x += 100;
-
-    // Cooldown period
-    canvas.drawRect({
-        x: x,
-        y: 10,
-        width: 10,
-        height: 10,
-        fillStyle: '#fdd',
-        strokeStyle: '#000'
-    });
-    ctx.fillText('Cooldown Period', x + 10, 12);
 }
 
 $(document).ready(function() {

@@ -41,6 +41,7 @@ input[type="range"] {
     font-size: 14px;
     cursor: pointer;
     line-height: 1.3;
+    touch-action: manipulation;
 }
 
 .btn-primary {
@@ -212,11 +213,9 @@ input[type="range"] {
 }
 
 #hits-in-window {
-    text-align: right;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-weight: bold;
+    text-align: center;
+    width: 100%;
 }
 
 /* Tier table styles */
@@ -282,18 +281,13 @@ input[type="range"] {
 }
 
 .button-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-#add, #hit {
-    height: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 #hit {
     white-space: nowrap;
+    width: 100%;
 }
 
 .request-type {
