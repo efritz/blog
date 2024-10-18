@@ -43,17 +43,6 @@
 
         <hr />
 
-        <div id="canvasContainer">
-            <div class="canvasWrapper">
-                <div id="canvas-info">
-                    <span id="hits-in-window"></span>
-                </div>
-                <div class="canvas-container">
-                    <canvas id="canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
         <div class="tiers-wrapper">
             <table id="tiers" class="table">
                 <thead>
@@ -67,19 +56,30 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <button id="add" type="button" class="btn btn-success">
-                <i class="fas fa-plus-circle"></i> Add New Tier
-            </button>
+            <div class="button-row">
+                <button id="add" type="button" class="btn btn-success">
+                    <i class="fas fa-plus-circle"></i> Add New Tier
+                </button>
+                <button id="hit" class="btn btn-primary">
+                    Make request
+                    <span>(or press spacebar)</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="canvasContainer">
+            <div class="canvasWrapper">
+                <div id="canvas-info">
+                    <span id="hits-in-window"></span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
         </div>
 
         <div class="controls-section">
             <div class="form-group controls-row">
-                <div class="button-container">
-                    <button id="hit" class="btn btn-primary">
-                        Make request
-                        <span>(or press spacebar)</span>
-                    </button>
-                </div>
                 <div class="slider-container">
                     <div class="request-type">
                         <label>
