@@ -4,8 +4,8 @@ let TIER_HEIGHT;   // dynamic
 let TIER_PADDING;  // dynamic
 
 let TIER_BUFFER = 5;
-let TIER_TOP_MARGIN = 30;
-let TIER_BOTTOM_MARGIN = 25;
+let TIER_TOP_MARGIN = 20;
+let TIER_BOTTOM_MARGIN = 45;
 
 function configUpdated() {
     TIER_HEIGHT = (CANVAS_HEIGHT - TIER_TOP_MARGIN - TIER_BOTTOM_MARGIN - TIER_BUFFER * (configs.length - 2)) / configs.length;
@@ -121,7 +121,7 @@ function draw(canvas, timestamp, log, configs, id) {
         let config = configs[activeIndex];
         let lastPeriodStart = activeTier.activePeriods.length > 0 ? activeTier.activePeriods[activeTier.activePeriods.length - 1].start : timestamp;
         let elapsedTime = timestamp - lastPeriodStart;
-        let bracketY = getTierTop(activeIndex) + TIER_HEIGHT / 4 - 25; // Raise the bracket to touch the top of the rectangle
+        let bracketY = getTierTop(activeIndex) + TIER_HEIGHT * 3/4 + 10; // Position the bracket at the bottom of the rectangle
         drawWindowBracket(canvas, config.window, Math.min(elapsedTime, config.window), bracketY);
     }
 
@@ -370,9 +370,8 @@ function getTierTop(tier) {
 }
 
 function drawWindowBracket(canvas, windowSize, currentWidth, y) {
-    const bracketHeight = 20;
-    const textHeight = 15;
-    const endLineLength = 10;
+    const bracketHeight = 10;
+    const endLineLength = 5;
     const ctx = canvas[0].getContext('2d');
     ctx.font = '12px Arial, sans-serif';
     
@@ -382,10 +381,10 @@ function drawWindowBracket(canvas, windowSize, currentWidth, y) {
     
     // Draw the bracket
     ctx.beginPath();
-    ctx.moveTo(startX, y + bracketHeight);
-    ctx.lineTo(startX, y + bracketHeight - endLineLength);
-    ctx.lineTo(endX, y + bracketHeight - endLineLength);
-    ctx.lineTo(endX, y + bracketHeight);
+    ctx.moveTo(startX, y);
+    ctx.lineTo(startX, y + endLineLength);
+    ctx.lineTo(endX, y + endLineLength);
+    ctx.lineTo(endX, y);
     
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
@@ -400,12 +399,12 @@ function drawWindowBracket(canvas, windowSize, currentWidth, y) {
     canvas.drawText({
         fillStyle: '#000',
         x: textX,
-        y: y + bracketHeight - textHeight - 5,
+        y: y + bracketHeight + 2, // Reduced space between bracket and text
         text: label,
         fontSize: 12,
         fontFamily: 'Arial, sans-serif',
         align: 'center',
-        baseline: 'middle'
+        baseline: 'top'
     });
 }
 
