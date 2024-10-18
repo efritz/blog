@@ -31,11 +31,12 @@ h2 {
     color: #333;
     padding: 10px 0;
     line-height: 1.5;
-    max-width: 800px;
     margin: 0 auto;
 }
 
 .description-section {
+    max-width: 1200px;
+    margin: 0 auto;
     margin-top: 20px;
 }
 
@@ -110,6 +111,8 @@ input[type="range"] {
     background-color: #f0f0f0;
     padding: 20px;
     border-radius: 5px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .controls-row {
@@ -228,7 +231,6 @@ input[type="range"] {
 }
 
 .tier-section > *:not(.table) {
-    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -238,7 +240,6 @@ input[type="range"] {
     border: 1px solid #e9ecef;
     border-radius: 5px;
     padding: 20px;
-    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -269,7 +270,6 @@ input[type="range"] {
 
 .collapsible-section {
     margin-bottom: 20px;
-    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
     border: 1px solid #e0e0e0;
@@ -345,10 +345,12 @@ input[type="range"] {
 }
 
 .tier-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-evenly;
+    
+}
+
+.tier-wrapper span {
+    display: block;
+    text-align: center;
 }
 
 .delete {
@@ -431,11 +433,15 @@ input[type="range"] {
 }
 
 /* Responsive styles */
-@media (max-width: 1156px) {
     .table {
         overflow-x: auto;
         white-space: nowrap;
         width: 100%;
+    }
+
+    .tiers-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     .label-wrapper {
@@ -451,7 +457,6 @@ input[type="range"] {
         flex-direction: column;
         align-items: stretch;
     }
-}
 
 @media (max-width: 860px) {
     .request-type {
