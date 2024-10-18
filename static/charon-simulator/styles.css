@@ -121,6 +121,7 @@ input[type="range"] {
     cursor: pointer;
     font-size: 18px;
     transition: color 0.3s ease;
+    margin-top: 5px;
 }
 
 .delete:hover {
@@ -347,6 +348,7 @@ input[type="range"] {
     flex: 1 1 auto;
     min-width: 300px;
     align-items: stretch;
+    /* display: none; */
 }
 
 td .slider-wrapper {
