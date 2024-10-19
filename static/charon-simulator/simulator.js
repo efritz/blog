@@ -12,50 +12,77 @@ function addRow(limit, window, active, cooldown) {
     tierCell.append(tierWrapper);
     row.append(tierCell);
 
-    function createSliderCell(value, min, max, step, format) {
+    function createSliderCell(value, values, format) {
         var cell = $('<td />');
         var wrapper = $('<div class="slider-wrapper"></div>');
         var labelWrapper = $('<div class="label-wrapper"></div>');
         var label = $('<span class="slider-label"></span>');
-        var slider = $('<input type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '">');
+        var slider = $('<div class="custom-slider"></div>');
+        var select = $('<select style="display:none;"></select>');
+        
+        values.forEach(function(val) {
+            select.append($('<option></option>').attr('value', val).text(val));
+        });
+        
+        select.val(value);
         labelWrapper.append(label);
-        wrapper.append(labelWrapper).append(slider);
+        wrapper.append(labelWrapper).append(slider).append(select);
         cell.append(wrapper);
         
-        // Set initial label text
-        updateSliderLabel(slider, format);
+        slider.slider({
+            min: 0,
+            max: values.length - 1,
+            value: values.indexOf(parseInt(value)),
+            step: 1,
+            range: 'min',
+            slide: function(event, ui) {
+                select.val(values[ui.value]).change();
+            }
+        });
         
-        slider.on('input', function() {
+        // Update the slider handle position when the select value changes
+        select.on('change', function() {
+            slider.slider('value', values.indexOf(parseInt($(this).val())));
+        });
+        
+        // Set initial label text
+        updateSliderLabel(select, format);
+        
+        select.on('change', function() {
             updateSliderLabel($(this), format);
             if (format === 'ns') {
                 // Update limit label when window changes
                 var row = $(this).closest('tr');
-                updateSliderLabel(row.find('input[type="range"]:eq(0)'), 'n/s');
+                updateSliderLabel(row.find('select:eq(0)'), 'n/s');
             }
             validateConfig();
         });
         return cell;
     }
 
-    row.append(createSliderCell(limit, 1, 100, 1, 'n/s'));
-    row.append(createSliderCell(window, 1, 600, 1, 'ns'));
-    row.append(createSliderCell(active, 1, 600, 1, 'ns'));
-    row.append(createSliderCell(cooldown, 0, 600, 1, 'ns')); // Changed min value to 0 for cooldown
+    var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+    var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
+
+    row.append(createSliderCell(limit, limitValues, 'n/s'));
+    row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
+    row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
+    row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
 
     $('#tiers tbody').append(row);
-    row.find('input[type="range"]').each(function() {
-        updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
+    row.find('select').each(function(index) {
+        var format = index === 0 ? 'n/s' : 'ns';
+        updateSliderLabel($(this), format);
     });
     updateTierNumbers();
     validateConfig();
 }
 
-function updateSliderLabel(slider, format) {
-    var value = parseInt(slider.val());
-    var label = slider.siblings('.label-wrapper').find('.slider-label');
+function updateSliderLabel(select, format) {
+    var value = parseInt(select.val());
+    var label = select.siblings('.label-wrapper').find('.slider-label');
     if (format === 'n/s') {
-        var row = slider.closest('tr');
-        var windowValue = parseInt(row.find('input[type="range"]:eq(1)').val());
+        var row = select.closest('tr');
+        var windowValue = parseInt(row.find('select:eq(1)').val());
         label.text(value + ' per ' + formatTime(windowValue));
     } else {
         label.text(formatTime(value));
@@ -113,7 +140,7 @@ function loadInitialTiers() {
 function validateConfig() {
     configs = [];
     $('#tiers tbody tr').each(function(i, c) {
-        configs.push(new BTConfig(...$(c).find('input[type="range"]').map(function(i, v) {
+        configs.push(new BTConfig(...$(c).find('select').map(function(i, v) {
             return $(v).val();
         })));
     });
@@ -183,7 +210,7 @@ $(document).ready(function() {
     $('#hit').click(applyHit);
     $('#add').click(onAdd);
     $('.delete').click(onDelete);
-    $('#tiers').on('input', 'input[type="range"]', validateConfig);
+    $('#tiers').on('change', 'select', validateConfig);
     updateAddButton(); // Call this to set the initial state of the button
 
     // Add collapsible functionality

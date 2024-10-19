@@ -3,6 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Charon Rate Limiting Simulator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -34,7 +36,7 @@
                             <dd>The maximum number of requests that can be granted in a window.</dd>
 
                             <dt>Window</dt>
-                            <dd>The length of time requests are tracked when determining if the limit is reached.</dd>
+                            <dd>The length of time requests are remembered and compared to the limit.</dd>
 
                             <dt>Active Time</dt>
                             <dd>How long a tier is active before it enters a cooldown period.</dd>
