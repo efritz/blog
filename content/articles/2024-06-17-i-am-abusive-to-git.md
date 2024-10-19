@@ -18,7 +18,7 @@ Over four years, I ended up falling into a very particular rhythm of exploratory
 1. This exploratory code is more likely than not going to be thrown away, and
 1. A **working result** is the the ultimate goal here, through whatever quick or surgical means get you there. Note that the result here is not necessarily a working code artifact, and could be something as intangible as a better understanding of the existing code or domain.
 
-As a corollary, the code being iterated over was for **me**, and outside eyes were expected to eventually gaze upon a rewritten history of what I _learned_ rather than the crazy wall scribblings that reflected the dead ends that taught me the lesson.
+As a corollary, the code being iterated over was for **me**, and outside eyes were expected to eventually gaze upon a rewritten history of what I _learned_ rather than the crazy wall scribblings that catalogued the dead ends that taught me the lesson.
 
 {{< lightbox src="/images/git-abuse/pepe-silvia.jpg" anchor="conspiracy" >}}
 
