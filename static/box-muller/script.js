@@ -626,6 +626,7 @@ function setupCanvasListeners(
         let isDrawing = false;
 
         function startDrawing(event) {
+            event.preventDefault();
             isDrawing = true;
             onMove(event);
         }
@@ -636,6 +637,7 @@ function setupCanvasListeners(
         }
 
         function onMove(event) {
+            event.preventDefault();
             if (!isDrawing) return;
 
             const { rChoice, thetaChoice, nChoice } = choices();
@@ -668,16 +670,24 @@ function setupCanvasListeners(
         }
 
         canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
 
         canvas.addEventListener('mousemove', onMove);
-        canvas.addEventListener('touchmove', onMove);
+        canvas.addEventListener('touchmove', onMove, { passive: false });
 
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('touchend', stopDrawing);
 
         canvas.addEventListener('mouseleave', stopDrawing);
         canvas.addEventListener('touchcancel', stopDrawing);
+
+        // Prevent default touch behavior on the canvas and its parent
+        canvas.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+        canvas.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        canvas.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
+        canvas.parentElement.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+        canvas.parentElement.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+        canvas.parentElement.addEventListener('touchend', (e) => e.preventDefault(), { passive: false });
     }
 
     addCanvasListeners($uniformCanvas);
