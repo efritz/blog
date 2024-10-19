@@ -57,8 +57,8 @@ Perhaps your system has components that are very sensitive to bursty requests, a
 
 In this configuration, once a client bursts into a higher tier they are effectively banned from the system for fifteen seconds.
 
-#### <a href="/charon-simulator?tiers=50,60,60,600&name=Batch%20Processing" target="_blank_">Limits for batch processing</a>
+#### <a href="/charon-simulator?tiers=50,15,15,30&name=Batch%20Processing" target="_blank_">Limits for batch processing</a>
 
 Many systems run periodically and spend the vast majority of their time idle. For example, a nightly reporting system will typically make requests to an API for a ten-minute span once a day. A tier can be configured to have a fairly generous limit for the window the job is expected to run, and then enter cooldown for the remainder of the twenty-four hour period to prevent additional requests until the next job runs.
 
-In this example configuration, the first request will trigger the start of a one-minute window. Fifty requests can be made in this time, after which no additional requests can be made for another ten minutes.
+In this configuration, the first request will trigger the start of a fifteen second window. Fifty requests can be made in this time, after which no additional requests can be made for another thirty seconds. In a production environment, Charon would handle window sizes and active/cooldown periods much longer than this. For the simulation we crank down the maximum bounds on these parameters because, well, who the heck is gonna be watching this thing for multiple hours?
