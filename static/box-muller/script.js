@@ -548,13 +548,13 @@ function updateCoordinates(
     $polarCanvas,
     $distributionCanvas,
     rChoice, thetaChoice, nChoice,
-    event, targetCanvas,
+    { clientX, clientY }, targetCanvas,
 ) {
     const rect = targetCanvas.getBoundingClientRect();
     const scaleX = targetCanvas.width / rect.width;
     const scaleY = targetCanvas.height / rect.height;
-    const x = (event.clientX - rect.left) * scaleX;
-    const y = (event.clientY - rect.top) * scaleY;
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
 
     if (targetCanvas === $uniformCanvas) {
         const { left, right, top, bottom } = uniformChartMargin;
@@ -623,35 +623,72 @@ function setupCanvasListeners(
     callback,
 ) {
     function addCanvasListeners(canvas) {
-        canvas.addEventListener('mousedown', (event) => {
-            const update = (event) => {
-                const { rChoice, thetaChoice, nChoice } = choices();
-                const { userDot, highlightedBar} = updateCoordinates(
-                    $uniformCanvas,
-                    $polarCanvas,
-                    $distributionCanvas,
-                    rChoice, thetaChoice, nChoice,
-                    event, canvas,
-                );
+        let isDrawing = false;
 
-                callback(userDot, highlightedBar);
-            };
+        function startDrawing(event) {
+            isDrawing = true;
+            onMove(event);
+        }
 
-            update(event);
-            $(document).on('mousemove', update);
-        });
+        function stopDrawing() {
+            isDrawing = false;
+            callback(null, null);
+        }
 
-        canvas.addEventListener('mouseleave', () => {
-            callback();
-        });
+        function onMove(event) {
+            if (!isDrawing) return;
+
+            const { rChoice, thetaChoice, nChoice } = choices();
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            let clientX, clientY;
+
+            if (event.type.startsWith('touch')) {
+                clientX = event.touches[0].clientX;
+                clientY = event.touches[0].clientY;
+            } else {
+                clientX = event.clientX;
+                clientY = event.clientY;
+            }
+
+            const x = (clientX - rect.left) * scaleX;
+            const y = (clientY - rect.top) * scaleY;
+
+            const { userDot, highlightedBar } = updateCoordinates(
+                $uniformCanvas,
+                $polarCanvas,
+                $distributionCanvas,
+                rChoice, thetaChoice, nChoice,
+                { clientX, clientY }, canvas,
+            );
+
+            callback(userDot, highlightedBar);
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('touchstart', startDrawing);
+
+        canvas.addEventListener('mousemove', onMove);
+        canvas.addEventListener('touchmove', onMove);
+
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        canvas.addEventListener('mouseleave', stopDrawing);
+        canvas.addEventListener('touchcancel', stopDrawing);
     }
 
     addCanvasListeners($uniformCanvas);
     addCanvasListeners($polarCanvas);
     addCanvasListeners($distributionCanvas);
 
-    $(document).on('mouseup', () => {
-        $(document).off('mousemove');
+    document.addEventListener('mouseup', () => {
+        callback(null, null);
+    });
+
+    document.addEventListener('touchend', () => {
         callback(null, null);
     });
 }
