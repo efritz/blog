@@ -1,0 +1,270 @@
+	\documentclass[tikz,border=5pt]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{calc,positioning,shapes.multipart,shapes}   
+\usepackage{listings}
+
+\definecolor{cA}{HTML}{646FA9}
+\definecolor{cB}{HTML}{49A9B4}
+\definecolor{cC}{HTML}{6BCD69}
+\definecolor{cD}{HTML}{9B9C78}
+\definecolor{cE}{HTML}{CBA18C}
+\definecolor{cF}{HTML}{C4737C}
+\definecolor{cG}{HTML}{DBDBDB}
+\definecolor{cX}{HTML}{6A0DAD}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\begin{document}
+\tikzset{basic/.style={
+  draw,
+  rectangle split,
+  rectangle split parts=2,
+  minimum width=8cm,
+  text width=7cm,
+  align=left,
+  font=\ttfamily
+  }
+}    
+\tikzset{json/.style={
+  draw,
+  dashed,
+  thick,
+  rectangle,
+  minimum width=8cm,
+  text width=7cm,
+  align=left
+  }
+}    
+\begin{tikzpicture}
+  \node[basic, rectangle split part fill={cA,white}] (dumps) {
+    dumps
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    repository: char \\
+    commit: char \\
+    root: char \\
+    visible\_at\_tip: boolean \\
+    processed\_at: timestamp \\
+    uploaded\_at: timestamp
+  };
+
+  \node[basic,rectangle split part fill={cB,white},left=2cm of dumps] (packages) {
+    packages
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    scheme: char \\
+    name: char \\
+    version: char \\
+    \color{cA}
+    dump\_id: integer
+  };
+    
+  \node[basic,rectangle split part fill={cC,white},right=2cm of dumps] (references) {
+    references
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    scheme: char \\
+    name: char \\
+    version: char \\
+    filter: blob \\
+    \color{cA}
+    dump\_id: integer
+  };  
+    
+  
+  \node[basic, rectangle split part fill={cD,white},below=3cm of dumps, xshift=-1cm] (documents) {
+    documents
+
+    \nodepart{second}
+    path: char \hfill PK \\
+    data: blob \\
+  };
+  
+  \node[basic, rectangle split part fill={cG,white},below=2cm of documents, xshift=1cm] (resultChunks) {
+    resultChunks
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    data: blob \\
+  };
+
+  \node[basic,rectangle split part fill={cE,white},left=1cm of documents] (definitions) {
+    definitions
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    scheme: char \\
+    identifier: char \\
+    \color{cA}
+    documentPath: char \\
+    \color{black}
+    startLine: integer \\
+    endLine: integer \\
+    startCharacter: integer \\
+    endCharacter: integer
+  };
+    
+  \node[basic,rectangle split part fill={cF,white},right=3cm of documents] (sqliteReferences) {
+    references
+
+    \nodepart{second}
+    id: integer \hfill PK \\
+    scheme: char \\
+    identifier: char \\
+    \color{cA}
+    documentPath: char \\
+    \color{black}
+    startLine: integer \\
+    endLine: integer \\
+    startCharacter: integer \\
+    endCharacter: integer
+  };
+  
+  \node[json,align=left, font=\ttfamily, below=3cm of definitions] (documentsSchema) {
+    \begin{lstlisting}[language=json]
+{
+  "ranges": {
+    4: {
+      "startLine": 12,
+      "endLine": 12,
+      "startCharacter": 3,
+      "endCharacter": 6,
+      "definitionResultId": 5,
+      "referenceResultId": 6,
+      "hoverResultId": 7,
+      "monikerIds": [8],
+    },
+  },
+  "hoverResults": {
+    7: "hover text",
+  },
+  "monikers":
+    8: {
+      "kind": "export",
+      "scheme": "npm",
+      "identifier": "foo:bar",
+      "packageId": 9,
+    },
+  },
+  "packages": {
+    9: {
+      "name": "foo",
+      "version": "0.1.0",
+    },
+  }
+}
+    \end{lstlisting}
+  };
+  
+  \node[json,align=left, font=\ttfamily, below=3cm of sqliteReferences] (resultChunkSchema) {
+    \begin{lstlisting}[language=json]
+{
+  "paths": {
+    1: "file.ext",
+  },
+  "results": {
+    3: [
+      {
+        "documentId": 1,
+        "rangeId": 4,
+      }
+    ],
+    5: ...,
+    6: ...,
+  },
+}
+    \end{lstlisting}
+  };
+  
+  % Postgres
+  \node[rectangle, left=0.75cm of packages]{\includegraphics[width=2cm]{postgres.png}};
+  \node[rectangle, left=0.75cm of definitions]{\includegraphics[width=2cm]{sqlite.png}};
+  
+  % SQLite
+  \draw[dashed, thick] ($(definitions.north west)+(-0.25cm,0.25cm)$) rectangle ($(resultChunkSchema.south east)+(0.25cm,-7.125cm)$);
+  \draw[-latex, very thick] (dumps.south) -- ($(dumps.south)+(0cm,-1.4cm)$);
+  
+  % Relationships
+  \draw[-latex] ([yshift=0pt]$(references.west)$) -- ([yshift=0pt]$(dumps.east)$);
+  \draw[-latex] ([yshift=0pt]$(packages.east)$) -- ([yshift=0pt]$(dumps.west)$);
+  \draw[-latex] ([yshift=0pt]$(definitions.east)$) -- ([yshift=0pt]$(documents.west)$);
+  \draw[-latex] ([yshift=0pt]$(sqliteReferences.west)$) -- ([yshift=0pt]$(documents.east)$);
+  
+  % Document schema
+  \draw[dashed, thick] ($(documents.north west)+(+.25cm,-0.9cm)$) rectangle ($(documents.north west)+(+2.5cm,-1.5cm)$) {};
+  \draw[-, dashed] ($(documents.north west)+(+.25cm,-0.9cm)$) -- (documentsSchema.north east);
+  \draw[-, dashed] ($(documents.north west)+(+.25cm,-1.5cm)$) -- (documentsSchema.south east);
+
+  % Result chunks schema
+  \draw[dashed, thick] ($(resultChunks.north west)+(+.25cm,-0.9cm)$) rectangle ($(resultChunks.north west)+(+2.5cm,-1.5cm)$) {};
+  \draw[-, dashed] ($(resultChunks.north west)+(+2.5cm,-0.9cm)$) -- (resultChunkSchema.north west);
+  \draw[-, dashed] ($(resultChunks.north west)+(+2.5cm,-1.5cm)$) -- (resultChunkSchema.south west);
+    
+  % Path relationship
+  \draw[fill=cD, opacity=0.25, dashed] ($(resultChunkSchema.north west)+(+2cm,-1.3cm)$) rectangle ($(resultChunkSchema.north west)+(+4.3cm,-1.7cm)$) {};
+  \draw[-latex] ($(resultChunkSchema.north west)+(+3.5cm,-1.3cm)$) to[out=90, in=-45] ($(documents.south east)+(-0.0cm,0cm)$);
+  \draw[fill=cD, opacity=0.25, dashed] ($(resultChunkSchema.north west)+(+5.25cm,-3.4cm)$) rectangle ($(resultChunkSchema.north west)+(+5.75cm,-3.85cm)$) {};  
+  \draw[-latex] ($(resultChunkSchema.north west)+(+5.5cm,-3.4cm)$) to[out=90, in=-90] ($(resultChunkSchema.north west)+(+3.75cm,-1.7cm)$);
+  
+  % Range relationship
+  \draw[fill=cA, opacity=0.25, dashed] ($(documentsSchema.north west)+(+1.8cm,-1.7cm)$) rectangle ($(documentsSchema.north west)+(+7.25cm,-5.1cm)$) {};
+  \draw[fill=cA, opacity=0.25, dashed] ($(resultChunkSchema.north west)+(+2.25cm,-3.8cm)$) rectangle ($(resultChunkSchema.north west)+(+5.125cm,-4.3cm)$) {};  
+  \draw[-latex] ($(resultChunkSchema.north west)+(+2.25cm,-4cm)$) -- ($(documentsSchema.north west)+(+7.25cm,-2.3cm)$);
+  
+  % Hover relationship
+  \draw[fill=cB, opacity=0.25, dashed] ($(documentsSchema.north west)+(+1.8cm,-6.35cm)$) rectangle ($(documentsSchema.north west)+(+7.25cm,-6.8cm)$) {};
+  \draw[fill=cB, opacity=0.25, dashed] ($(documentsSchema.north west)+(+5.5cm,-4.25cm)$) rectangle ($(documentsSchema.north west)+(+6cm,-4.7cm)$) {};
+  \draw[-latex] ($(documentsSchema.north west)+(+6cm,-4.45cm)$) to[out=0, in=90] ($(documentsSchema.north west)+(+6.8cm,-6.35cm)$);
+  
+  % Moniker relationship
+  \draw[fill=cC, opacity=0.25, dashed] ($(documentsSchema.north west)+(+1.8cm,-8cm)$) rectangle ($(documentsSchema.north west)+(+7.25cm,-9.75cm)$) {};
+  \draw[fill=cC, opacity=0.25, dashed] ($(documentsSchema.north west)+(+5cm,-5.15cm)$) rectangle ($(documentsSchema.north west)+(+5.55cm,-4.65cm)$) {};
+  \draw[-latex] ($(documentsSchema.north west)+(+5.25cm,-5.15cm)$) to[out=-90, in=90] ($(documentsSchema.north west)+(+5.8cm,-8cm)$);
+  
+  % Package relationship
+  \draw[fill=cD, opacity=0.25, dashed] ($(documentsSchema.north west)+(+1.8cm,-11.4cm)$) rectangle ($(documentsSchema.north west)+(+7.25cm,-12.3cm)$) {};
+  \draw[fill=cD, opacity=0.25, dashed] ($(documentsSchema.north west)+(+4.6cm,-9.8cm)$) rectangle ($(documentsSchema.north west)+(+5.2cm,-9.3cm)$) {};
+  \draw[-latex] ($(documentsSchema.north west)+(+5.2cm,-9.5cm)$) to[out=0, in=90] ($(documentsSchema.north west)+(+6.5cm,-11.4cm)$);
+  
+  % Results relationship
+  \draw[fill=cE, opacity=0.25, dashed] ($(resultChunkSchema.north west)+(+1.25cm,-5.1cm)$) rectangle ($(resultChunkSchema.north west)+(+3cm,-5.52cm)$) {};
+  \draw[fill=cE, opacity=0.25, dashed] ($(documentsSchema.north west)+(+6.55cm,-3.375cm)$) rectangle ($(documentsSchema.north west)+(+7.125cm,-3.85cm)$) {};
+  \draw[-latex] ($(documentsSchema.north west)+(+7.125cm,-3.6cm)$) -- ($(resultChunkSchema.north west)+(+1.25cm,-5.3cm)$);
+  %  
+  \draw[fill=cF, opacity=0.25,dashed] ($(resultChunkSchema.north west)+(+1.25cm,-5.52cm)$) rectangle ($(resultChunkSchema.north west)+(+3cm,-5.95cm)$) {};
+  \draw[fill=cF, opacity=0.25, dashed] ($(documentsSchema.north west)+(+6.35cm,-3.775cm)$) rectangle ($(documentsSchema.north west)+(+6.9cm,-4.25cm)$) {};
+  \draw[-latex] ($(documentsSchema.north west)+(+6.9cm,-4cm)$) -- ($(resultChunkSchema.north west)+(+1.25cm,-5.75cm)$);
+\end{tikzpicture}
+\end{document}

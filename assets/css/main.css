@@ -598,3 +598,25 @@ img[alt=mitel] {
 .articles article:hover {
   background-color: #dbeaf0;
 }
+
+/* Article-specific styles
+* --------------------------------------------*/
+
+.schema-design-nosql table {
+  border-collapse: collapse;
+}
+
+.schema-design-nosql table p {
+  margin: 0;
+}
+
+.schema-design-nosql table th,
+.schema-design-nosql table td {
+  padding: 5px;
+  border: 1px solid #abafb3;
+}
+
+.schema-design-nosql table td:nth-child(1),
+.schema-design-nosql table td:nth-child(2) {
+  white-space: nowrap;
+}
