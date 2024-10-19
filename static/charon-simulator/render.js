@@ -243,7 +243,7 @@ function updateStatusText(log, configs, timestamp) {
         let activeTierSeconds = configs[activeIndex].active / 100;
         let formattedTimeLeft = formatTimeRemaining(timeLeftInTier);
         let formattedTotalTime = formatTimeRemaining(activeTierSeconds);
-        $('#hits-in-window').text(`${hitsInWindow}/${windowSize} requests in current window (${formattedTimeLeft}/${formattedTotalTime} active time remaining)`);
+        $('#hits-in-window').text(`${hitsInWindow}/${windowSize} requests in window (${formattedTimeLeft}/${formattedTotalTime} remaining in tier)`);
     } else {
         $('#hits-in-window').text('No requests in window');
     }

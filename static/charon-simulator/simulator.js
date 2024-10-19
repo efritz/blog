@@ -17,6 +17,7 @@ function addRow(limit, window, active, cooldown) {
         var wrapper = $('<div class="slider-wrapper"></div>');
         var labelWrapper = $('<div class="label-wrapper"></div>');
         var label = $('<span class="slider-label"></span>');
+        var sliderContainer = $('<div class="slider-container-narrow"></div>');
         var slider = $('<div class="custom-slider"></div>');
         var select = $('<select style="display:none;"></select>');
         
@@ -26,8 +27,10 @@ function addRow(limit, window, active, cooldown) {
         
         select.val(value);
         labelWrapper.append(label);
-        wrapper.append(labelWrapper).append(slider).append(select);
+        sliderContainer.append(slider).append(select);
+        wrapper.append(labelWrapper).append(sliderContainer);
         cell.append(wrapper);
+        cell.addClass('slider-wrapper-narrow');
         
         slider.slider({
             min: 0,
@@ -63,10 +66,10 @@ function addRow(limit, window, active, cooldown) {
     var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
     var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
 
-    row.append(createSliderCell(limit, limitValues, 'n/s'));
-    row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
-    row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
-    row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
+    row.append(createSliderCell(limit, limitValues, 'n/s').attr('data-label', 'Limit'));
+    row.append(createSliderCell(window, timeValues.slice(1), 'ns').attr('data-label', 'Window')); // exclude 0
+    row.append(createSliderCell(active, timeValues.slice(1), 'ns').attr('data-label', 'Active Time')); // exclude 0
+    row.append(createSliderCell(cooldown, timeValues, 'ns').attr('data-label', 'Cooldown Time')); // include 0
 
     $('#tiers tbody').append(row);
     row.find('select').each(function(index) {
@@ -79,14 +82,16 @@ function addRow(limit, window, active, cooldown) {
 
 function updateSliderLabel(select, format) {
     var value = parseInt(select.val());
-    var label = select.siblings('.label-wrapper').find('.slider-label');
+    var label = select.closest('.slider-wrapper').find('.slider-label');
+    var labelText;
     if (format === 'n/s') {
         var row = select.closest('tr');
         var windowValue = parseInt(row.find('select:eq(1)').val());
-        label.text(value + ' per ' + formatTime(windowValue));
+        labelText = value + ' per ' + formatTime(windowValue);
     } else {
-        label.text(formatTime(value));
+        labelText = formatTime(value);
     }
+    label.text(labelText);
 }
 
 function formatTime(value) {
