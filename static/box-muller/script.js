@@ -1,6 +1,6 @@
 const epsilon = 0.001;
 const numBuckets = 50;
-const uniformChartMargin = { top: 20, right: 20, bottom: 40, left: 40 };
+const uniformChartMargin = { top: 20, right: 20, bottom: 40, left: 50 };
 const distributionChartMargin = { top: 20, right: 20, bottom: 60, left: 60 };
 
 const rChoices = {
@@ -126,14 +126,14 @@ function populateSelectOptions() {
 }
 
 function newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar) {
-    // if (nChoice === '') {
-    //     return (index) => {
-    //         const dot = dots[index];
-    //         const u1 = dot.u1;
-    //         const u2 = dot.u2;
-    //         return `rgba(${Math.floor(u1 * 255)}, ${Math.floor(u2 * 255)}, 0, 0.75)`;
-    //     }
-    // }
+    if (nChoice === '') {
+        return (index) => {
+            const dot = dots[index];
+            const u1 = dot.u1;
+            const u2 = dot.u2;
+            return `rgba(${Math.floor(u1 * 255)}, ${Math.floor(u2 * 255)}, 0, 0.75)`;
+        }
+    }
 
     const values = dots.map(dot => valuesForDot(dot, rChoice, thetaChoice, nChoice)).map(({ n }) => n);
 
@@ -143,7 +143,7 @@ function newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar)
     const bucketSize = range / numBuckets;
     const maxAbs = Math.max(...values.map(value => Math.abs(value)));
 
-    return (index) => {
+    return (index, opaque = false) => {
         const value = values[index];
 
         // Highlight all dots that would fall in the highlighted bar as black
@@ -154,7 +154,7 @@ function newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar)
         const normalizedDistance = Math.abs(value) / maxAbs;
         const red = (Math.floor(normalizedDistance * 255));
         const blue = Math.floor((1 - normalizedDistance) * 255);
-        return `rgba(${red}, 0, ${blue}, 0.75)`;
+        return `rgba(${red}, 0, ${blue}, ${opaque ? 1 : 0.75})`;
     }
 };
 
@@ -447,23 +447,27 @@ function drawDistributionChart($canvas, ctx, dots, rChoice, thetaChoice, nChoice
     // Draw bars
     const barWidth = chartWidth / numBuckets;
     const scaleY = chartHeight / maxCount;
-
+    const calculateColor = newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar);
+    
     buckets.forEach((count, index) => {
         const x = distributionChartMargin.left + index * barWidth;
         const y = chartHeight + distributionChartMargin.top - count * scaleY;
         const bucketHeight = count * scaleY;
 
-        if (highlightedBar === index) {
-            ctx.fillStyle = 'black';
-        } else if (userBucket === index) {
+        if (highlightedBar === index || userBucket === index) {
             ctx.fillStyle = 'black';
         } else {
-            const bucketValue = min + (index + 0.5) * bucketSize;
-            const distanceFromMean = Math.abs(bucketValue - mean);
-            const maxDistance = Math.max(max - mean, mean - min);
-            const normalizedDistance = distanceFromMean / maxDistance;
+            const dotIndex = dots.findIndex(dot => {
+                const value = transform(dot);
+                const bucketIndex = Math.min(Math.floor((value - min) / bucketSize), numBuckets - 1);
+                return bucketIndex === index;
+            });
 
-            ctx.fillStyle = `rgb(${Math.floor(normalizedDistance * 255)}, 0, ${Math.floor((1 - normalizedDistance) * 255)})`;
+            if (dotIndex === -1) {
+                ctx.fillStyle = 'rgba(200, 200, 200, 0.5)';
+            } else {
+                ctx.fillStyle = calculateColor(dotIndex, true);
+            }
         }
 
         ctx.fillRect(x, y, barWidth - 1, bucketHeight);
@@ -720,7 +724,7 @@ $(document).ready(() => {
 
         let currentBar = 0;
         let animationInterval;
-        
+
         animationInterval = setInterval(() => {
             highlightedBar = currentBar;
             drawGraphs();
