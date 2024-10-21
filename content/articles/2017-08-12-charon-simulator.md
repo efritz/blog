@@ -6,62 +6,59 @@ tags = []
 showpagemeta = true
 +++
 
-<div class="notice">
-To skip the fluff and get to the good stuff, see one of the sample configuration links in the <a href="#sample-configurations">TL;DR</a>.
-</div>
+### Configuring rate limits
 
-Charon, as described in the [whitepaper](/papers#charon), is a cooperative system to enforce limits on behalf of users. For example, an HTTP API request can immediately return an [HTTP 429](https://httpstatuses.com/429) if the limiting system has a large number of recent requests from that user in its history. Although the request has already made it to the system, it can save an expensive database operation which is most certainly a more precious resource than front-end server cycles.
+Charon, as described in the [whitepaper](/papers#charon), is a cooperative system used to enforce limited access to resources on behalf of users. For example, an HTTP API server can choose to immediately return an [HTTP 429](https://httpstatuses.com/429) response if the limited resource has had a large number of requests from that user in its recent history. This can help save, for example, expensive database operations which are a much more precious resource than server cycles handling request (and rate limit) middleware.
 
-Charon is a service designed to *grant* or *reject* either an individual or a group of requests for a resource on behalf of a *domain*, which is just an opaque string. Generally a domain is a "user", but could also be a group of users, a system, or an abstract entity such as a conference or an event. Of course, [similar](https://github.com/lyft/ratelimit) [solutions](https://github.com/youtube/doorman) [exist](https://redis.io/commands/incr).
+Charon is a service designed to *grant* or *reject* either an individual or a group of requests for a **resource** on behalf of a **domain**. Domains and resources are identified in Charon by opaque strings. Resources can be anything that need to be protected - database calls, compute resources, external API calls, etc. A domain is generally backed by a user or tenant, but could also be a group of users, a system, or an ephemeral or abstract entity such as a request or an event.
 
-Charon's method of rate limiting, especially its configuration definition, stand out as unique and tremendously flexible. The original proof-of-concept implementation was a simple [sliding window counter](https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/). Unfortunately, this solution only performs well when requests are fairly evenly distributed. If the access pattern of resources is *bursty* (which you better believe it will be in production), then many clients may hit limits spuriously.
+Of course, this system is not entirely unique and [similar](https://github.com/lyft/ratelimit) [solutions](https://github.com/youtube/doorman) [exist](https://redis.io/commands/incr).
 
-The solution we settled on was to extend the sliding windows into layers called *tiers*. If a user hits a limit in one tier, it can burst up into the next one. Each tier can be configured independently by the following five parameters.
+Charon's method of rate limiting, especially its configuration definition, stand out as unique and tremendously flexible. The original proof-of-concept implementation was based on a simple [sliding window counter](https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/), where each domain and resource pair receive their own window configuration and history. Unfortunately, this solution only performs well when requests are fairly evenly distributed. If the access pattern of resources is *bursty* (which you better believe it will be in production), then many clients may hit limits spuriously.
 
-- Window size: the memory limit of the tier. Requests older than the window size are forgotten and do not influence a future rate limiting decision.
-- Window limit: the maximum number of requests which can be granted inside the window. Once this number is hit, all requests are rejected until a previous grant falls off of the left side of the window.
-- Active period: once entered, a tier is *active* for this long. After a tier's active period expires, it begins its *cooldown* period.
-- Cooldown period: how long a tier remains in *cooldown* after it becomes inactive. A tier cannot be entered until its cooldown period elapses.
-- Skippability: whether or not this tier can be completely *passed through* when in cooldown by a burst.
+The solution we settled on was to extend the sliding windows into layers called **tiers**. If a user hits a limit in one tier, it has the opportunity to **burst** up into the next tier, where it will operate for a period of time with a different limit. Each tier can be configured independently with the following parameters:
 
-At any given time, a domain belongs in the *highest* tier that is in its active period. Inactive domains begin in the lowest tier and can work their way up via excessive use.
+- **Window size**, denoted $T^w$, defines the period of time that granted requests for a domain and resource pair are recorded. The current sliding window covers the last $T^w$ seconds and ends at the current time. Any requests made more than $T^w$ seconds ago do not influence limiting behavior and do not need to be tracked. These requests have "fallen out of the window".
+- **Window limit** defines the maximum number of requests that can be granted within a single window. All requests are rejected while the current window is at max capacity. The next request to be granted in the current tier may only happen once the earliest request falls out of the window, reducing the window count and adding additional capacity for a new request to be granted.
+- **Active period** defines the length of time a tier will be active. A sliding window can only exist in an active tier. Once a tier's active time has elapsed, it will enter its cooldown period.
+- **Cooldown period** defines the length of time a tier cannot be burst into after its active period ends. This parameter allows burst tiers to accommodate non-uniform request patterns without allowing users to continuously burst into a higher rate limit.
 
-I've heard that a picture is worth a thousand words.
+### Burst tiers in action
 
-{{< lightbox src="/images/charon/burst-tiers.png" anchor="burst-tiers" >}}
+To better illustrate, I'll save a thousand words of description and show a few pictures instead.
 
-I've also heard that a simulator is worth a thousand pictures[^1], so I brought one of those along too.
+Here, we see a request in the sliding window of a lower tier being rejected. This rejection burst up to a higher tier where it can be granted. This begins the active period of the higher tier, and any future requests will be made according to the configured parameters of the higher tier. The lower tier, still in its active period, becomes temporarily shadowed.
 
-[^1]: This particular simulator currently works only in Chrome, so maybe more like 900 pictures.
+{{< lightbox src="/images/charon/burst-tiers-successful.png" anchor="burst-tiers-successful" >}}
 
-### Sample Configurations
+Once the higher tier's active period elapses, it enters its cooldown period, marked in red. Once this cooldown period begins, the lower tier (still in its active period) becomes un-shadowed. The user may be granted additional requests in the lower tier at the original rate. However, if the user hits the lower tier's limit a second time, they won't be able to re-burst back into the higher tier until its cooldown period elapses. The user will then have to wait for a period of time before their request capacity replenishes.
 
-After launching a simulator, request to use a resource by pressing (or spamming) the spacebar. White dots represent a granted request and red X's represent a rejected request. The tier configuration is completely configurable, so feel free to experiment. The configuration is very flexible, but several patterns present themselves immediately. They are described in turn below.
+{{< lightbox src="/images/charon/burst-tiers-cooldown.png" anchor="burst-tiers-cooldown" >}}
 
-#### Simple
+### Burst tiers in (inter)action
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,30,0', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
+To *even better* illustrate the different ways burst tiers can be configured, I'll save a thousand more images covering all configurations and edge cases and give you an interactive [simulator instead](/charon-simulator). In the simulator, you can arbitrarily configure the number and parameters of burst tiers, and make requests at your own rate.
 
-This simple configuration contains only a single tier. A domain is allowed five requests per second. Unlike [token bucket](https://en.wikipedia.org/wiki/Leaky_bucket) schemes, a domain's past inactivity does not influence current or future limiting decisions: five requests is all you will ever get in that second.
+We've identified several useful patterns of burst tier configuration, which we'll explain below. But the simulator is very flexible, so we encourage you to explore!
 
-#### Penalties
+#### <a href="/charon-simulator?tiers=5,1,1,0&name=Simple" target="_blank_">Simple burst tiers</a>
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,1,0,50,5,5,15', 'Tier Configuration - Penalties', 'width=900,height=500')">Run the Simulator</a>
+In this configuration, a user can be granted five requests per second.
 
-In order to correct the deficiency of the scheme above, we apply a second tier with a much larger limit. Domains that experience a burst of requests will not be denied unfairly. However, we must protect the system as a whole and cannot allow a domain to burst into a higher rate tier *without consequence*. In exchange for a higher rate limit *now*, the domain gives up the ability to have a higher rate limit in the future (for a period of time).
+#### <a href="/charon-simulator?tiers=5,1,1,0,50,5,5,15&name=Penalties" target="_blank_">Penalty burst tiers</a>
 
-In this configuration, a user in the second tier can maintain its high-frequency of requests for five seconds, but is stuck at the normal limit for the next fifteen seconds.
+In order to correct the deficiency of the scheme above, we apply a second tier with a much larger limit. Domains that experience a burst of requests will not be denied unfairly. However, we must protect the system as a whole and cannot allow a domain to burst into a higher rate tier *without consequence*. In exchange for a higher rate limit *now*, the domain gives up the ability to have a consistently higher rate limit in the near future.
 
-#### Punishment
+In this configuration, a user can burst into a tier with a higher limit for five seconds, but can only burst once every fifteen seconds.
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=5,1,1,0,1,15,15,0', 'Tier Configuration - Punishment', 'width=900,height=500')">Run the Simulator</a>
+#### <a href="/charon-simulator?tiers=5,1,1,0,1,15,15,0&name=Punishment" target="_blank_">Punishment burst tiers</a>
 
-Perhaps *bursty* request behavior is detrimental to your system and frequent requests signify a client of malintent. In this scenario, you would want to deny such clients future access to critical resources. This can be done by making a *prison tier*. Such a tier, once entered, has a very long active period and a very low limit. Once a user bursts into this tier, they are trapped without the ability to make a grantable request for as long as the tier is active.
+Perhaps your system has components that are very sensitive to bursty requests, and an increase of requests signifies client malintent. In this scenario, you would want to deny greedy clients future access to critical resources. This can be done by making a *prison tier*. Such a tier, once entered, has a very long active period and a very low limit. Once a user bursts into this tier, they are trapped without the ability to make a grantable request for as long as the tier is active.
 
-#### Batch Processing
+In this configuration, once a client bursts into a higher tier they are effectively banned from the system for fifteen seconds.
 
-<a href="javascript:void(0);" target="popup" onclick="window.open('/charon-simulator.html?tiers=50,60,60,3540', 'Tier Configuration - Batch Processing', 'width=900,height=500')">Run the Simulator</a>
+#### <a href="/charon-simulator?tiers=50,15,15,30&name=Batch%20Processing" target="_blank_">Limits for batch processing</a>
 
-Lastly, many systems run periodically but spend the vast majority of their time idle. Take a reporting system, for example, that is meant to run once every day at the same time and will typically only make requests to an API for a ten-minute span. A tier can be configured to have a fairly generous limit within that window, and the cooldown can last for the remainder of the twenty-four hours.
+Many systems run periodically and spend the vast majority of their time idle. For example, a nightly reporting system will typically make requests to an API for a ten-minute span once a day. A tier can be configured to have a fairly generous limit for the window the job is expected to run, and then enter cooldown for the remainder of the twenty-four hour period to prevent additional requests until the next job runs.
 
-In the simulator, the first request will trigger the start of a one-minute window. Up to fifty requests can be made within this time, after which no additional requests can be made for the rest of the hour.
+In this configuration, the first request will trigger the start of a fifteen second window. Fifty requests can be made in this time, after which no additional requests can be made for another thirty seconds. In a production environment, Charon would handle window sizes and active/cooldown periods much longer than this. For the simulation we crank down the maximum bounds on these parameters because, well, who the heck is gonna be watching this thing for multiple hours?
