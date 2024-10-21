@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Box-Muller Transform Visualization</title>
     <link rel="stylesheet" href="/box-muller/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -33,10 +33,16 @@
             </div>
         </div>
 
+        <div id="chartToggles">
+            <label><input type="checkbox" id="toggleUniform" checked> Show Uniform Chart</label>
+            <label><input type="checkbox" id="togglePolar" checked> Show Polar Chart</label>
+            <label><input type="checkbox" id="toggleDistribution" checked> Show Distribution Chart</label>
+        </div>
+
         <hr />
 
         <div id="canvasContainer">
-            <div class="canvasWrapper">
+            <div id="uniformWrapper" class="canvasWrapper">
                 <h2 class="chartTitle">
                     Step 1: Generate cartesian points
                 </h2>
@@ -58,7 +64,8 @@
                     <canvas id="uniformCanvas"></canvas>
                 </div>
             </div>
-            <div class="canvasWrapper">
+
+            <div id="polarWrapper" class="canvasWrapper">
                 <h2 class="chartTitle">
                     Step 2: Project to polar coordinates
                 </h2>
@@ -85,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="canvasWrapper" id="distributionWrapper">
+            <div id="distributionWrapper" class="canvasWrapper">
                 <h2 class="chartTitle">
                     Step 3: Map polar coordinates to scalars
                 </h2>
@@ -123,15 +130,15 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="footnotes">
-        <p id="footnote-1">[1]
-            This transform can actually creates a <strong>pair</strong> of independent
-            and normally distributed values from the inputs <code>U₁</code> and <code>U₂</code>.
-            We consistently use the cosine function to create one value of the pair for this visualization.
-            The other value can be created by swapping cosine out for sine.
-        </p>
+        <div class="footnotes">
+            <p id="footnote-1">[1]
+                This transform can actually creates a <strong>pair</strong> of independent
+                and normally distributed values from the inputs <code>U₁</code> and <code>U₂</code>.
+                We consistently use the cosine function to create one value of the pair for this visualization.
+                The other value can be created by swapping cosine out for sine.
+            </p>
+        </div>
     </div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

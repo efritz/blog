@@ -82,6 +82,14 @@ a.footnote {
     display: none;
 }
 
+#chartToggles {
+    display: none;
+    margin: 20px auto;
+    width: 800px;
+    text-align: center;
+    
+}
+
 /* Collapsible section styles */
 
 .collapsible-section {

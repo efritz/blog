@@ -704,13 +704,23 @@ function setupCanvasListeners(
 }
 
 $(document).ready(() => {
-    // Add collapsible functionality
-    $('.collapsible-header').click(function() {
-        $(this).next('.collapsible-content').slideToggle();
-        $(this).find('.toggle-icon').text(function(_, text) {
-            return text === '▼' ? '▲' : '▼';
-        });
-    });
+    const shouldAnimate = window.location.search.includes('?animate');
+
+    if (shouldAnimate) {
+        $('#chartToggles').show();
+        $('#toggleUniform').on('change', () => $('#uniformWrapper').toggle());
+        $('#togglePolar').on('change', () => $('#polarWrapper').toggle());
+        $('#toggleDistribution').on('change', () => $('#distributionWrapper').toggle());
+
+        let currentBar = 0;
+        let animationInterval;
+        
+        animationInterval = setInterval(() => {
+            highlightedBar = currentBar;
+            drawGraphs();
+            currentBar = (currentBar + 1) % numBuckets;
+        }, 200);
+    }
 
     populateSelectOptions();
     let rChoice = $('#rChoice').val();
@@ -725,7 +735,26 @@ $(document).ready(() => {
     const $polarCanvas = document.getElementById('polarCanvas');
     const $distributionCanvas = document.getElementById('distributionCanvas');
 
-    const drawGraphs = () => drawAllGraphs(
+    const drawGraphs = () => {
+        // Only draw distribution chart if nChoice is not empty
+        if (nChoice !== '') {
+            drawAllGraphs(
+                $uniformCanvas,
+                $polarCanvas,
+                $distributionCanvas,
+                dots, rChoice, thetaChoice, nChoice, userDot, highlightedBar
+            );
+        } else {
+            drawAllGraphs(
+                $uniformCanvas,
+                $polarCanvas,
+                $distributionCanvas,
+                dots, rChoice, thetaChoice, nChoice, userDot, null
+            );
+        }
+    };
+
+    const originalDrawGraphs = () => drawAllGraphs(
         $uniformCanvas,
         $polarCanvas,
         $distributionCanvas,
@@ -808,7 +837,13 @@ $(document).ready(() => {
     generateDots();
     drawGraphs();
 
-    // Initially expand the description section
+    $('.collapsible-header').click(function() {
+        $(this).next('.collapsible-content').slideToggle();
+        $(this).find('.toggle-icon').text(function(_, text) {
+            return text === '▼' ? '▲' : '▼';
+        });
+    });
+
     $('.collapsible-content').show();
     $('.toggle-icon').text('▼');
 });
