@@ -150,15 +150,16 @@ canvas {
 #canvasContainer {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     align-items: stretch;
     margin-top: 20px;
 }
 
 .canvasWrapper {
-    width: 32%;
+    width: calc(33% - 20px);
     text-align: center;
+    margin: 0 10px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
@@ -304,7 +305,7 @@ canvas {
     }
 
     .canvasWrapper {
-        width: 48%;
+        width: calc(50% - 20px);
     }
 
     #distributionWrapper {
@@ -323,7 +324,7 @@ canvas {
     }
 
     .canvasWrapper:not(#distributionWrapper) {
-        width: 48%;
+        width: calc(50% - 20px);
     }
 
     .canvasWrapper canvas:not(#distributionCanvas) {
