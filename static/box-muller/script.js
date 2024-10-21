@@ -57,22 +57,27 @@ const thetaChoices = {
 const nChoices = {
     'theta': {
         label: 'μ + σ * [θ]',
+        expr: (rChoice, thetaChoice) => `μ + σ * [${thetaChoices[thetaChoice].label}]`,
         value: (r, theta) => theta,
     },
     'cosTheta': {
         label: 'μ + σ * [cos(θ)]',
+        expr: (rChoice, thetaChoice) => `μ + σ * [cos(${thetaChoices[thetaChoice].label})]`,
         value: (r, theta) => Math.cos(theta),
     },
     'r': {
         label: 'μ + σ * [r]',
+        expr: (rChoice, thetaChoice) => `μ + σ * [${rChoices[rChoice].label}]`,
         value: (r, theta) => r,
     },
     'thetaR': {
         label: 'μ + σ * [r * θ]',
+        expr: (rChoice, thetaChoice) => `μ + σ * [${rChoices[rChoice].label} * ${thetaChoices[thetaChoice].label}]`,
         value: (r, theta) => r * theta,
     },
     'cosThetaR': {
         label: 'μ + σ * [r * cos(θ)]',
+        expr: (rChoice, thetaChoice) => `μ + σ * [${rChoices[rChoice].label} * cos(${thetaChoices[thetaChoice].label})]`,
         value: (r, theta) => r * Math.cos(theta),
     },
 };
@@ -121,14 +126,14 @@ function populateSelectOptions() {
 }
 
 function newColorCalculator(dots, rChoice, thetaChoice, nChoice, highlightedBar) {
-    if (nChoice === '') {
-        return (index) => {
-            const dot = dots[index];
-            const u1 = dot.u1;
-            const u2 = dot.u2;
-            return `rgba(${Math.floor(u1 * 255)}, ${Math.floor(u2 * 255)}, 0, 0.75)`;
-        }
-    }
+    // if (nChoice === '') {
+    //     return (index) => {
+    //         const dot = dots[index];
+    //         const u1 = dot.u1;
+    //         const u2 = dot.u2;
+    //         return `rgba(${Math.floor(u1 * 255)}, ${Math.floor(u2 * 255)}, 0, 0.75)`;
+    //     }
+    // }
 
     const values = dots.map(dot => valuesForDot(dot, rChoice, thetaChoice, nChoice)).map(({ n }) => n);
 
@@ -508,7 +513,8 @@ function drawDistributionChart($canvas, ctx, dots, rChoice, thetaChoice, nChoice
     ctx.fillStyle = 'black';
     ctx.font = '11px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('n', chartWidth / 2 + distributionChartMargin.left, canvasHeight - 15);
+    const nExpr = nChoices[nChoice].expr(rChoice, thetaChoice);
+    ctx.fillText(`n = ${nExpr}`, chartWidth / 2 + distributionChartMargin.left, canvasHeight - 15);
 
     ctx.fillStyle = 'black';
     ctx.font = '11px Arial';
