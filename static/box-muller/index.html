@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Box-Muller Transform Visualization</title>
+    <link rel="stylesheet" href="/box-muller/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div id="container">
+        <div class="description-section">
+            <div class="collapsible-section">
+                <h1 class="collapsible-header">Box-Muller Transform Visualization <span class="toggle-icon">▼</span></h1>
+                <div class="collapsible-content description">
+                    <p>
+                        The <a href="https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform">Box-Muller transform</a> is a random number sampling method that converts
+                        a pair of <strong>uniformly distributed random numbers</strong> into
+                        a single (or if you'd rather, a pair<sup><a href="#footnote-1" class="footnote">1</a></sup> of)
+                        <strong>normally distributed random number(s)</strong>.
+                    </p>
+
+                    <p>
+                        The default choices of the function definitions producing <code>r</code>, <code>θ</code>, and <code>n</code>
+                        in this visualization produce a standard normal distribution.
+                        Changing the functions can significantly alter the distribution of the transformed random numbers.
+                        Play around with different combinations of functions to see how they affect the output.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div id="canvasContainer">
+            <div id="uniformWrapper" class="canvasWrapper">
+                <h2 class="chartTitle">
+                    Step 1: Generate cartesian points
+                </h2>
+                <div class="hint">
+                    Uniformly generate random values <code>U₁</code>,<code>U₂</code> <code>∈</code> <code>[0, 1]</code>.
+                    <br />
+                    Plot points (<code>U₁</code>,<code>U₂</code>) on the cartesian plane.
+                    <br />
+                    <span>&nbsp;</span>
+                </div>
+                <div class="uniform-controls">
+                    <div class="slider-container full-width">
+                        <label for="numDots">Number of random values: <span id="numDotsValue">5000</span></label>
+                        <input type="range" id="numDots" min="1" max="10000" value="5000">
+                    </div>
+                </div>
+                <div class="hint">Click and drag to see a single point transform.</div>
+                <div class="canvas-container">
+                    <canvas id="uniformCanvas"></canvas>
+                </div>
+            </div>
+
+            <div id="polarWrapper" class="canvasWrapper">
+                <h2 class="chartTitle">
+                    Step 2: Project to polar coordinates
+                </h2>
+                <div class="hint">
+                    Project each point (<code>U₁</code>,<code>U₂</code>) to a polar coordinate (<code>r</code>, <code>θ</code>).
+                    <br />
+                    Define <code>r</code> (the radial distance) as a function of <code>U₁</code>.
+                    <br />
+                    Define <code>θ</code> (the angle from x axis) as a function of <code>U₂</code>.
+                </div>
+                <div class="polar-controls">
+                    <div class="dropdown-container">
+                        <label for="rChoice"><span class="legend"><code>r</code> = </span></label>
+                        <select id="rChoice" name="r"></select>
+                    </div>
+                    <div class="dropdown-container theta-formula">
+                        <label for="thetaChoice"><span class="legend"><code>θ</code> = </span></label>
+                        <select id="thetaChoice" name="theta"></select>
+                    </div>
+                </div>
+                <div class="hint">Click and drag to see a single point transform.</div>
+                <div class="canvas-container">
+                    <canvas id="polarCanvas"></canvas>
+                </div>
+            </div>
+
+            <div id="distributionWrapper" class="canvasWrapper">
+                <h2 class="chartTitle">
+                    Step 3: Map polar coordinates to scalars
+                </h2>
+                <div class="hint">
+                    Define a function <code>f</code>(<code>r</code>, <code>θ</code>) producing a scalar value <code>n</code>.
+                    <br />
+                    Move the distribution center by changing the mean.
+                    <br />
+                    Widen or narrow the distribution by changing the stddev.
+                </div>
+                <div class="distribution-controls">
+                    <div class="dropdown-container">
+                        <label for="nChoice"><span class="legend"><code>n</code> = </span></label>
+                        <select id="nChoice" name="n">
+                            <option value="" selected>Select an expression</option>
+                        </select>
+                    </div>
+                    <div id="distributionControls">
+                        <div class="slider-row">
+                            <div class="slider-container">
+                                <label for="mean">Mean (μ): <span id="meanValue">0</span></label>
+                                <input type="range" id="mean" min="-1000" max="1000" step="1" value="0">
+                            </div>
+                            <div class="slider-container">
+                                <label for="stddev">Stddev (σ): <span id="stddevValue">1</span></label>
+                                <input type="range" id="stddev" min="0.1" max="50" step="0.01" value="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hint">Click and drag to see the points that map to the range.</div>
+                <div class="canvas-container">
+                    <canvas id="distributionCanvas"></canvas>
+                    <div id="noExpressionMessage" class="no-expression-message">No scalar expression selected</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="chartToggles">
+            <label><input type="checkbox" id="toggleUniform" checked> Show Uniform Chart</label>
+            <label><input type="checkbox" id="togglePolar" checked> Show Polar Chart</label>
+            <label><input type="checkbox" id="toggleDistribution" checked> Show Distribution Chart</label>
+        </div>
+
+        <div class="footnotes">
+            <p id="footnote-1">[1]
+                This transform can actually creates a <strong>pair</strong> of independent
+                and normally distributed values from the inputs <code>U₁</code> and <code>U₂</code>.
+                We consistently use the cosine function to create one value of the pair for this visualization.
+                The other value can be created by swapping cosine out for sine.
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/box-muller/script.js"></script>
+</body>
+</html>

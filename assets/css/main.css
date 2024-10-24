@@ -96,6 +96,11 @@ img {
   max-width: 100%;
 }
 
+img.centered {
+  display: block;
+  margin: 0 auto;
+}
+
 .footnotes {
   font-size: 0.75em;
 }
