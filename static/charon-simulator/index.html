@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Charon Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/charon-simulator/styles.css">
+</head>
+
+<body>
+    <div id="container">
+        <div class="description-section">
+            <div class="collapsible-section">
+                <h1 class="collapsible-header">Charon Simulator <span class="toggle-icon">▼</span></h1>
+                <div class="collapsible-content description">
+                    <p>
+                        <a href="/articles/charon-simulator">Charon</a> is a cooperative rate limiting system used to enforce fair access to shared resources.
+                        This system may <strong>grant</strong> or <strong>reject</strong> access requests for a resource for a user.
+                    </p><p>
+                        Charon uses a unique rate limiting method with configurable <strong>tiers</strong>
+                        that determine the limit and speed at which requests can be granted.
+
+                        If a user exhausts the limits of one tier, they may <strong>burst</strong> up into the next tier,
+                        which may be configured with a higher (or lower) limit.
+                    </p><p>
+                        This simulator allows you to configure and visualize different burst tier configurations. You can add tiers, adjust their parameters, and make requests to see how the system behaves.
+                    </p>
+
+                    <div class="help-text">
+                        <dl>
+                            <dt>Limit</dt>
+                            <dd>The maximum number of requests that can be granted in a window.</dd>
+
+                            <dt>Window</dt>
+                            <dd>The length of time requests are remembered and compared to the limit.</dd>
+
+                            <dt>Active Time</dt>
+                            <dd>How long a tier is active before it enters a cooldown period.</dd>
+
+                            <dt>Cooldown Time</dt>
+                            <dd>
+                                The length of time a tier cannot be re-entered after its active time has elapsed.
+                                This parameter is useful to prevent users from continually re-bursting into higher-limit tiers without consequence.
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="tiers-wrapper">
+            <table id="tiers" class="table">
+                <thead>
+                    <tr>
+                        <th class="tier-header"></th>
+                        <th class="limit-header">Limit</th>
+                        <th class="window-header">Window</th>
+                        <th class="active-header">Active Time</th>
+                        <th class="cooldown-header">Cooldown Time</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
+            <button id="add" type="button" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Add New Tier
+            </button>
+        </div>
+
+        <div id="canvasContainer">
+            <div class="canvasWrapper">
+                <div id="canvas-info">
+                    <span id="hits-in-window"></span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-section">
+            <div class="form-group controls-row">
+                <div class="slider-container">
+                    <div class="request-type">
+                        <label>
+                            <input type="radio" name="request-type" value="single" checked> Make single request
+                        </label>
+                        <label>
+                            <input type="radio" name="request-type" value="batch"> Reserve multiple requests
+                        </label>
+                    </div>
+                    <div id="batch-controls" style="display: none;">
+                        <div class="slider-wrapper">
+                            <div id="hits-values">
+                                <span>Reserve </span>
+                                <span id="min-hits-value">1</span>
+                                <span> - </span>
+                                <span id="max-hits-value">5</span>
+                                <span> requests </span>
+                            </div>
+                            <div id="hits-wrapper">
+                                <div id="hits-slider"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="hit" class="btn btn-primary">
+                Make request
+                <span>(or press spacebar)</span>
+            </button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
+    <script type="text/javascript" src="/charon-simulator/log.js"></script>
+    <script type="text/javascript" src="/charon-simulator/render.js"></script>
+    <script type="text/javascript" src="/charon-simulator/simulator.js"></script>
+</body>
+</html>
