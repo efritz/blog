@@ -1,6 +1,7 @@
 MathJax.Hub.Config({
   tex2jax: {
     inlineMath: [['$', '$'], ['\\(', '\\)']],
-    processEscapes: true
+    processEscapes: true,
+    loader: {load: ["input/tex", "output/chtml"]},
   }
 });
