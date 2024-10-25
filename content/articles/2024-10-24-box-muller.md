@@ -129,7 +129,7 @@ I kept reading page after page on how the Box-Muller transform works, just waiti
 
 So I built an [interactive visualizer](/box-muller) where I could control and replace individual sub-expressions of the transformation. I needed the ability to **debug** the transformation in a way that gave me real-time visual feedback. And this seemed to do the trick.
 
-The visualizer generates pairs of uniformly distributed values $(U_1, U_2)$ and plots them as a points in the Cartesian coordinate system. Plotting the distribution of either value alone will yield incredibly unsurprising histograms (_hint: they're uniform by construction_).
+The visualizer generates pairs of uniformly distributed values $(U_1, U_2)$ and plots them as points in the Cartesian coordinate system. Plotting the distribution of either value alone will yield incredibly unsurprising histograms (_hint: they're uniform by construction_).
 
 {{< lightbox src="/images/box-muller/u1.gif" anchor="u1" half="true" >}}
 {{< lightbox src="/images/box-muller/u2.gif" anchor="u2" half="true" >}}
