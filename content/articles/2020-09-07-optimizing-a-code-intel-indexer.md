@@ -108,12 +108,7 @@ This [change](https://github.com/sourcegraph/lsif-go/pull/79) significantly impr
 
 The implementation of the indexer has historically been single-threaded for simplicity.
 
-<!-- TODO: make local -->
-{{< lightbox
-    src="https://i.imgflip.com/4bwccv.jpg"
-    absolute="true"
-    anchor="lazy-bums"
-    alt="All my idle cores" >}}
+{{< centeredimg src="/images/optimizing-indexer/idle-cores.jpg" alt="All my idle cores" >}}
 
 Sourcegraph is often deployed onto nodes with many CPUs, but our indexer was only able to use one at a time. We've realized what a waste the single-threaded design was after one of our enterprise customers showed us lsif-go consuming 100% of one core, and 0% of the other 95 cores. There's no way we're going to miss the opportunity to see all 96 of those cores light up the next time we chat. So we made everything that is able to run at the same time [run at the same time](https://github.com/sourcegraph/lsif-go/pull/91). Unfortunately, parallelizing workloads in general is not a trivial task.
 
