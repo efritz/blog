@@ -1,7 +1,7 @@
 <article>
   <div class="row">
     <div class="left">
-      <h4 {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>{{ .Get "title" | markdownify }}</h4>
+      <h4 class="list-item" {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>{{ .Get "title" | markdownify }}</h4>
       {{ if .Get "sub" }}
         <div class="sub muted">{{ .Get "sub" | markdownify }}</div>
       {{ end }}

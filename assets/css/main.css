@@ -33,13 +33,22 @@ h6 {
 
 h1 { font-size: 1.333em; }
 h2 { font-size: 1.777em; }
-h3 { font-size: 1.333em; }
-h4 { font-size: 1.000em; font-weight: bold }
-h5 { font-size: 1.000em; font-weight: bold }
-h6 { font-size: 1.000em; font-weight: bold }
 
-h3 {
+.articles h3 {
+  font-size: 1.555em;
   border-bottom: 1px solid rgba(0, 0, 0, .0785);
+}
+
+.articles h4 {
+  font-size: 1.333em;
+  border-bottom: 1px solid rgba(0, 0, 0, .0785);
+}
+
+h3.list-item,
+h4.list-item {
+  font-size: 1.000em;
+  font-weight: bold;
+  border-bottom: none;
 }
 
 main {
