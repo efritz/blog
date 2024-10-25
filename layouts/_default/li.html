@@ -1,7 +1,7 @@
 <article>
   <div class="row">
     <div class="left">
-      <h4>
+      <h3 class="list-item">
         {{ if .Params.Icon }}
           <i class="fa fa-{{ .Params.Icon }} class-icon li-icon"></i>
         {{ end }}
@@ -15,7 +15,7 @@
         {{ else }}
           <a href="{{ .Permalink }}">{{ .Title }}</a>
         {{ end }}
-      </h4>
+      </h3>
     </div>
 
     <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="right">

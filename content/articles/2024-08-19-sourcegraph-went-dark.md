@@ -21,7 +21,7 @@ On the bright side, I've cemented my place on the insights leaderboard for the r
 Sourcegraph has made their future development repository private, but it seems they've left a public snapshot available at <a href="https://github.com/sourcegraph/sourcegraph-public-snapshot"><code>sourcegraph/sourcegraph-public-snapshot</code></a> for the time being.
 </div>
 
-## Keeping references alive
+### Keeping references alive
 
 Over my tenure at Sourcegraph I've done [a fair bit of writing](/tags/sourcegraph/) for the engineering blog, which I've inlined into this website for stable reference. It's interesting to see what people are trying to build and, for an engineer, how they're trying to build it. Much of my writing used links into relevant public code as a reference.
 
@@ -48,7 +48,7 @@ I had wondered [what happens to forks when a repository is deleted or changes vi
 
 _My fork will continue to exist_ (yay), but the source repository becoming inaccessible might take commits outside of the `main` branch with it. I need to ensure that these commits are part of the new repository network.
 
-## Scraping for relevant commits
+### Scraping for relevant commits
 
 Step one is to find all the commits I care about. I ran the following Go program to iterate through all of _my_ pull requests on the source repository and write their payloads to disk for further processing.
 
@@ -211,7 +211,7 @@ func extractCommits(ctx context.Context) error {
 
 Running `go run . >> commits.txt` dumped these commits onto the end of the file and completes the set of Git SHAs that need to be brought into the repository network for stable reference.
 
-## Bringing commits into the new repository network
+### Bringing commits into the new repository network
 
 Given the warning above (_"does not belong to any branch on this repository"_), it should be sufficient to ensure that my fork has a branch containing each relevant SHA I'd like to retain access to.
 
@@ -229,7 +229,7 @@ for SHA in $(cat commits.txt); do
 done
 ```
 
-## Rewriting references
+### Rewriting references
 
 At this point I should be safe and have _some target_ to link to in my fork for each reference to a pull request or commit in the source repository. Now I just have to figure out how to automate that process (there are at least 275 code references over 15 files and I'm not doing that by hand).
 

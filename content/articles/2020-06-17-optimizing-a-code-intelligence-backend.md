@@ -25,7 +25,7 @@ With the guidance of the Go memory and CPU profiler, we implemented optimization
 * Parallelization
 * Doing less stuff (where "stuff" is I/O, CPU usage, and memory allocations)
 
-## Identifying bottlenecks
+### Identifying bottlenecks
 
 Premature optimization is the root of all evil, so we initiated our optimization efforts by using a CPU and memory profiler to identify performance bottlenecks in our existing system. Here are the CPU and memory allocation profiles we began with:
 
@@ -52,7 +52,7 @@ These profiles revealed a number of hotspots in the code, and we combined these 
 
 These efforts yielded a 2x speedup in query latency, a 2x speedup in processing latency, and a nearly 50% reduction in memory and disk load. In this post, we'll highlight what impact each optimization had, and we'll dive into a detailed summary of overall improvements at the end.
 
-## Architecture changes
+### Architecture changes
 
 The CPU profiling revealed a substantial amount of time was being spent in the API server. This service receives the LSIF upload from the API user and passes it to the bundle manager server which writes it to disk. A separate background worker service later converts the on-disk LSIF data into a SQLite bundle. On a user query, the API server receives the requests, queries the bundle manager server, which in turn uses the SQLite bundle to respond to the API server, which then forwards that response to the user.
 
@@ -72,7 +72,7 @@ The way we did this was a bit of a kludge. In essence, we wanted to eliminate an
 
 [In the code](https://github.com/efritz/sourcegraph/tree/bc072662500da3ce0bc7b5820bf0f63fb59182fb/internal/codeintel/lsifserver/client/proxy.go#L40-46), we use the `httptest.NewRecorder` function to record the handler response, and then return this request to the caller as if it came from an actual over-the-network HTTP client call. Not the cleanest code in the world, but this addressed the immediate performance bottleneck and we were eager to move onto the others. In a separate pass, we were able to even further collapse this boundary and replace the fake HTTP server shim with direct function calls.
 
-## Parallelization
+### Parallelization
 
 Overall, the entire process of converting an LSIF index into a bundle file is a simple, linear pipeline.
 
@@ -90,7 +90,7 @@ Overall, the entire process of converting an LSIF index into a bundle file is a 
 
 We identified that the reading and writing steps (marshalling, unmarshalling, and I/O) occupied the majority of time spent, which is where we focused our parallelization efforts.
 
-### Parallel JSON parsing
+#### Parallel JSON parsing
 
 Profiling identified JSON parsing as a CPU hotspot, which pointed us to the reader portion of the pipeline. LSIF data is uploaded as JSON that describes the network of nodes and edges that captures the referential structure of code:
 
@@ -119,7 +119,7 @@ In the implementation, we used channels as bounded queues to break up the parsin
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/1e83fa635ade825e39b41031b5bd5809cecc2a69#diff-d8ead48c93da52682080c1e083e3157fR1">`1e83fa6`</a>, reduced conversion time by 31%.
 </div>
 
-### Writing to SQLite in parallel
+#### Writing to SQLite in parallel
 
 The output of the LSIF processing system is a SQLite bundle that contains 4 categories of data:
 
@@ -154,11 +154,11 @@ To increase write throughput, we moved the parallelism into the writer layer. Af
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/7c99cd982e1c3a8e77f2a065f7ae6640a08ba5bb#diff-86711fd26a316ad73cedd5eb066b4c21R1">`7c99cd9`</a>, reduced conversion time by 10.43%.
 </div>
 
-## Other code changes: doing _fewer_ things
+### Other code changes: doing _fewer_ things
 
 In addition to simplifying the architecture and parallelizing critical tasks, we also made numerous targeted updates to be smarter (thriftier) to reduce the amount of data allocated in memory, serialized, and persisted.
 
-### Collapse rows in SQLite
+#### Collapse rows in SQLite
 
 Prior to Sourcegraph 3.17, each definition and reference mapped to its own row in the SQLite table. Each such row consisted of the following:
 * An auto-generated numerical UUID
@@ -184,7 +184,7 @@ Due to the reduced size of data, we are also able to insert more definition and 
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/69bf52c2e3ef2655eb94ba6ed091f439c6c236b4#diff-87794b8e6825323e89453e637c6c6116R117">`69bf52c`</a>, reduced bundle sizes by 50%.
 </div>
 
-### Faster, smaller serialization
+#### Faster, smaller serialization
 
 We replaced the gzipped JSON-encoded bundle payloads with gzipped [gob-encoded](https://golang.org/pkg/encoding/gob/) structures. This reduced heap allocations, reduced overall bundle size, and yielded small improvements in overall processing time.
 
@@ -194,7 +194,7 @@ Most importantly, this allowed us to remove some tech debt caused by data struct
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/d17750ffd9aecafdc68fdeb9a6dbc7e62e876c5c#diff-baa2de1a12d5be3e15c550035933d4e5R1">`d17750f`</a>, reduced bundle sizes by 10%.
 </div>
 
-### Empty slice allocations
+#### Empty slice allocations
 
 After porting the LSIF processing system from TypeScript to Go, our code was littered with empty slice allocations like this one:
 
@@ -218,7 +218,7 @@ In our case, rewriting empty slice allocations to have non-zero capacities did n
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR19">`8a905ac`</a>, reduced conversion time by 9.35%.
 </div>
 
-### Maps vs. structs
+#### Maps vs. structs
 
 In TypeScript, the most common associative data structure that maps from key to value is a JavaScript object (`{}`). The closest analog that Go has is a map from string to interface (`map[string]interface{}`). However, if the set of key values and the corresponding value types are known at compile time, Go has another data structure, the struct, which has different runtime characteristics.
 
@@ -267,7 +267,7 @@ In Go, map values are allocated on the heap, while non-pointer struct instances 
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/8a905acbbfeadd09d45174742bc94df7b5d42057#diff-8b8dfca408b173d88fdef9e4637735abR25">`8a905ac`</a>, reduced conversion time by 9.35%.
 </div>
 
-### Reducing data movement
+#### Reducing data movement
 
 The conventional wisdom holds that stack allocation is often more efficient than heap allocation, but this is not always the case. For example, there are cases where naive stack allocation will result in unnecessary copying. Consider the following for-loop, which is representative of a pattern that was quite common in our code:
 
@@ -315,7 +315,7 @@ At runtime, this eliminates the need to copy the 216 bytes of each slice element
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/d1f8cafdf952d8eeabadfd38f4ebae0050c06a11">`d1f8caf`</a>, reduced conversion time by 26.18%.
 </div>
 
-### Efficient JSON parsing
+#### Efficient JSON parsing
 
 The Go standard library's JSON parser is reliable and has an easy-to-use API. However, it is not hyper-optimized for performance. Profiling showed that the most CPU time in the correlation phase of processing was spent in the `"encoding/json"` package, due to its heavy use of reflection.
 
@@ -325,7 +325,7 @@ We looked at several other options for JSON parsing in Go ([easyjson](https://gi
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/6b12b267574d1870664389e8840255af04a30b6d#diff-ab549083ae1ef9af86ec1fcc8dd1a8c8R15">`6b12b26`</a>, reduced conversion time by 19.02%.
 </div>
 
-### Avoid unnecessary disk writes
+#### Avoid unnecessary disk writes
 
 The bundle manager acts as a sort of hub in the code navigation backend system, fetching LSIF data and serving it to workers, which then convert it into SQLite bundles that are then passed back to the bundle to write to disk.
 
@@ -339,7 +339,7 @@ This yielded a performance boost that became more significant the larger the cod
   This update, implemented in <a href="https://github.com/efritz/sourcegraph/commit/2eae464dcd21a4573cdafef167eabee99af773f1#diff-2978e84d13764ae85636a117d5e3e9d4R188">`2eae464`</a>, reduced conversion time by 20.13%.
 </div>
 
-## Reviewing results
+### Reviewing results
 
 The following chart shows the decrease in query latency while running our [integration test suite](https://github.com/efritz/sourcegraph/tree/5f51043ad2130a1acdcfca8b969f907cd03a220d/internal/cmd/precise-code-intel-test) compared to the previous two Sourcegraph releases. The test suite is querying cross-repo definitions and references over three commits from [etcd-io/etcd](https://github.com/etcd-io/etcd), [pingcap/tidb](https://github.com/pingcap/tidb), and [distributedio/titan](https://github.com/distributedio/titan), and two commits from [uber-go/zap](https://github.com/uber-go/zap).
 

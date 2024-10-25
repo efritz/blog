@@ -81,7 +81,7 @@ func EncodeRanges(values []int32) ([]byte, error) {
 }
 ```
 
-## What makes this code so special?
+### What makes this code so special?
 
 Honestly, nothing! The code itself is not revolutionary and will appear in no papers. It's just a bunch of techniques that are applied in a thoughtful order that yields a huge savings in a dimension that was concerning for the project at the time. It did its job, it understood the assignment, and that's as valid a definition of **good code** as any.
 
@@ -129,7 +129,7 @@ ranges := []int32{
 
 Now the question is, how small can we make this payload so that we can shove it into a database column without blowing the company's runway on poorly utilized disk space?
 
-### Naive encoding
+#### Naive encoding
 
 In our most basic binary encoding, we can lay each 32-bit integer down into a byte array, one after another. Each of the 40 values occupies 32 bits, meaning it takes 160 bytes to encode all 10 ranges, as so:
 
@@ -145,7 +145,7 @@ In our most basic binary encoding, we can lay each 32-bit integer down into a by
 ...
 ```
 
-### Variable-width integer encoding
+#### Variable-width integer encoding
 
 Given that we're encoding components of source code ranges, we can take advantage of the fact that the value of each component will, the vast majority of the time, never touch the majority of the significant bits of the encoding. Line numbers for even very large files will range in the hundreds to thousands (possibly tens of thousands of lines before other developer tooling tooling begins to choke), and character numbers will generally stay below 100 or so. Even more, zealots will always [keep it below 80](https://en.wikipedia.org/wiki/Punched_card) as a principled rule. These numbers ar miniscule compared to 2 billion, the upper range of a 32-bit integer.
 
@@ -196,11 +196,11 @@ Encoding each integer in this way allows us to encode all 10 ranges in only 58 b
 
 This yields an initial 64% reduction in space, but we have more tricks to apply.
 
-### Delta encoding
+#### Delta encoding
 
 Varint encoding is so successful because _our input integers are already fairly small_. If there's a way we can losslessly alter the data so that the inputs are even smaller, we can compound this benefit for even more space savings. To achieve this, we can use [delta encoding](https://en.wikipedia.org/wiki/Delta_encoding) to store the _difference_ between adjacent values in a sequence, rather than encoding the original values as they are given.
 
-#### Step 1: Column-orient the data
+##### Step 1: Column-orient the data
 
 The first step we take is to flip the rows and the columns of the input array. This makes it so that each start line is adjacent to another start line, each start character is adjacent to another start character, and so on, and has the effect of lowering the _variance_ between sequential elements.
 
@@ -215,7 +215,7 @@ ranges := []int32{
 
 Because ranges are supplied in ascending order, high variance between start lines will occur only when there are large gaps between symbol references. The variance in start characters are bounded by the maximum line length in a given file, enforced by senior engineers, rigid style guides, and bounded monitor real estate. The variance in ending line and character offsets turn out to be inconsequential because of the next few tricks we employ.
 
-#### Step 2: Store span lengths
+##### Step 2: Store span lengths
 
 If we consider what the ranges we're encoding represents, we can do something ridiculously effective. In the most common case, we're encoding the range of an _identifier_, not the entirety of an expression block. Thus, the range does not span multiple lines, and the start line and end line will, for a dominating proportion of uses, be the same. Furthermore, the majority of operations we're enabling will result in a list of references _of the same length_. In the case of our running example, the references to our target is always `Fprintf`, which is 7 characters long **in every context in which it appears**.
 
@@ -234,7 +234,7 @@ Given that our goal is to minimize the value of each component, we've already do
 
 But we're not done cooking.
 
-#### Step 3: Delta-encode each column
+##### Step 3: Delta-encode each column
 
 Now that our data is prepped and our mise en place is at the stovetop, we can finally apply some heat. To perform the delta encoding, we replace each value in the array with the difference to the value that precedes it in the original array.
 
@@ -257,7 +257,7 @@ Encoding this sequence as varints can be done in 40 bytes, as each element can b
 
 _But look at all those zeroes..._
 
-### Encoding runs of zero-runs
+#### Encoding runs of zero-runs
 
 For our last trick, we'll remove some unnecessary elements from the encoding altogether. Nothing is smaller than something you didn't need to encode in the first place.
 
@@ -298,6 +298,6 @@ After all our changes, it's now possible to rendered the final binary encoding i
 
 Weighing in at 21 bytes, this yields a stacked 48% reduction in space, or an 87% reduction from our original naive encoding.
 
-### Takeaway
+#### Takeaway
 
 Thinking about the shape of data in practice can often reveal insights that can be exploited.
