@@ -39,7 +39,7 @@ The following Git commit graph illustrates this, where commit `b` could simply b
     anchor="long-graph"
     caption="A Git commit graph with large distances between code intelligence indexes." >}}
 
-## A better design
+### A better design
 
 In these circumstances, bounded traversals are a fundamental design flaw. To get rid of this constraint, we turn to a technique that was very successful in the past: index the result of the queries out of band. This technique forms the basis of our search: we create a series of n-gram indexes over source text so we can quickly look inside text documents. This technique also forms the basis of our code intelligence: we create [indexes](https://microsoft.github.io/language-server-protocol/specifications/lsif/0.5.0/specification) that contain the answers to all the relevant language server queries that could be made about code at a particular revision.
 
@@ -66,7 +66,7 @@ The `lsif_dirty_repositories` table tracks which repositories need their commit 
 | ----------------------------- | ----------- | ------------ |
 | github.com/sourcegraph/sample | 42          | 42           |
 
-#### Example
+**Example**
 
 For this example, we'll use the following commit graph, where commits `80c800`, `c85b4b`, and `3daedb` define uploads #1, #2, and #3, respectively.
 
@@ -96,7 +96,7 @@ We want to search the graph in both directions, so we perform the operation agai
 
 The topological ordering of the commit graph and each traversal takes time linear to the size of the commit graph, making this entire procedure a linear time operation.
 
-## The neglected scaling dimension
+### The neglected scaling dimension
 
 Well, it's not _quite_ linear time if you take into account some of the stuff we claimed we could hand-wave away earlier: index files for different root directories.
 
@@ -266,7 +266,7 @@ To give a sense of this user's scale:
 
 While the commit graph itself was relatively small (the [k8s/k8s](https://github.com/kubernetes/kubernetes) commit graph is twice that size and could be processed without issue), the number of distinct roots was very large.
 
-## Memory reduction attempts
+### Memory reduction attempts
 
 As an emergency [first attempt to reduce memory usage](https://github.com/efritz/sourcegraph/commit/4e10e9f9a7a600d65dc9b24468073faad49e832d), we were able to cut the amount of memory required to calculate visible uploads down by a factor of 4 (with the side effect of doubling the time it took to compute the commit graph). This was an acceptable trade-off, especially for a background process, and especially in a patch release meant to restore code intelligence to a high-volume private instance.
 
@@ -310,7 +310,7 @@ The second change is the replacement of the root and indexer fields by a map fro
 
 This also greatly reduces the _multiplicity_ of these strings in memory. Before, we were duplicating each indexer and root values for every _visible_ upload. Now, we only need to store them for each _upload_, as the values do not change depending on where in the commit graph you are looking. Logically, this was simply a [string interning](https://en.wikipedia.org/wiki/String_interning) optimization.
 
-## Hitting a moving target
+### Hitting a moving target
 
 While we were busy preparing a patch release to restore code intelligence to our customer, they had upgraded to the next version to fix an unrelated error they were experiencing in Sourcegraph's search code.
 
@@ -324,7 +324,7 @@ In the same spirit, we can remove the explicit step of topologically sorting the
 
 Our [last change](https://github.com/efritz/sourcegraph/commit/ec87b1b6fda006d38ad310ac59656b7e64c07b3c), however, was the real heavy hitter and comes in 2 parts.
 
-### Part 1: Using a more compact data structure
+#### Part 1: Using a more compact data structure
 
 We've so far been storing our commit graph in a map from commits to the set of uploads visible from that commit. When the number of distinct roots is large, the lists under each commit can also become quite large. Most notably, this makes the merge operation between 2 lists quite expensive in terms of both CPU and memory. CPU is increased as the merge procedure compares each pair of elements from the list in a trivial but quadratic nested loop. Memory is increased as merging 2 lists creates a third, all of which are live at the same time before any are a candidate for garbage collection.
 
@@ -338,7 +338,7 @@ We make the observation that looking in a single direction, each commit can see 
 var visibleUploads map[string /* commit */]map[string /* indexer+root */]Upload /* sole upload visible at root */
 ```
 
-### Part 2: Ignoring uninteresting data
+#### Part 2: Ignoring uninteresting data
 
 We stop pre-calculating the set of visible uploads for **every** commit at once. We make the observation that for a large class of commits, the set of visible uploads are simply redundant information.
 
@@ -377,7 +377,7 @@ In this case, it was **very** noticeable.
     anchor="disk"
     caption="Sorry about your disk." >}}
 
-## Pick 3: low latency, low memory usage, low disk usage, or developer sanity
+### Pick 3: low latency, low memory usage, low disk usage, or developer sanity
 
 Home stretch—we can do this. To summarize:
 
@@ -400,7 +400,7 @@ We introduced a new table, `lsif_nearest_uploads_links`, which stores a link fro
 - If the commit exists in `lsif_nearest_uploads`, we simply use those visible uploads, otherwise
 - If the commit exists in `lsif_nearest_upload_links`, we use the visible uploads attached to the ancestor.
 
-#### Example
+**Example**
 
 We'll use the following commit graph again for our example. Here, commit `68acd3` defines upload #1, and `67e0bf` defines upload #2 (both with distinct indexing root directories).
 
@@ -438,13 +438,13 @@ This set of changes finally reduces disk usage from 100% to a much more reasonab
 
 And things _seem_ to be remaining calm...
 
-## Lessons learned (part 2)
+### Lessons learned (part 2)
 
 In [Part 1](/articles/optimizing-commit-graph-part-1/#lessons-learned) we pointed out that databases are a hugely deep subject and knowing your tools deeply can get you fairly far in terms of performance. Unfortunately, with the wrong data model, it doesn't matter how fast you can read or write it from the storage layer. You're optimizing the wrong thing and missing the forest for the trees.
 
 In Part 2, we presented a fantastic way to "optimize the database" by reducing the size of our data set. Taking a step back away from the nitty-gritty details of an existing implementation to determine the shape of the data surrounding a problem can reveal much more straightforward and efficient ways to analyze and manipulate that data. This is especially true in a world with changing assumptions.
 
-### More posts like this
+#### More posts like this
 
 - [A 5x reduction in RAM usage with Zoekt memory optimizations](https://sourcegraph.com/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
 - [How not to break a search engine or: What I learned about unglamorous engineering](https://sourcegraph.com/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)

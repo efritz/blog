@@ -33,7 +33,7 @@ This is a glaring hole in the feature. The majority of users are exploring code 
 
 In order to plug this hole, we determine the set of nearby commits for which Sourcegraph has received an index, query these indexes on behalf of the requested commit, then adjust the resulting locations (file paths and ranges within a document) using the Git diff between the commits as a guide. This enables Sourcegraph to respond with precise results to requests on commits missing an index.
 
-## Tracking cross-commit index visibility
+### Tracking cross-commit index visibility
 
 The first step in this process is to [track how commits of a repository relate to one another](https://github.com/efritz/sourcegraph/commit/34b51fff934f973900f3aa3a7b9b0886ceef5d18). Unfortunately, the service providing the code intelligence features was separated (by design) from the rest of the product. We had only recently [gained access to the Sourcegraph PostgreSQL database](https://github.com/efritz/sourcegraph/commit/9f0feb4b72828c06d5677986e9d96491cc72e17c) used by the rest of the application, and no other team was tracking commit information. The source of truth for that data was another service called gitserver, which required both an RPC call and a subprocess to access.
 
@@ -113,7 +113,7 @@ LIMIT 1
 
 This query maintains a worklist (the query-local `lineage` table) seeded by the requested commit, and grows by finding untracked commits that are either a parent (the ancestor `A` direction) or a child (the descendant `D` direction) of a commit already in the worklist and inserting it. The table is implicitly ordered by its insertions, so the final select returns the commit with index data that also has the smallest commit distance to the requested commit. The `WHERE` clause inside of the CTE is there to limit the size of the working table, which can be pathologically large in the case of a large commit graph and no uploads visible from a given commit.
 
-#### Example
+**Example**
 
 The values of the tables above represent the following hypothetical commit graph, where `a36064` is the head of the `main` branch, `6106fc` is the head of the feature branch `feat/x`, and the commits with uploads (`f4fb06` and `d67b8d`) are drawn in blue.
 
@@ -135,7 +135,7 @@ Running the query above from the commit `313082` produces the following CTE resu
 
 Of particular note is that we don't visit _sibling_ commits: once we reach a commit by travelling in the ancestor direction, we can't suddenly flip direction. Maintaining the direction heading during traversal ensures that the algorithm will eventually terminate.
 
-## Performance improvements
+### Performance improvements
 
 Unfortunately, our first stab at an implementation had a number of rather disappointing performance characteristics, as first stabs typically do. The query above is basically a SQL translation of an imperative graph-walking algorithm. Thinking of the query in these terms makes it easier to see that the runtime cost of the query will increase proportionally to the distance travelled through the graph.
 
@@ -166,7 +166,7 @@ The following query plan shows an execution trace that visited around 100 commit
 
 A row is a duplicate of another row (from PostgreSQL's point of view) if they both contain the same set of values. However, from our point of view, a row is a duplicate of another row if only their commit values match. After all, we're running a breadth-first search over a graph and by the time we've seen a commit for the second time, we've already seen it via the shortest path. This mismatch in expectations don't cost us correctness, but it does cause performance problems and the pain that comes with it.
 
-#### Example
+**Example**
 
 The following hypothetical commit graph contains a number of feature branches that are eventually merged back into mainline, unlike our previous example where all commits had at most one parent.
 
@@ -254,7 +254,7 @@ This change makes the query efficient enough that we no longer have to worry abo
 
 Well, it solved the problem once and for all _at a particular scale_.
 
-## Lessons learned
+### Lessons learned
 
 One major take away for us was the concrete reinforcement that databases are a hugely deep subject, but are not magic. Building and maintaining an accurate mental model of how your tools work seems to be a necessary skill in software engineering, and acting with poor mental models can lead to disastrous performance results (at best).
 
@@ -262,7 +262,7 @@ Another major takeaway is that the cliché holds: computers do what you tell the
 
 Check out [Part 2](/articles/optimizing-commit-graph-part-2), in which we tackle additional scalability challenges.
 
-### More posts like this
+#### More posts like this
 
 - [A 5x reduction in RAM usage with Zoekt memory optimizations](https://sourcegraph.com/blog/zoekt-memory-optimizations-for-sourcegraph-cloud/)
 - [How not to break a search engine or: What I learned about unglamorous engineering](https://sourcegraph.com/blog/how-not-to-break-a-search-engine-unglamorous-engineering/)
