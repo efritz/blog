@@ -44,6 +44,11 @@ h2 { font-size: 1.777em; }
   border-bottom: 1px solid rgba(0, 0, 0, .0785);
 }
 
+.articles h5 {
+  font-size: 1.111em;
+  border-bottom: 1px solid rgba(0, 0, 0, .0785);
+}
+
 h3.list-item,
 h4.list-item {
   font-size: 1.000em;

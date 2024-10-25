@@ -113,7 +113,7 @@ LIMIT 1
 
 This query maintains a worklist (the query-local `lineage` table) seeded by the requested commit, and grows by finding untracked commits that are either a parent (the ancestor `A` direction) or a child (the descendant `D` direction) of a commit already in the worklist and inserting it. The table is implicitly ordered by its insertions, so the final select returns the commit with index data that also has the smallest commit distance to the requested commit. The `WHERE` clause inside of the CTE is there to limit the size of the working table, which can be pathologically large in the case of a large commit graph and no uploads visible from a given commit.
 
-**Example**
+##### Example
 
 The values of the tables above represent the following hypothetical commit graph, where `a36064` is the head of the `main` branch, `6106fc` is the head of the feature branch `feat/x`, and the commits with uploads (`f4fb06` and `d67b8d`) are drawn in blue.
 
@@ -166,7 +166,7 @@ The following query plan shows an execution trace that visited around 100 commit
 
 A row is a duplicate of another row (from PostgreSQL's point of view) if they both contain the same set of values. However, from our point of view, a row is a duplicate of another row if only their commit values match. After all, we're running a breadth-first search over a graph and by the time we've seen a commit for the second time, we've already seen it via the shortest path. This mismatch in expectations don't cost us correctness, but it does cause performance problems and the pain that comes with it.
 
-**Example**
+##### Example
 
 The following hypothetical commit graph contains a number of feature branches that are eventually merged back into mainline, unlike our previous example where all commits had at most one parent.
 

@@ -1,4 +1,4 @@
-const linkableHeaderSelector = '.articles h3:not(.list-item), .articles h4:not(.list-item)';
+const linkableHeaderSelector = '.articles h3:not(.list-item), .articles h4:not(.list-item), .articles h5:not(.list-item)';
 
 $(document).ready(function() {
     for (const header of document.querySelectorAll(linkableHeaderSelector)) {

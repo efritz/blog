@@ -66,7 +66,7 @@ The `lsif_dirty_repositories` table tracks which repositories need their commit 
 | ----------------------------- | ----------- | ------------ |
 | github.com/sourcegraph/sample | 42          | 42           |
 
-**Example**
+##### Example
 
 For this example, we'll use the following commit graph, where commits `80c800`, `c85b4b`, and `3daedb` define uploads #1, #2, and #3, respectively.
 
@@ -400,7 +400,7 @@ We introduced a new table, `lsif_nearest_uploads_links`, which stores a link fro
 - If the commit exists in `lsif_nearest_uploads`, we simply use those visible uploads, otherwise
 - If the commit exists in `lsif_nearest_upload_links`, we use the visible uploads attached to the ancestor.
 
-**Example**
+##### Example
 
 We'll use the following commit graph again for our example. Here, commit `68acd3` defines upload #1, and `67e0bf` defines upload #2 (both with distinct indexing root directories).
 

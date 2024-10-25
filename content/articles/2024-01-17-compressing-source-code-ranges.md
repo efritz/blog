@@ -200,7 +200,7 @@ This yields an initial 64% reduction in space, but we have more tricks to apply.
 
 Varint encoding is so successful because _our input integers are already fairly small_. If there's a way we can losslessly alter the data so that the inputs are even smaller, we can compound this benefit for even more space savings. To achieve this, we can use [delta encoding](https://en.wikipedia.org/wiki/Delta_encoding) to store the _difference_ between adjacent values in a sequence, rather than encoding the original values as they are given.
 
-**Step 1: Column-orient the data**
+##### Step 1: Column-orient the data
 
 The first step we take is to flip the rows and the columns of the input array. This makes it so that each start line is adjacent to another start line, each start character is adjacent to another start character, and so on, and has the effect of lowering the _variance_ between sequential elements.
 
@@ -215,7 +215,7 @@ ranges := []int32{
 
 Because ranges are supplied in ascending order, high variance between start lines will occur only when there are large gaps between symbol references. The variance in start characters are bounded by the maximum line length in a given file, enforced by senior engineers, rigid style guides, and bounded monitor real estate. The variance in ending line and character offsets turn out to be inconsequential because of the next few tricks we employ.
 
-**Step 2: Store span lengths**
+##### Step 2: Store span lengths
 
 If we consider what the ranges we're encoding represents, we can do something ridiculously effective. In the most common case, we're encoding the range of an _identifier_, not the entirety of an expression block. Thus, the range does not span multiple lines, and the start line and end line will, for a dominating proportion of uses, be the same. Furthermore, the majority of operations we're enabling will result in a list of references _of the same length_. In the case of our running example, the references to our target is always `Fprintf`, which is 7 characters long **in every context in which it appears**.
 
@@ -234,7 +234,7 @@ Given that our goal is to minimize the value of each component, we've already do
 
 But we're not done cooking.
 
-**Step 3: Delta-encode each column**
+##### Step 3: Delta-encode each column
 
 Now that our data is prepped and our mise en place is at the stovetop, we can finally apply some heat. To perform the delta encoding, we replace each value in the array with the difference to the value that precedes it in the original array.
 
