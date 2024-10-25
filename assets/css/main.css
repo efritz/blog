@@ -625,3 +625,27 @@ img[alt=mitel] {
 .articles article:hover {
   background-color: #dbeaf0;
 }
+
+/* Table of Contents Styles
+* --------------------------------------------*/
+
+#toc {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  width: 250px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#toc .current {
+  color: red;
+  font-weight: bold;
+}
