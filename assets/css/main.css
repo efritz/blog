@@ -51,6 +51,12 @@ h4.list-item {
   border-bottom: none;
 }
 
+.header-link {
+  cursor: pointer;
+  margin-left: 0.5em;
+  font-size: 0.8em;
+}
+
 main {
   text-align: justify;
 }
