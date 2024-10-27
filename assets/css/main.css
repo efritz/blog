@@ -643,9 +643,27 @@ img[alt=mitel] {
   font-size: 14px;
   line-height: 1.5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+#toc li {
+  padding-left: 1em;
+  list-style-type: none;
+}
+
+#toc a {
+  display: block;
+  padding: 2px 0;
+  color: #333;
+  text-decoration: none;
+}
+
+#toc a:hover {
+  color: #4c98b2;
 }
 
 #toc .current {
-  color: red;
-  font-weight: bold;
+  color: #4c98b2;
+  font-weight: 900;
+  font-family: 'Lato Bold', sans-serif;
 }
