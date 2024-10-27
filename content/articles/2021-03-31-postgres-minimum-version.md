@@ -16,7 +16,7 @@ As of Sourcegraph 3.27 (released [April 20, 2021](https://about.sourcegraph.com/
 
 Read the [documentation guide](https://sourcegraph.com/docs/admin/postgres#upgrading-postgresql) for instructions on how to upgrade PostgreSQL.
 
-## Why does Sourcegraph 3.27 require Postgres 12?
+### Why does Sourcegraph 3.27 require Postgres 12?
 
 Sourcegraph 3.27 requires support for new and old table references in statement-level triggers, but Postgres 9.6 contains an explicit SQL standard compatibility exclusion and does not support this. As noted in the documentation for [creating triggers](https://www.postgresql.org/docs/9.6/sql-createtrigger.html#SQL-CREATETRIGGER-COMPATIBILITY):
 
@@ -26,7 +26,7 @@ We are requiring Postgres 12 because it supports new and old table references in
 
 The rest of this post explains the technical motivation for why we needed this capability.
 
-### What are row-level and statement-level triggers?
+#### What are row-level and statement-level triggers?
 
 In SQL, there are two ways a trigger can be executed:
 
@@ -37,7 +37,7 @@ In the former case, the trigger has access to the `OLD` and `NEW` row values, wh
 
 In the latter case, the trigger does not have access to the previous or the updated data. Unfortunately, statement-level triggers have no access to previous data, and must re-query the target table to make use of any newly updated data.
 
-### Why do we need statement-level triggers?
+#### Why do we need statement-level triggers?
 
 Sourcegraph performs database migrations on application startup. We try our best to keep these migrations fast, as a slow migration will block additional container instances from starting and accepting traffic.
 
@@ -79,7 +79,7 @@ Postgres requires that each returned row be visible to the current transaction a
 
 As explained in the [documentation](https://www.postgresql.org/docs/9.6/indexes-index-only-scans.html) for index-only scans, partially visible pages require a heap access to check which rows are visible and which are not. These heap access and visibility checks dominate the running time of this query.
 
-### Speeding up counting queries
+#### Speeding up counting queries
 
 A near half-hour query is not _efficient_. Due to the consequences caused by Postgres [MVCC](https://www.postgresql.org/docs/9.6/mvcc-intro.html), there are few actions under our control that could make a count of so many objects faster. Instead, we should count fewer things.
 
@@ -117,7 +117,7 @@ It is an efficient operation to count both the total number of indexes as well a
 
 The schema version bounds can be kept in sync with the source table trivially by using triggers on inserts, updates, and deletes: if we insert a new row with a new lowest or new highest version or if we update/delete a row with the last remaining lowest or highest version, then we update the associated minimum or maximum version for that index.
 
-### Analyzing the trade-offs
+#### Analyzing the trade-offs
 
 Engineering performance around a database is full of trade-offs. In this case, we've gained faster counts by sacrificing efficiency of inserts.
 
@@ -136,7 +136,7 @@ So how bad would this approach be?
 
 Turns out it's pretty bad. Inserting 800k rows into the database with statement-level triggers takes under a minute (on a non-production test machine). Using row-level triggers the same operation takes over an hour.
 
-## Conclusion
+### Conclusion
 
 In order to enable us to continue to scale and improve the performance of your Sourcegraph instance, we are bumping the minimum supported version of Postgres to unlock new features and performance enhancements.
 

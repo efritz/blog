@@ -33,7 +33,7 @@ We've tried to make this transition as seamless as possible, and there should be
 
 But, if you'd like to see how the sausage is debugged, read on.
 
-## The issue
+### The issue
 
 Upgrades of Sourcegraph instances, including on-premise deployments and our [Cloud](https://sourcegraph.com/search) environment, would often fail with a dreaded "dirty database" error. This class of error left the Sourcegraph instance in a broken state that required manual intervention to resolve.
 
@@ -43,7 +43,7 @@ In our Cloud environment, Sourcegraph engineers endured the same manual process.
 
 Requiring site administrators to directly modify database contents is not a distribution practice we should encourage. The frequency of these errors and the rising burden put on users and application/product engineers made this a pressing issue to resolve.
 
-## Identifying (a) contributing factor
+### Identifying (a) contributing factor
 
 In our original effort to eradicate this class of error, we incorrectly attributed the Docker container health check period as the primary cause. Our intuition was built from two observations:
 
@@ -62,7 +62,7 @@ Each migrator attempts to take an advisory lock over a shared key representing t
 
 After some initial testing, we discovered that the frequency of "dirty database" behaviors did not actually decrease. The solution did not address the symptoms, and we needed to do more.
 
-## A deeper contributing factor
+### A deeper contributing factor
 
 Over time, our engineering organization formed some tribal knowledge regarding ways to avoid "taking down production" with poorly defined migrations. Creating indexes on tables that can have a large number of rows caused many to hesitate. Normal index creation operations take an exclusive write lock on the table, creating the new index from the existing table data synchronously. During this time no inserts, updates, or deletes can be made to the table. You basically incur write downtime (along with a blip of failed requests in your metrics dashboards and alerting systems, and a slice of failed jobs that failed in the background) for the table, which can take tens of minutes for large tables.
 
@@ -131,13 +131,13 @@ We changed the migration process to gracefully deal with concurrent index creati
 
 After another round of testing, migrations finally behave according to intuition.
 
-## Conclusion
+### Conclusion
 
 We've long since outgrown the way in which we run database migrations. We've known for a while that there _was_ a problem, and felt the pain along with our users for an embarrassingly long time. After digging a bit deeper, better understanding the problem space, and breaking a bit of our ossified code and deployment process along the way, we can now deliver a significant quality of life improvement to our users and Sourcegraphers alike.
 
 If your next upgrade does **not** crash, please tweet me at [@ericfritz](https://twitter.com/ericfritz).
 
-### Related resources
+#### Related resources
 
 We've updated several documentation pages which are worth a look for existing site administrators:
 

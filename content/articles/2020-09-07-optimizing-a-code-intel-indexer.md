@@ -10,7 +10,7 @@ tags = ["sourcegraph"]
 
 We (Sourcegraph's Code Intelligence team) recently made Go [code intelligence](https://sourcegraph.com/docs/code-search/code-navigation/precise_code_navigation) faster, especially on very large repositories. For example, we cut the indexing time by 95% for the huge [Go AWS SDK](https://sourcegraph.com/github.com/aws/aws-sdk-go) repository, from 8 minutes to 24 seconds. Here's how we did it.
 
-## Background: what is code intelligence?
+### Background: what is code intelligence?
 
 Developers use [Sourcegraph](https://about.sourcegraph.com) for code search and navigation. When you're navigating code on Sourcegraph, you get hovers, definitions, and references to help you along the way. They're fast and cross-repository, can work on any branch or commit, and can be precise (with [LSIF](https://lsif.dev) set up in CI).
 
@@ -19,7 +19,7 @@ Developers use [Sourcegraph](https://about.sourcegraph.com) for code search and 
     alt="Cross-repository jump to definition"
     anchor="j2d" >}}
 
-## The problem: really big monorepos
+### The problem: really big monorepos
 
 Sourcegraph is used by organizations all over the "manyrepo"-vs.-monorepo spectrum:
 
@@ -28,7 +28,7 @@ Sourcegraph is used by organizations all over the "manyrepo"-vs.-monorepo spectr
 
 Our recent optimizations focused on the very large monorepos.
 
-## Time to Intelligence (TTI)
+### Time to Intelligence (TTI)
 
 To track indexing performance, we use an important internal key metric called **Time To Intelligence** (TTI), which covers the time it takes to:
 
@@ -45,13 +45,13 @@ So, after the improvements discussed here, how well do we index Go code at scale
 
 Indexing speed is _so_ important for code bases undergoing constant change. Stale, hours-old code intelligence on a monorepo at scale is about as useful as using a map of Pangea to find your way home. This is why the code intelligence team is dedicated to [increasing the efficiency of every part of the stack](/articles/optimizing-a-code-intel-backend) to make sure your map of the code is always accurate.
 
-## How we optimized it
+### How we optimized it
 
 A language indexer tool is conceptually simple. It reads source code, constructs an in-memory representation of the program structure, resolves symbol names, then generates a JSON-encoded graph representation of those symbols according to the [LSIF](https://microsoft.github.io/language-server-protocol/specifications/lsif/0.4.0/specification/) specification. Go provides [tooling](https://pkg.go.dev/golang.org/x/tools/go/packages?tab=doc) to parse and analyze Go source code in the standard library, leaving only the last stage for us to optimize.
 
 Here's how we did it.
 
-### Reduce repeated work
+#### Reduce repeated work
 
 We think the major inefficiency of the previous version of lsif-go is best illustrated by a likely familiar, but incredibly relevant, story by [Joel Spolsky](https://www.joelonsoftware.com/2001/12/11/back-to-basics/) about a simple worker named Shlemiel.
 
@@ -94,7 +94,7 @@ Because the list of positions are ordered, we can use binary search to efficient
 
 It is [much more efficient](https://github.com/sourcegraph/lsif-go/pull/84) to instead pass along only the positions which can match a subtree. This change means that the binary search for a node decreases as its depth increases: the leaves of the tree have to search a much smaller list. Because the number of nodes in the tree (generally) increases with depth, this cost savings is compounded.
 
-### Batch what you can
+#### Batch what you can
 
 An LSIF indexer is a tool that spits out an index file. The index file is generally larger than the input source code due to making the implicit definition and reference relationships explicit. It stands to reason that the performance of the indexer will eventually be dependent on the performance of formatting the output and writing to disk.
 
@@ -104,7 +104,7 @@ Unfortunately, we were writing each line to an unbuffered file. Without a buffer
 
 This [change](https://github.com/sourcegraph/lsif-go/pull/79) significantly improved performance.
 
-### Parallelize where possible
+#### Parallelize where possible
 
 The implementation of the indexer has historically been single-threaded for simplicity.
 
@@ -165,7 +165,7 @@ In the current version of lsif-go, all writes to the file are synchronized by a 
 
 Each non-trivial task is broken into package-level work, queued into a channel, and then distributed over a number of goroutines (that scales depending on the number of physical cores on the indexing machine). A task finishes once the entire input channel has been consumed and each worker goroutine has exited. Each task makes a fresh set of goroutines.
 
-## Reviewing results
+### Reviewing results
 
 The following chart show the comparison between lsif-go v0.9.0 (the un-optimized, previous release), v0.10.0 (some optimizations applied here), and v1.0 (the new stable release).
 

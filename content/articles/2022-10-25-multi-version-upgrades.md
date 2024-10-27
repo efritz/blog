@@ -23,7 +23,7 @@ A recent peek at our customer instance distribution showed that 70% of our self-
 
 At first glance, it may seem that multi-version upgrades are simply "standard upgrades in a `for` loop." While that _is_ the basic idea, there's also a world of nuance surrounding it. Let's dive in.
 
-## The migration journey
+### The migration journey
 
 At the start of this journey, we used [golang-migrate](https://github.com/golang-migrate/migrate) to handle the details of our migrations. This tool would detect the current "schema state" of the database (stored in a forcibly created table with at most one row) and apply any migrations that were defined strictly after the currently reported state. This process would happen on application startup, generally no-oping after the first run that actually applied any missing migrations.
 
@@ -78,7 +78,7 @@ The following image shows a reduced (but fairly accurate) migration graph over s
     alt="How migration graph structures change release after release."
     anchor="releases" >}}
 
-## The pile of wrenches
+### The pile of wrenches
 
 The evolution of our migration definitions over time has created a number of issues to overcome for multi-version upgrades. The biggest issue comes from periodically squashing migration definitions, which erases information necessary to the upgrade process. In the image above, there's no valid way to upgrade from 3.36 to 3.39 in one step. The squashed migration contains _both_ the SQL that's already been run by the 3.36 installation, as well as the SQL defined in 3.37 that has yet to be applied. As we cannot partially apply a single migration, we cannot support this upgrade path.
 
@@ -107,7 +107,7 @@ There were also a number of odd-duck cases to tackle, which had existed until th
 
 After cleaning up this pile of wrenches, we have a unified migration graph that **passes our validation**, and can upgrade the _schema_ of a database from any version to any other version (within v3.20 and 4.0+). Unfortunately, schema migrations are only half of the upgrade process.
 
-## Handling out-of-band migrations
+### Handling out-of-band migrations
 
 Early in 2021, we [proposed](https://docs.google.com/document/d/1xA7M77OyU5l7a1wZLJAAyKHzgcXKHrlzOcnMtxVa44c/edit#heading=h.trqab8y0kufp) and implemented out-of-band migration machinery to perform large-scale data (non-schema) migrations in the background of the application. We needed a way to run large-scale rewrites over data on our `codeintel` database, which at the time held a 2TB data set. As these rewrites were pure SQL, it was tempting to put them into our existing migration infrastructure. As this was prior to our decoupling of migrations from application startup, we needed to ensure that all migrations finished within our Kubernetes health check. Failing to do so required manual engineer intervention to run the failed migration.
 
@@ -126,7 +126,7 @@ To solve this, we also run the out-of-band migrations in the migrator, interleav
 
 In the example above, upgrading from v3.37 to v3.40 would require the completion of out-of-band migrations #1-#3. To make things a bit more difficult, the out-of-band migration code is only guaranteed to run against the database schema that existed within its lifetime. We cannot invoke out-of-band migration #3 with the v3.37.0 database schema, for example. This becomes a scheduling problem in which we upgrade the schema to a certain version, run out-of-band migrations to completion at that point, and continue the process.
 
-## Conclusion
+### Conclusion
 
 We've continued to iterate on our schema and data migration infrastructure to remove entire classes of pain from our customers, and we are taking significant strides to decrease maintenance burden. Keep your eyes peeled for future improvements in this area.
 

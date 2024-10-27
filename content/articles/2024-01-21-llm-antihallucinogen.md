@@ -15,7 +15,7 @@ Within the rapidly expanding domain of artificial intelligence, the capacity for
 
 For LLM based coding assistants to live up to their potential and solve these problems, they need to have the best possible context. Here's what we're doing to take [the context Cody already has](https://about.sourcegraph.com/blog/all-you-need-is-cody) and make it even better.
 
-## Orthogonal search dimensions
+### Orthogonal search dimensions
 
 Embeddings-powered search indexes are constructed by reducing the input corpus into a _semantic vector space_. Reductively, when two documents cover similar ideas, they would appear within this vector space close together. To retrieve documents related to a particular keyword, those keywords are also translated into the same vector space, and the documents closest to the keywords are considered candidates for retrieval. DataStax has [a good primer](https://www.datastax.com/guides/what-is-a-vector-embedding) on the subject.
 
@@ -29,7 +29,7 @@ In the course of using LLMs to develop coding AI assistants, we've been met with
 
 Let's make our case with a few examples.
 
-### Risperidone
+#### Risperidone
 
 **As it turns out, the greatest LLM anti-psychotic is giving it enough of the correct context in the first place.**
 
@@ -49,7 +49,7 @@ Including the definition (hence the concrete field names) in the LLM context win
 
 {{< lightbox src="/images/scip-powered-cody/req-scip2.png" anchor="precise-result" caption="SCIP-powered Cody giving a precise answer given appropriate context." >}}
 
-### In the land of infinite possibilities...
+#### In the land of infinite possibilities...
 
 **Generative AI gonna generate.**
 
@@ -89,7 +89,7 @@ What Cody (without SCIP) wasn't aware of was that our custom `random` package pu
 
 While this is a very contrived example (specifically constructed for inclusion in this blog post to remove all the real-world muck), Cody has been witnessed to find other real-world, cross-boundary bug such as the values for a user-defined limit not being passed from a GraphQL layer down to the database layer where zero (the default value) results were always returned. Without sufficient context, Cody's suggestions may be incorrect or only act as a local band-aid instead of a root cause fix.
 
-## What we've got
+### What we've got
 
 While we haven't explored the entire breath of possibilities, we do have a rough, and more importantly, a working system in place. The addition of precise context to the context window creates a new pipeline prior to any data being sent off to the LLM backend.
 
@@ -99,7 +99,7 @@ The context sent to the code intelligence context service includes anything that
 
 From here, the code intelligence context service can perform a cheap syntactic analysis (via [TreeSitter](https://tree-sitter.github.io/tree-sitter/)) to extract symbol names from the currently visible code. These symbol names can be translated into SCIP names, giving us a set of root symbols to begin a traversal of relationships. The API gathers relevant code metadata, locations, and source text, and returns it to the Cody client for inclusion in the context window.
 
-## Where we're going
+### Where we're going
 
 This is fertile land and there's no shortage of exploratory work ahead of us. We've identified a number of areas of fruitful research, including but not limited to:
 
