@@ -629,11 +629,18 @@ img[alt=mitel] {
 /* Table of Contents Styles
 * --------------------------------------------*/
 
+@media (max-width: 1079px) {
+  #toc {
+    display: none;
+  }
+}
+
 #toc {
   position: fixed;
   top: 100px;
   right: 20px;
-  width: 250px;
+  width: calc((100vw - 800px) / 2 - 40px);
+  min-width: 200px;
   max-height: 80vh;
   overflow-y: auto;
   background-color: #f9f9f9;
