@@ -1,26 +1,42 @@
-
 $(document).ready(function() {
-    // Add 'top' id to the article title
-    $('.articles h2:first').attr('id', 'top');
-
     $('#toc').toc({
-        content: '.articles',  // Changed to include the title
-        headings: 'h2, h3, h4, h5'
+        content: '.articles, .resume',
+        headings: 'h2, h3, h4, h5, h6'
     });
+
+    window.addEventListener('scroll', () => updateLink(selectVisibleHeader()));
+    window.addEventListener('hashchange', () => updateLink(fromHash()));
+    updateLink(fromHash());
 });
 
-window.addEventListener('scroll', function() {
-    $('.article-content h2, .article-content h3, .article-content h4, .article-content h5').each(function(_, header) {
-        const headerTop = header.getBoundingClientRect().top;
-
-        if (0 <= headerTop && headerTop <= window.innerHeight / 2) {
-            $('#toc a').each(function(_, tocLink) {
-                if (tocLink.href.endsWith('#' + header.id)) {
-                    $(tocLink).addClass('current');
-                } else {
-                    $(tocLink).removeClass('current');
-                }
-            });
+function selectVisibleHeader() {
+    const headers = $('h2, h3, h4, h5, h6').toArray();
+    const viewportHeight = window.innerHeight;
+    const scrollTop = window.scrollY;
+    
+    let currentHeader = headers[0];
+    for (const header of headers) {
+        const rect = header.getBoundingClientRect();
+        const headerTop = rect.top + scrollTop;
+        
+        if (headerTop < scrollTop + (viewportHeight / 3)) {
+            currentHeader = header;
         }
-    });
-});
+    }
+
+    return currentHeader.id;
+}
+
+function fromHash() {
+    return decodeURI(window.location.hash.slice(1));
+}
+
+function updateLink(id) {
+    if (id === '') {
+        id = $('h2').toArray()[0].id;
+    }
+
+    console.log({id});
+    $('#toc a').removeClass('current');
+    $(`#toc a[href="#${id}"]`).addClass('current');
+}
