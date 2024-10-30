@@ -1,6 +1,7 @@
 +++
 title = "Resume"
 index = true
+show-toc = true
 +++
 
 ## Resume

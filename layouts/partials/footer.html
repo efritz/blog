@@ -19,6 +19,8 @@
     (resources.Get "js/scroll.js")
     (resources.Get "js/lightbox.js")
     (resources.Get "js/mathjax.js")
+    (resources.Get "js/jquery.toc.min.js")
+    (resources.Get "js/toc.js")
   | resources.Concat "assets/js/bundle.js" | minify | fingerprint
 }}
 

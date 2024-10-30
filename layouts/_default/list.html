@@ -10,9 +10,15 @@
     <main role="main">
       <div class="container">
         {{ if isset .Params "index" }}
-          <section class="article-content">
-            {{ .Content }}
-          </section>
+          {{ if isset .Params "show-toc" }}
+            <div id="toc"></div>
+          {{ end }}
+
+          <article class="{{ .Type }}">
+            <section class="article-content">
+              {{ .Content }}
+            </section>
+          </article>
         {{ else }}
           {{ if eq .Title "Articles" }}
             <h2>Articles</h2>
