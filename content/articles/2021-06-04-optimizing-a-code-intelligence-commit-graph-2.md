@@ -6,12 +6,11 @@ showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-commit-graph-part-2/"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
-+++
 
-{{< hero
-    src="/images/external/opt-commitgraph/hero.png"
-    headline="We enabled Sourcegraph to resolve code intelligence requests for commits missing an index, but ran into scalability challenges when dealing with large commit graphs. Here's how we unearthed and resolved the problem."
->}}
+[hero]
+image = "/images/external/opt-commitgraph/hero.png"
+caption = "We enabled Sourcegraph to resolve code intelligence requests for commits missing an index, but ran into scalability challenges when dealing with large commit graphs. Here's how we unearthed and resolved the problem."
++++
 
 In [Part 1 of this optimization story](/articles/optimizing-commit-graph-part-1), we detailed how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. The implementation lies completely within PostgreSQL, and the queries run with very low latency (< 1ms). We boldly claimed that our fears of scalability were no longer cause for concern.
 
