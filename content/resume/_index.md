@@ -1,7 +1,6 @@
 +++
 title = "Resume"
 index = true
-show-toc = true
 +++
 
 ## Resume
@@ -9,6 +8,8 @@ show-toc = true
 <div class="notice">
 A more concise <a href="/assets/papers/Fritz%20-%20Resume.pdf">printable version</a> of this resume is also available.
 </div>
+
+<div id="toc"></div>
 
 ### Work History
 

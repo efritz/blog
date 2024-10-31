@@ -631,7 +631,6 @@ img[alt=mitel] {
 
 #toc {
   position: fixed;
-  top: 78px;
   right: calc((100vw - 770px) / 2 + 770px + 15px);
   min-width: 200px;
   max-width: 400px;
@@ -645,6 +644,7 @@ img[alt=mitel] {
   line-height: 1.5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left;
+  transition: top 0.3s ease-out;
   z-index: 998;
 }
 
@@ -674,7 +674,25 @@ img[alt=mitel] {
 
 @media (max-width: 1280px) {
   #toc {
-    display: none;
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: calc(100% - 20px);
+    max-width: 100% !important;
+    border: 0;
+    box-shadow: none;
+    padding: 0 10px;
+    margin: 20px 0;
+    font-size: inherit;
+  }
+
+  #toc::before {
+    content: 'Table of Contents';
+    display: block;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
   }
 }
-

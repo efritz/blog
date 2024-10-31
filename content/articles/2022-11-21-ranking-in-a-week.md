@@ -6,12 +6,11 @@ showpagemeta = true
 external = "https://about.sourcegraph.com/blog/ranking-in-a-week"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
-+++
 
-{{< hero
-    src="/images/external/ranking/hero.png"
-    headline="In just over a week, four developers designed and built a data pipeline utilizing Sourcegraph's wealth of source code data. The result is Sourcegraph's new search ranking system inspired by PageRank."
->}}
+[hero]
+image = "/images/external/ranking/hero.png"
+caption = "In just over a week, four developers designed and built a data pipeline utilizing Sourcegraph's wealth of source code data. The result is Sourcegraph's new search ranking system inspired by PageRank."
++++
 
 Last week we announced that we are now [ranking search results](https://about.sourcegraph.com/blog/new-search-ranking) on [https://sourcegraph.com](https://sourcegraph.com) in order to prioritize _relevant_ as well as _reusable_ code. We consider this Sourcegraph’s code intelligence platform's first major victory of many, and a booming herald for a new era of code search.
 
