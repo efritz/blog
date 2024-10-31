@@ -3,8 +3,6 @@
     {{ partial "meta.html" . }}
   {{ end }}
 
-  <div id="toc"></div>
-
   {{ if .Params.hero }}
     <div class="hero-container">
       <div class="hero">
@@ -19,6 +17,8 @@
       </div>
     </div>
   {{ end }}
+
+  <div id="toc"></div>
 
   <section class="article-content {{ .Slug }}">
     {{ .Content }}
