@@ -1,25 +1,53 @@
+const headerHeight = 78;
+const heroBuffer = 20;
+const tocHeaderSelectors = 'h2, h3, h4, h5, h6';
+
 $(document).ready(function() {
-    $('#toc').toc({
+    const toc = $('#toc');
+    const heroContainer = $('.hero-container');
+
+    toc.toc({
         content: '.articles, .resume',
-        headings: 'h2, h3, h4, h5, h6'
+        headings: tocHeaderSelectors,
     });
 
-    window.addEventListener('scroll', () => updateLink(selectVisibleHeader()));
+    window.addEventListener('scroll', () => {
+        updateLink(selectVisibleHeader());
+
+        const hasHero = heroContainer.length > 0;
+        const scrollTop = $(window).scrollTop();
+        const heroHeight = hasHero && heroContainer.offset().top + heroContainer.outerHeight();
+
+        if (hasHero && (scrollTop + headerHeight < heroHeight)) {
+            toc.css({ 'position': 'absolute', 'top': heroHeight + heroBuffer });
+        } else {
+            toc.css({ 'position': 'fixed', 'top': headerHeight });
+        }
+    });
+
+    if (heroContainer.length) {
+        // Set to 20px below hero image
+        toc.css('top', heroContainer.offset().top + heroContainer.outerHeight() + heroBuffer);
+    } else {
+        // Set directly below header
+        toc.css('top', headerHeight);
+    }
+
+    // Highlight link on header copy button press
     window.addEventListener('hashchange', () => updateLink(fromHash()));
+
+    // Set initial state
     updateLink(fromHash());
 });
 
 function selectVisibleHeader() {
-    const headers = $('h2, h3, h4, h5, h6').toArray();
-    const viewportHeight = window.innerHeight;
-    const scrollTop = window.scrollY;
-    
+    const headers = $(tocHeaderSelectors).toArray();
+    const viewportHeight = $(window).innerHeight();
+    const scrollTop = $(window).scrollTop();
+
     let currentHeader = headers[0];
     for (const header of headers) {
-        const rect = header.getBoundingClientRect();
-        const headerTop = rect.top + scrollTop;
-        
-        if (headerTop < scrollTop + (viewportHeight / 3)) {
+        if (header.getBoundingClientRect().top + scrollTop < scrollTop + (viewportHeight / 3)) {
             currentHeader = header;
         }
     }
@@ -36,7 +64,6 @@ function updateLink(id) {
         id = $('h2').toArray()[0].id;
     }
 
-    console.log({id});
     $('#toc a').removeClass('current');
     $(`#toc a[href="#${id}"]`).addClass('current');
 }
