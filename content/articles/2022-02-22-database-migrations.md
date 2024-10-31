@@ -6,12 +6,11 @@ showpagemeta = true
 external = "https://about.sourcegraph.com/blog/introducing-migrator-service"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
-+++
 
-{{< hero
-    src="/images/external/migrator/hero.png"
-    headline="Upgrades of Sourcegraph instances would often fail with a dreaded \"dirty database\" error, leaving the the instance in a broken state that required manual intervention to resolve. Here's how we identified and solved a huge source of pain during upgrades for administrators."
->}}
+[hero]
+image = "/images/external/migrator/hero.png"
+caption = "Upgrades of Sourcegraph instances would often fail with a dreaded \"dirty database\" error, leaving the the instance in a broken state that required manual intervention to resolve. Here's how we identified and solved a huge source of pain during upgrades for administrators."
++++
 
 We have recently identified the root cause of a frequent, insidious pain point related to database migrations during Sourcegraph version upgrades. Many users handling the installation and upgrade of their Sourcegraph instance can likely attest to seeing an error similar to the following midway through an upgrade from one minor release to the next.
 

@@ -6,12 +6,11 @@ showpagemeta = true
 external = "https://about.sourcegraph.com/blog/multi-version-upgrades"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
-+++
 
-{{< hero
-    src="/images/external/mvu/hero.png"
-    headline="Sourcegraph administration just got an order-of-magnitude quality-of-life improvement. Using a Sourcegraph 4.0 (or later) migrator utility, you can upgrade your on-prem installation of Sourcegraph from 3.20 directly to Sourcegraph 4.0 and beyond."
->}}
+[hero]
+image = "/images/external/mvu/hero.png"
+caption = "Sourcegraph administration just got an order-of-magnitude quality-of-life improvement. Using a Sourcegraph 4.0 (or later) migrator utility, you can upgrade your on-prem installation of Sourcegraph from 3.20 directly to Sourcegraph 4.0 and beyond."
++++
 
 It's finally happened.
 

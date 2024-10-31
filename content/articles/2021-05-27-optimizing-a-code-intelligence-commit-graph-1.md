@@ -6,12 +6,11 @@ showpagemeta = true
 external = "https://about.sourcegraph.com/blog/optimizing-commit-graph/"
 icon = "sourcegraph"
 tags = ["sourcegraph"]
-+++
 
-{{< hero
-  src="/images/external/opt-commitgraph/hero.png"
-  headline="We enabled Sourcegraph to respond to requests for commits missing a code intelligence index quickly and with precise results. Read about our journey."
->}}
+[hero]
+image = "/images/external/opt-commitgraph/hero.png"
+caption = "We enabled Sourcegraph to respond to requests for commits missing a code intelligence index quickly and with precise results. Read about our journey."
++++
 
 Sourcegraph's Code Intelligence team builds tools and services that provide contextual information around code. These enable users to perform fast, comprehensive, and accurate code navigation, and to surface dependency relationships across projects, repositories, and languages. In this post I'll dive into how Sourcegraph can resolve code intelligence queries using data from older commits when data on the requested commit is not yet available. In [Part 2](/articles/optimizing-commit-graph-part-2), we'll cover how additional scalability concerns presented themselves and how we tackled them.
 

@@ -1,9 +1,24 @@
 <article class="{{ .Type }}">
   {{ if isset .Params "showpagemeta" }}
-  {{ partial "meta.html" . }}
+    {{ partial "meta.html" . }}
   {{ end }}
 
   <div id="toc"></div>
+
+  {{ if .Params.hero }}
+    <div class="hero-container">
+      <div class="hero">
+        <div class="image-wrapper">
+          <img src="/assets{{ .Params.hero.image }}">
+        </div>
+        {{ if .Params.hero.caption }}
+        <div class="p-wrapper">
+          <p>{{ .Params.hero.caption }}</p>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
 
   <section class="article-content {{ .Slug }}">
     {{ .Content }}
