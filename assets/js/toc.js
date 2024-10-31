@@ -11,6 +11,9 @@ $(document).ready(function() {
         headings: tocHeaderSelectors,
     });
 
+    // Always use fixed positioning
+    toc.css('position', 'fixed');
+
     window.addEventListener('scroll', () => {
         updateLink(selectVisibleHeader());
 
@@ -18,19 +21,30 @@ $(document).ready(function() {
         const scrollTop = $(window).scrollTop();
         const heroHeight = hasHero && heroContainer.offset().top + heroContainer.outerHeight();
 
-        if (hasHero && (scrollTop + headerHeight < heroHeight)) {
-            toc.css({ 'position': 'absolute', 'top': heroHeight + heroBuffer });
+        if (hasHero) {
+            // With hero image: smoothly transition between positions
+            if (scrollTop + headerHeight < heroHeight) {
+                const newTop = heroHeight - scrollTop + heroBuffer;
+                toc.css('top', `${newTop}px`);
+            } else {
+                toc.css('top', `${headerHeight}px`);
+            }
         } else {
-            toc.css({ 'position': 'fixed', 'top': headerHeight });
+            // Without hero image: adjust based on scroll position
+            if (scrollTop < 92) { // 170 - 78 = 92 (difference between desired initial position and header height)
+                toc.css('top', '170px');
+            } else {
+                toc.css('top', `${headerHeight}px`);
+            }
         }
     });
 
+    // Set initial position
     if (heroContainer.length) {
-        // Set to 20px below hero image
-        toc.css('top', heroContainer.offset().top + heroContainer.outerHeight() + heroBuffer);
+        const initialTop = heroContainer.offset().top + heroContainer.outerHeight() + heroBuffer;
+        toc.css('top', `${initialTop}px`);
     } else {
-        // Set directly below header
-        toc.css('top', headerHeight);
+        toc.css('top', '170px');
     }
 
     // Highlight link on header copy button press

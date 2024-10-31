@@ -644,6 +644,8 @@ img[alt=mitel] {
   line-height: 1.5;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: left;
+  transition: top 0.3s ease-out;
+  z-index: 998;
 }
 
 #toc li {
