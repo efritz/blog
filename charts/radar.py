@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-import matplotlib.path as mpath
 
 # Define data as a list of dictionaries combining dimensions and scores
 data = [
