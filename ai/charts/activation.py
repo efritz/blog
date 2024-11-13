@@ -130,8 +130,8 @@ def make_plot(n, index, title, cs_complexity, cs_familiarity):
         ax.text(x_above[i], y_above[i], z_above[i], labels_above[i], color='black', zorder=10)
 
 fig = plt.figure(figsize=(14, 6))
-make_plot(2, 1, 'Motivation Threshold Before AI Assistance', cs_complexity_pre, cs_familiarity_pre)
-make_plot(2, 2, 'Motivation Threshold After AI Assistance', cs_complexity_post, cs_familiarity_post)
+make_plot(2, 1, 'Motivation threshold w/  AI assistance', cs_complexity_pre, cs_familiarity_pre)
+make_plot(2, 2, 'Motivation threshold w/o AI assistance', cs_complexity_post, cs_familiarity_post)
 
 # Add sliders for synchronized control of elev and azim
 ax_elev = plt.axes([0.2, 0.02, 0.65, 0.03], facecolor='lightgray')
