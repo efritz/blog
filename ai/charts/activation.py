@@ -1,57 +1,82 @@
-# Activation Energy Barrier Diagram Script
-# Author: [Your Name]
-# Date: [Today's Date]
-
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.interpolate import CubicSpline
+from matplotlib import cm
 
-# Step 1: Define the range for Task Familiarity or Complexity
-# 0 = Highly Familiar, 10 = Unfamiliar
-x = np.linspace(0, 10, 500)
+points = [
+    {'complexity': 0.1, 'familiarity': 0.9, 'friction': 0.2, 'label': 'Program in Go'},
+    {'complexity': 0.2, 'familiarity': 1.0, 'friction': 0.7, 'label': 'Program in Bash'},
+    {'complexity': 0.0, 'familiarity': 0.6, 'friction': 0.3, 'label': 'Invoke ffmpeg'},
+    {'complexity': 0.7, 'familiarity': 0.8, 'friction': 0.4, 'label': 'Build a compiler'},
+    {'complexity': 1.0, 'familiarity': 0.7, 'friction': 1.0, 'label': 'Solve P=NP'},
+    {'complexity': 0.2, 'familiarity': 0.2, 'friction': 0.3, 'label': 'Center a div'},
 
-# Step 2: Define Activation Energy functions
-# Before AI Assistance (Higher Activation Energy)
-y_before = np.exp(0.5 * x)
+    # {'complexity': 1.0, 'familiarity': 1.0, 'friction': 0.0, 'label': 'Xl'},
+    # {'complexity': 1.0, 'familiarity': 0.0, 'friction': 0.0, 'label': 'Yl'},
 
-# After AI Assistance (Lower Activation Energy)
-y_after = y_before * 0.5  # AI reduces activation energy by 50%
 
-# Step 3: Plot the Activation Energy Curves
-plt.figure(figsize=(12, 7))
-plt.plot(x, y_before, label='Before AI Assistance', color='red', linewidth=2)
-plt.plot(x, y_after, label='After AI Assistance', color='green', linewidth=2)
+    # {'complexity': 1.0, 'familiarity': 1.0, 'friction': 1.0, 'label': 'Xh'},
+    # {'complexity': 1.0, 'familiarity': 0.0, 'friction': 1.0, 'label': 'Yh'},
 
-# Step 4: Annotate Specific Tasks
-# Define task positions based on familiarity (x-values)
-tasks = {
-    'Visualization Software': 2,
-    'Adding ToC to Website': 5,
-    'Creating ffmpeg Script': 8
-}
+    # {'complexity': 0.0, 'familiarity': 0.0, 'friction': 1.0, 'label': 'Wh'},
 
-for task_name, x_task in tasks.items():
-    # Calculate y-values for both curves at the task point
-    y_before_task = np.exp(0.5 * x_task)
-    y_after_task = y_before_task * 0.5
 
-    # Plot markers on the curves
-    plt.scatter(x_task, y_before_task, color='red', s=50)
-    plt.scatter(x_task, y_after_task, color='green', s=50)
 
-    # Draw vertical dotted lines connecting the two points
-    plt.vlines(x_task, y_after_task, y_before_task, colors='gray', linestyles='dashed')
+    # {'complexity': 0.6, 'familiarity': 0.8, 'friction': 0.3, 'label': 'Z'},
+    # {'complexity': 0.2, 'familiarity': 0.9, 'friction': 0.1, 'label': 'W'},
+    # {'complexity': 0.8, 'familiarity': 0.7, 'friction': 1.0, 'label': 'M'},
+    # {'complexity': 0.3, 'familiarity': 0.5, 'friction': 0.5, 'label': 'N'}
+]
 
-    # Annotate the tasks
-    plt.text(x_task, y_before_task + 50, f'{task_name}\nHigh Effort Without AI', color='red', ha='center')
-    plt.text(x_task, y_after_task - 70, f'{task_name}\nLower Effort With AI', color='green', ha='center')
+x_points = np.array([p['complexity'] for p in points]) # Complexity
+y_points = np.array([p['familiarity'] for p in points]) # Familiarity
+z_points = np.array([p['friction'] for p in points]) # Friction
+labels = [p['label'] for p in points]
 
-# Step 5: Customize the Plot
-plt.title('AI Lowers Activation Energy for Task Initiation', fontsize=16)
-plt.xlabel('Task Familiarity or Complexity', fontsize=14)
-plt.ylabel('Activation Energy (Effort Required)', fontsize=14)
-plt.legend(fontsize=12)
-plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+r = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+x_complexity = np.array(r)
+y_familiarity = np.array(r)
+
+# Complexity vs friction data (Pre-AI)
+f_complexity_pre = np.array([0.4, 0.6, 0.7, 0.8, 0.9, 0.8, 0.7, 0.7, 0.6, 0.3, 0.0])
+f_familiarity_pre = np.array([0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.3, 0.5, 0.6, 0.8, 0.9])
+f_complexity_post = np.array([1.0, 0.9, 0.9, 0.9, 0.9, 0.8, 0.7, 0.7, 0.6, 0.3, 0.0])
+f_familiarity_post = np.array([0.0, 0.0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9])
+
+# Create meshgrid for surfaces
+X = np.linspace(0, 1, 200)
+Y = np.linspace(0, 1, 200)
+X_mesh, Y_mesh = np.meshgrid(X, Y)
+
+def make_plot(n, index, title, f_complexity, f_familiarity):
+    ax1 = fig.add_subplot(1, n, index, projection='3d')
+    ax1.set_title(title)
+    ax1.set_xlabel('Complexity')
+    ax1.set_ylabel('Familiarity')
+    ax1.set_zlabel('Friction')
+    ax1.view_init(elev=15, azim=-135)
+    ax1.set_xlim(0, 1)
+    ax1.set_ylim(0, 1)
+    ax1.set_zlim(0, 1)
+
+    # Draw data points
+    ax1.scatter(x_points, y_points, z_points, color='black', s=50, depthshade=False)
+    for i, txt in enumerate(labels):
+        ax1.text(x_points[i], y_points[i], z_points[i], txt, color='black')
+
+    # Draw surface
+    ax1.plot_surface(
+        X_mesh,
+        Y_mesh,
+        np.clip(CubicSpline(x_complexity, f_complexity)(X_mesh) * CubicSpline(y_familiarity, f_familiarity)(Y_mesh), 0, 1),
+        cmap=cm.viridis,
+        alpha=0.8,
+        edgecolor='none',
+    )
+
+fig = plt.figure(figsize=(14, 6))
+make_plot(2, 1, 'Motivation Threshold Before AI Assistance', f_complexity_pre, f_familiarity_pre)
+make_plot(2, 2, 'Motivation Threshold After AI Assistance', f_complexity_post, f_familiarity_post)
+# make_plot(3, 3, 'Motivation Threshold After AI Assistance (Expected)', friction_hype)
 plt.tight_layout()
-
-# Step 6: Display the Plot
 plt.show()
