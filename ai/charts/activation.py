@@ -28,6 +28,9 @@ f_familiarity_pre = np.array([0.0, 0.0, 0.0, 0.1, 0.1, 0.2, 0.3, 0.5, 0.6, 0.8, 
 # Complexity vs friction data (Post-AI)
 f_complexity_post = np.array([1.0, 0.9, 0.9, 0.9, 0.9, 0.8, 0.7, 0.7, 0.6, 0.3, 0.0])
 f_familiarity_post = np.array([0.0, 0.0, 0.05, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9])
+# All ez-pz
+# f_complexity_post = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+# f_familiarity_post = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
 
 # Create spline functions
 cs_complexity_pre = CubicSpline(x_complexity, f_complexity_pre)
