@@ -1,12 +1,17 @@
 +++
-title = "Using AI"
+title = "My AI junior dev still needs an adult in the room"
 slug = "using-ai"
-date = "2024-10-25T00:00:00-00:00"
+date = "2024-11-20T00:00:00-00:00"
 tags = []
 showpagemeta = true
 +++
 
-[aidev](https://github.com/efritz/aidev)
+- [aidev](https://github.com/efritz/aidev)
+- [A visual intuition for the Box-Muller transform](https://eric-fritz.com/articles/box-muller/)
+- junior engineer; would delegate same tasks to huamns if I could nerdsnipe them into doing it
+- junior engineer that refuses mentorship (after the current session is over)
+
+> The economist William Stanley Jevons spotted this pattern in 1865. He saw that better coal efficiency led to more coal use, not less. New technology doesn't just save resources – it opens new possibilities that increase total activity.
 
 TODO
 
@@ -20,7 +25,7 @@ TODO
 
 TODO
 
-{{< lightbox src="/images/using-ai/3-after.png" anchor="3-after" >}}
+{{< lightbox src="/images/using-ai/3-after.png" anchor="3-after" small="true" >}}
 
 TODO
 
@@ -364,7 +369,7 @@ It seems there might be an issue. Let me try with `python3` explicitly:
 <div class="stderr">ModuleNotFoundError: No module named 'numpy'</div>
 </div>
 
-<div class="asisstant">
+<div class="assistant">
 I see the issue now. The required Python packages (`numpy` and `matplotlib`) are not installed in the virtual environment. Let's install them first:
 </div>
 
@@ -383,7 +388,7 @@ I apologize for the confusion. It seems there might be an issue with the virtual
 <div class="shell">
 <span class="info">Proposed shell command:</span>
 <span class="command">ls venv/bin</span>
-<span class="info">No code was executed.</span>
+<span class="info">User canceled, no code was executed.</span>
 </div>
 </div>
 </div>
@@ -1234,6 +1239,7 @@ Certainly! I'll add a fourth canvas to display a bar chart of the distribution o
 </ol>
 </div>
 
+<!--
 <div class="system-error">Error: The search string "document.addEventListener('DOMContentLoaded', () => {
     const uniformCanvas = document.getElementById('uniformCanvas');
     const polarCanvas = document.getElementById('polarCanvas');
@@ -1262,6 +1268,7 @@ First, let's read the current content of the `uniform.js` file:
 <div class="assistant">
 Now that we have the current content, let's update the `uniform.js` file with the new changes:
 </div>
+-->
 
 <div class="filesystem">
 <span class="info">Wrote file <span class="red">"uniform.js"</span>:</span>
@@ -1443,6 +1450,7 @@ Now, let's update the `styles.css` file to adjust the layout for three canvases:
 Finally, let's update the `uniform.js` file to remove Cartesian calculations and correct the rThetaValues calculation:
 </div>
 
+<!--
 <div class="system-error">Error: The search string "    const cartesianCanvas = document.getElementById('cartesianCanvas');
     const cartesianCtx = cartesianCanvas.getContext('2d');" must appear exactly once in the file.
 </div>
@@ -1458,6 +1466,7 @@ I apologize for the error. It seems the content of the file has changed since ou
 <div class="assistant">
 Now that we have the current content, let's update the `uniform.js` file with the required changes:
 </div>
+-->
 
 <div class="filesystem">
 <span class="info">Wrote file <span class="red">"uniform.js"</span>:</span>
@@ -1535,6 +1544,7 @@ Is there anything else you'd like me to modify or improve in the project?
 </div>
 </div>
 
+<!--
 <div class="turn">
 <div class="user">there are still some referneces to the cartesian canvas</div>
 
@@ -1616,6 +1626,7 @@ I apologize for the continued issues. It seems that the `drawCartesianDots(dots)
 </div>
 </div>
 </div>
+-->
 
 <div class="turn">
 <div class="user">I've modified uniform.js with the changes to remove cartesian canvas references. Can we modify the bucket values so that we expect values to be in the range (-2, 2) and there are 50 bars on the chart?</div>
@@ -1627,6 +1638,7 @@ Certainly! I understand that you've already removed the Cartesian canvas referen
 Let's modify the `uniform.js` file:
 </div>
 
+<!--
 <div class="system-error">Error: The search string "    function drawDistributionChart(dots) {
         const rThetaValues = dots.map(dot => {
             const theta = 2 * Math.PI * dot.u2;
@@ -1742,10 +1754,12 @@ Now that we have the current content, let's modify the `drawDistributionChart` f
 <div class="assistant">
 I apologize for the confusion. You're right, it's best to rewrite the entire file to ensure we have the correct content with the requested changes. I'll create a new version of the `uniform.js` file with the updated distribution chart and without any references to the Cartesian canvas.
 </div>
+-->
 
 <div class="filesystem">
 <span class="info">Wrote file <span class="red">"uniform.js"</span>:</span>
 
+<!--
 ```diff
   document.addEventListener('DOMContentLoaded', () => {
 +     const uniformCanvas = document.getElementById('uniformCanvas');
@@ -1794,6 +1808,7 @@ I apologize for the confusion. You're right, it's best to rewrite the entire fil
 ```
 
 <span class="separator">@@ ... @@</span>
+-->
 
 ```diff
               const theta = 2 * Math.PI * dot.u2;
@@ -2309,6 +2324,7 @@ Certainly! I'll rename the file from `uniform.js` to `script.js` and update the 
 Certainly! I'll update the distribution chart title and modify the x-axis labels to show only integers. Let's make these changes in the `script.js` file:
 </div>
 
+<!--
 <div class="system-error">Error: The search string "    &lt;div class="canvasWrapper">
         &lt;h2>R*Theta Distribution&lt;/h2>
         &lt;canvas id="distributionCanvas">&lt;/canvas>
@@ -2318,6 +2334,7 @@ Certainly! I'll update the distribution chart title and modify the x-axis labels
 <div class="assistant">
 I apologize for the error. It seems that the HTML content is not in the `script.js` file. Let's update the `index.html` file to change the title of the distribution chart:
 </div>
+-->
 
 <div class="filesystem">
 <span class="info">Wrote file <span class="red">"index.html"</span>:</span>
@@ -3061,6 +3078,7 @@ Certainly! Let's zoom out a bit more by further reducing the maximum radius and 
 Certainly! I'll add U1 and U2 legends to the uniform graph and decrease the legend text size on both the uniform and distribution graphs. Here are the changes:
 </div>
 
+<!--
 <div class="system-error">Error: The search string "        // Draw x-axis labels
         distributionCtx.fillStyle = 'black';
         distributionCtx.font = '12px Arial';
@@ -3103,6 +3121,7 @@ Certainly! I'll add U1 and U2 legends to the uniform graph and decrease the lege
 <div class="assistant">
 I apologize for the confusion. Let's try to update the file again, focusing on the specific changes we want to make. We'll update the `drawUniformDots` function to add U1 and U2 legends, and then adjust the font sizes in both the uniform and distribution charts.
 </div>
+-->
 
 <div class="filesystem">
 <span class="info">Wrote file <span class="red">"script.js"</span>:</span>
@@ -3215,6 +3234,8 @@ I apologize for the confusion. Let's try to update the file again, focusing on t
 </div>
 </div>
 </div>
+
+TODO
 
 #### Nudging the AI
 
@@ -3780,7 +3801,7 @@ TODO
 </div>
 
 <div class="turn">
-<div class="user">I'd like to make the polar coordinates text to have a tight-bounded white backgroudn to ensure that it's always visible even if there are points plotted behind it</div>
+<div class="user">I'd like to make the polar coordinates text to have a tight-bounded white background to ensure that it's always visible even if there are points plotted behind it</div>
 
 <div class="response">
 <div class="assistant">
@@ -4840,7 +4861,7 @@ You're right - we need to add CSS to handle the collapsing behavior. Let's updat
 </div>
 
 <div class="turn">
-<div class="user">Ok, when we collapse a turn I'd like the "user" div to stay as-is, but have all of the following divs be collapsed. Note that there's only one "user" div in a turn and it's always the first elemetn.</div>
+<div class="user">Ok, when we collapse a turn I'd like the "user" div to stay as-is, but have all of the following divs be collapsed. Note that there's only one "user" div in a turn and it's always the first element.</div>
 
 <div class="response">
 <div class="assistant">
@@ -4999,7 +5020,7 @@ Without a specific height mentioned, let me suggest lowering it to 300 pixels, w
 </div>
 
 <div class="turn">
-<div class="user">Dude, you just started talking about ffmpeg stuff.</div>
+<div class="user"><span class="important">Dude, you just started talking about ffmpeg stuff.</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -5171,11 +5192,21 @@ TODO
     .user {
         margin-left: -2rem;
         cursor: pointer;
+        position: relative;
     }
 
     .user:hover,
     .user:hover > *:not(.collapse-button) {
         text-decoration: underline;
+    }
+
+    .user .important:before {
+        content: '⮕';
+        color: red;
+        font-size: 1.25rem;
+        position: absolute;
+        left: -3.5rem;
+        top: 0.5rem;
     }
 
     /* Outline tool use */
@@ -5230,7 +5261,7 @@ TODO
         color: #c51b00;
     }
 
-    .stdout, .stderr, .system-error {
+    .command, .stdout, .stderr, .system-error {
         white-space: pre;
         overflow-y: scroll;
     }
