@@ -1,44 +1,79 @@
 +++
 title = "My AI junior dev still needs an adult in the room"
-slug = "using-ai"
-date = "2024-11-20T00:00:00-00:00"
+slug = "my-ai-junior-dev-still-needs-an-adult-in-the-room"
+date = "2024-11-25T00:00:00-00:00"
 tags = []
 showpagemeta = true
 +++
 
 - [aidev](https://github.com/efritz/aidev)
-- [A visual intuition for the Box-Muller transform](https://eric-fritz.com/articles/box-muller/)
 - junior engineer; would delegate same tasks to huamns if I could nerdsnipe them into doing it
 - junior engineer that refuses mentorship (after the current session is over)
+- [good enough prompting](https://www.oneusefulthing.org/p/getting-started-with-ai-good-enough)
+[o1-preview chat](https://chatgpt.com/share/67441234-7ee0-800e-891a-85eb8da8621b)
 
 > The economist William Stanley Jevons spotted this pattern in 1865. He saw that better coal efficiency led to more coal use, not less. New technology doesn't just save resources – it opens new possibilities that increase total activity.
 
 TODO
 
-{{< lightbox src="/images/using-ai/1-before.png" anchor="1-before" half="true" >}}
-{{< lightbox src="/images/using-ai/2-before.png" anchor="2-before" half="true" >}}
+{{< lightbox src="/images/my-ai-junior/1-before.png" anchor="1-before" half="true" >}}
+{{< lightbox src="/images/my-ai-junior/2-before.png" anchor="2-before" half="true" >}}
 
 TODO
 
-{{< lightbox src="/images/using-ai/1-after.png" anchor="1-after" half="true" >}}
-{{< lightbox src="/images/using-ai/2-after.png" anchor="2-after" half="true" >}}
+{{< lightbox src="/images/my-ai-junior/1-after.png" anchor="1-after" half="true" >}}
+{{< lightbox src="/images/my-ai-junior/2-after.png" anchor="2-after" half="true" >}}
 
 TODO
 
-{{< lightbox src="/images/using-ai/3-after.png" anchor="3-after" small="true" >}}
+{{< lightbox src="/images/my-ai-junior/3-after.png" anchor="3-after" small="true" >}}
 
 TODO
 
 Weird: If I import this file into the context of my AI harness it gets very confused and starts regurgitating snippets of previous conversations.
 
-### Examples
+### Conversation highlights
 
 TODO
 
-#### Delegating ffmpeg
+#### Figure out how to run an external tool
 
-TODO
+When writing [A visual intuition for the Box-Muller transform](/articles/box-muller/), I had taken a bunch of screen recordings with the MacOS Screenshot tool. These were used as illustrative examples sprinkled between denser passages of text and $\LaTeX$ symbols. Math can be hard. Pictures can make it more palatable. _Moving_ pictures can even make it tasty.
 
+{{< lightbox src="/images/box-muller/ln_u1.gif" anchor="box-muller" caption="Yummy math wiggling aboutst your screen." >}}
+
+I don't have an easy way to embed videos into my blog [^1], so I needed to convert these MOV artfacts into GIFs. A cursory glance failed to show a way to get either QuickTime Player or VLC to export to a GIF. There are plenty of online services that can do this for free, but they have at least one of the following downsides:
+
+- They produce a poor quality artifact
+- They do not allow you to change things like framerate
+- They have a very low "free" limit, which hamstrings iteration on settings
+- They contain watermarks
+
+[^1]: This may change in the near future, as I bet this would be a fairly task easy to delegate to my AI junior.
+
+All the while, ffmpeg is sitting **right there** - but hell if I know how to invoke it properly.
+
+This is a task that I could, without a doubt, perform myself with a bit of docs spelunking and a smidge of patience. It is also something that can be trivially verified - just check if the output file is a GIF and looks the same as the input MOV. This is a perfect example of a **delegatable task**.
+
+I ask my AI junior to "Convert these mov files into gifs". I give no other context. I don't say how. I don't even qualify what the _these_ in the request refers to. He's a pretty enthusiastic guy, so I think he can figure out most of the rest of the task from there.
+
+And he freakin' does.
+
+He first checks to see if ffmpeg is actually installed; it's not, so he installs it via homebrew. He then looks for whatever MOV files I might be vaguely referencing and gets a list of candidates. Then, he creates a Bash script that invokes ffmpeg in a loop using flags I've never heard of - including `lanczos`, which I can only assume from a cursory Google search is his choice of [resampling method](https://en.wikipedia.org/wiki/Lanczos_resampling). Finally, he runs the script and I'm presented with seven converted GIF files.
+
+Dude one-shotted my task without asking for clarification.
+
+I now have a working MOV-to-GIF conversion pipeline that can be iterated on. The initial output was too small, which is no fault of my junior. I didn't specify anything about output constraints except "be a GIF", and in that circumstance I'd consider all choices (within reason) to be valid.
+
+I asked for him to increase the size of the output. He modifies and re-runs the Bash script, quickly plopping out a set of updated artifacts. Interestingly, when we increased the size, he ardently batched in some other changes that increased the image quality. He increased the frame-rate to make the animation smoother, ensured that it looped indefinitely instead of just playing once and freezing on the last frame. He also performed a bit of color palette manipulation. Nice touch.
+
+The output was larger, but not large enough. I asked for larger images once again, and he obliged. Again, he took the liberty of updating additional quality settings that probably only matter once the image gets large enough to notice such details.
+
+At this point I realized that "bigger" wasn't the right instruction to give. The screen captures I had taken had varying widths - some had captured two animating panels, and some captured three. Embedding these GIFs resulted in a wonky-looking blog post where the two-panel GIFs took up 50% more vertical space than the three-panel GIFs. What I really wanted was for each _individual panel_ to have the same relative size. I needed to ask for "bigger, but with consistent height".
+
+With one last (more specific) ask to my AI Junior, the task was done. And I had only uttered 30 words.
+
+<span class="conversation-header"></span>
 <div class="conversation">
 <div class="turn">
 <div class="user">Convert these mov files into gifs</div>
@@ -188,7 +223,7 @@ Error: User canceled
 </div>
 
 <div class="assistant">
-I apologize for the interruption. It seems the script encounte#c51b00 an issue with overwriting existing files. Let's modify the script to automatically overwrite existing files without prompting. Here's the updated version:
+I apologize for the interruption. It seems the script encountered an issue with overwriting existing files. Let's modify the script to automatically overwrite existing files without prompting. Here's the updated version:
 </div>
 
 <div class="filesystem">
@@ -329,12 +364,29 @@ Conversion complete!</div>
 </div>
 </div>
 
-TODO
+<span class="conversation-footer"></span>
 
-#### Fixing venv
+Ship it.
 
-TODO
+#### Figure out how to run a tool I built (lol, whoops)
 
+I had written a quick single-use Python script to generate a radar diagram with matplotlib. Coming back to it in a different terminal session a day later, I wasn't able to run it without issue. I'm fairly unpracticed in daily Python use, so there's always these little things I forget to do when working with virtualenvs.
+
+We saw above that my AI junior is pretty good at filling out his own context to meet a (simple) goal. I was interested to see how he would fare on troubleshooting and diagnosing the issue here. My immediate solution would probably have been to trash and re-create the virtulenv and just get on with my day. Perhaps delegating the task would have provided me with a more elegant solution.
+
+This conversation started a bit more explicitly. I added the contents of the Python script as well as the entries of the current directory to the conversation context. The AI junior could have requested this information, but that would just be a more expensive call to `cat`/`ls` to find out that the script was called `radar.py` and the virtualenv was called `venv` (big shocker).
+
+After handing my AI junior the task, he immediately activated the virtualenv, but failed to invoke the correct Python interpreter - the same failure that I had experienced. Good start. His second attempt guessed that `python3` might be a more appropriate choice. This resulted in a different error message (progress!) about missing dependencies.
+
+He quickly changed focus to deal with that new roadblock and attempted to install numpy and matplotlib via pip. This was the correct choice of package manager, but the wrong choice in binary (again). To explore a bit more, he tried to list the contents of the `venv/bin` directory. Thinking this might not be a fruitful path, I interrupted that train of thought and simply asserted that he should use `pip3` instead.
+
+Despite an active virtualenv, `pip3` was mapping to the system-wide installation. Thankfully, the homebrew-installed version of pip declines to install system-wide packages. Something here was wrong, so I suggested him to use the specific `pip3` binary in the virtualenv.
+
+My AI junior once again insisted on listing the contents of the `venv/bin` directory. This time I didn't interrupt him, and the command revealed `pip`, `pip3`, `python`, and `python3` binaries that should have been accessible via the Bash PATH the entire time. This revealed some clear malformed-ness of the virtualenv, or at least an issue with its activation.
+
+He then proposed the elegant solution of trashing and re-creating the virtualenv so that we could just get on with our day. And that's when I started to _really_ like the cut of this guy's jib.
+
+<span class="conversation-header"></span>
 <div class="conversation">
 <div class="context">
 <span class="info">Added <span class="red">"radar.py"</span> into context.</span>
@@ -527,17 +579,58 @@ Yes, let's run the script with the activated virtual environment:
 </div>
 </div>
 
-TODO
+<span class="conversation-footer"></span>
 
-#### Box-Muller
+Ok, so for this one I'll admit I actually kinda got in the way of troubleshooting and he likely would have ended up at the finish line sooner without my interruptions. Despite that, I wouldn't give a carte blanche to him to run commands without supervision. I wouldn't want global changes made to my computer. But to be fair, either of us could have easily fallen into that situation with a borked virtualenv. I also wouldn't want the "nuke it, start over" attitude on things outside of something like a virtualenv, which is trivially reconstructable.
 
-TODO
+If I'm going to brick my machine I'm going to be damn sure it's **my own** fault.
 
+#### Pair programming a greenfield project
+
+So this AI junior is good at Bash. How is he at writing code?
+
+I wrote the [interactive visualizer](/box-muller/) used in [A visual intuition for the Box-Muller transform](/articles/box-muller/) almost entirely via prompting my AI junior. This was an explicit exercise to see how far I could get without explicitly writing code, and how quickly I could get there.
+
+I started with a bare-bones webpage: an `index.html` file with three empty divs that simply included an empty stylesheet and empty javascript file. This is about a blank of a slate as you can start with, while still implicitly constraining the problem space to "using javascript" and gently dissuading something overkill like an SSR Next.js app.
+
+I ended up with a working visualizer and zero effort spent on fiddling with where to drop points and draw arcs on a 2D canvas. It took multiple conversations over several days to get all of the features I wanted, but I would consider the experience an impressive display of what's possible by simply requesting things you want to see and that thing being magicked into creation.
+
+The entire conversation is too long to walk through in full, but there are some interesting highlights:
+
+- Each request is a small iteration from the previous state, with an output that I can immediately verify. Often times the edits were so clear that they were obviously correct from simply looking at and accepting the code diff. At worst, I had to refresh the webpage and see if the new behavior matches my expectations. This setup kept me squarely in the drivers seat and helped to keep the pairing session focused on what I want to see accomplished. Keeping each request small also prevents multiple things going _really wrong_, and creating garbage out of previously working code.
+- Because the session is a linear conversation, each request could build off of the previous one. If you've already specified the current task in enough detail, it's unnecessary to provide the same context again. At least that's true while you're on the happy path. This makes it incredibly easy to give just _fragments_ of a request as a follow-up that are easily understood in the flow of the dialog:
+    - "Sorry I mean the x-axis and y-axis should have ..." (axes of _what?_ )
+    - "Distribution doesn't need opacity" (opacity of _what?_ )
+    - "Zoom out a bit more" (zoom out _WHAT?_ )
+- The pairing session was _collaborative_. I also had the code open in my own editor and sometimes made independent edits if they were lower effort than specifying what should be done. In this conversation, I only opted to do this once (see <span style="color: red">⮕</span>). After the `#cartesian` element was (correctly) removed by the AI junior, I removed a few other blocks of dead code that were left in-place. [aidev](https://github.com/efritz/aidev) ensures that these concurrent changes are reflected automatically in the context of the next turn of the conversation.
+- Amazingly, I could simply describe a problem about the current implementation and my AI junior will instinctively understand the issue and just ... go and correct it. For example, I asked him to add labels to the polar coordinates, but they initially came out a bit offset from the grid lines. I simply mentioned that "these don't seem to line up". From that, he fiddles with math in three different spots and changes text alignment and baselines. And it's instantly just **better** (see <span style="color: blue">⮕</span>). A lesser example of this behavior is the silent correction of my reference to `transofrm.js` in skeleton HTML file, which doesn't exist, during his frist edit of the conversation.
+- Coding output tends to do the right thing a lot of the time, but the result is not always the most maintainable. Edits will more likely make similar changes in multiple places in the code rather than first refactoring to make the change once. This is often fine, possibly even preferred when the goal is quick iteration, but can make the code at the end of the session fairly tangled. As more knots form, and more code is unnecessarily repeated, incomplete solutions tend to get more frequent. I would sometimes refactor the gnarlier parts of the code bewteen sessions to decrease the confusion of my AI junior when starting a new conversation. I had also heavily refactored the end artifact (both Javascript and CSS) prior to publication, though I'm sure I could direct my AI junior to do the same refactorings with sufficient direction.
+- Apart from general maintanability, some code choices can simply be _odd_. For example, when I asked my AI junior to draw gridlines on all three canvases, he created the following function:
+    ```javascript
+    function drawGridlines(ctx, width, height, isPolar = false) {
+        ctx.strokeStyle = 'rgba(200, 200, 200, 0.5)';
+        ctx.lineWidth = 0.5;
+
+        if (isPolar) {
+            /* ... */
+        } else {
+            /* ... */
+        }
+    }
+    ```
+    The two behaviors switched by `isPolar` share almost nothing in common except the style of the line strokes. It would be cleaner to express these behaviors as two functions, `drawPolarGridlines` and `drawCartesianGridlines`.
+
+    Similarly, when I asked for an update of a panel title, he chose to add an identifier to the element and do it dynamically in Javascript, as a side effect of the unrelated `generateAndDrawDots` function, rather than just updating the existing text in the HTML (see <span style="color: green">⮕</span>).
+
+    Some of these choices weren't sufficiently explained in the surrounding expository text. Because these are not reasoning models equipped with temporal consistency and deep introspection, asking them why they did something would just give you a plausible but ungrounded explanation for the original answer. That's not a fault of the model - [humans do the same thing](https://www.youtube.com/watch?v=Of01gO_fC1M). But ufnlike most humans, the model would likey reply to such a question with a sycophantic "You're absolutely right!" followed by a suggestion to do a complete 180.
+
+Take a peek at the full initial conversation below.
+
+<span class="conversation-header"></span>
 <div class="conversation">
 <div class="context">
 <span class="info">Added <span class="red">"transform.js"</span> into context.</span>
 <span class="info">Added <span class="red">"index.html"</span> into context.</span>
-<span class="info">Added <span class="red">"uniform.js"</span> into context.</span>
 <span class="info">Added <span class="red">"styles.css"</span> into context.</span>
 </div>
 
@@ -1629,7 +1722,7 @@ I apologize for the continued issues. It seems that the `drawCartesianDots(dots)
 -->
 
 <div class="turn">
-<div class="user">I've modified uniform.js with the changes to remove cartesian canvas references. Can we modify the bucket values so that we expect values to be in the range (-2, 2) and there are 50 bars on the chart?</div>
+<div class="user"><span class="important">NOTE: I've modified uniform.js to remove additional references to the cartesian canvas. Can we modify the bucket values so that we expect values to be in the range (-2, 2) and there are 50 bars on the chart?</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -2418,7 +2511,7 @@ The distribution chart should now have the correct title and x-axis labels as re
 </div>
 
 <div class="turn">
-<div class="user">Add the range to the title of the uniform distribution graph. Label the x and y axis of the gridliens.</div>
+<div class="user"><span class="important green">Add the range to the title of the uniform distribution graph. Label the x and y axis of the gridlines.</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -2695,7 +2788,7 @@ Certainly! I'll update the `drawPolarDots` function in the `script.js` file to a
 </div>
 
 <div class="turn">
-<div class="user">The labels for r don't seem to line up precisely with the gridlines.</div>
+<div class="user"><span class="important blue">The labels for r don't seem to line up precisely with the gridlines.</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -3235,564 +3328,48 @@ I apologize for the confusion. Let's try to update the file again, focusing on t
 </div>
 </div>
 
-TODO
+<span class="conversation-footer"></span>
 
-#### Nudging the AI
+This was just the **first** conversation I had iterating on this visualizer. I had many more, basically invoked in a chain. The output of the previous conversation was fed as the input of the next. Some conversations were more fruitful than others. Some of my requests were more trivially implementable, and some were a bit more difficult for me to explain exactly what I wanted to add or change.
 
-TODO
+But overall it was a great success, and produced something that likely wouldn't exist if I had to write it all myself.
 
-<div class="conversation">
-<div class="context">
-<span class="info">Added <span class="red">"static/charon-simulator/styles.css"</span> into context.</span>
-<span class="info">Added <span class="red">"static/charon-simulator/simulator.js"</span> into context.</span>
-<span class="info">Added <span class="red">"static/charon-simulator/render.js"</span> into context.</span>
-<span class="info">Added <span class="red">"static/charon-simulator/log.js"</span> into context.</span>
-<span class="info">Added <span class="red">"static/charon-simulator/index.html"</span> into context.</span>
-</div>
+#### Crunchy grass on the greenfield project
 
-<div class="turn">
-<div class="user">I'd like to change the range inputs to have more customized min/max/step sizes. Limit should be 1-50 in intervals of 5 (1, 5, 10, 15, 20, ..., 45, 50). Window and active time should be [1, 2, 3, 4, 5, 10, 15, 20, 25, 30]. Cooldown should be the same but include 0.</div>
+As a greenfield project grows in size and scope you might discover that the field isn't perfectly level and there's weird lumps and bumps that you need to engineer around. The grass isn't as green as you remember. You may have placed a few structures in the wrong place, but moving them just reveals patches of dirt where there was previously lush and untouched nature.
 
-<div class="response">
-<div class="assistant">
-Certainly! I'll modify the `addRow` function in the `simulator.js` file to implement these custom ranges for the sliders. Here's how we can do it:
-</div>
+After playing around with the visualizer for a while, I realized that certain combinations of inputs produce distributions of dots that make the polar coordinate labels extremely difficult to read. A solution to this problem I was particularly keen on was involved rendering a small translucent background behind the label text to increase the contrast.
 
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+Here's a before and after:
 
-```diff
-      deleter.click(onDelete);
-      tierWrapper.append(tierNumber).append(deleter);
-      tierCell.append(tierWrapper);
-      row.append(tierCell);
+{{< lightbox src="/images/my-ai-junior/labels-before.png" anchor="labels-before" half="true" >}}
+{{< lightbox src="/images/my-ai-junior/labels-after.png" anchor="labels-after" half="true" >}}
 
--     function createSliderCell(value, min, max, step, format) {
-+     function createSliderCell(value, values, format) {
-          var cell = $('<td />');
-          var wrapper = $('<p style="slider-wrapper"></p>');
-          var labelWrapper = $('<p style="label-wrapper"></p>');
-          var label = $('<span style="slider-label"></span>');
--         var slider = $('<input type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '">');
-+         var select = $('<select></select>');
-+
-+         values.forEach(function(val) {
-+             select.append($('<option></option>').attr('value', val).text(val));
-+         });
-+
-+         select.val(value);
-          labelWrapper.append(label);
--         wrapper.append(labelWrapper).append(slider);
-+         wrapper.append(labelWrapper).append(select);
-          cell.append(wrapper);
+My AI junior was doing such a great job setting up this project, I assumed he'd also be up for small feature requests like this. Unfortunately this task didn't go as smoothly as some of the others.
 
-          // Set initial label text
--         updateSliderLabel(slider, format);
-+         updateSliderLabel(select, format);
+I handed him the current project files and briefly described what I wanted. He merrily went to work, and immediately proposed _[wrapping] the polar coordinates text in a new span element_. This seemed wrong, since all of the labels are drawn directly on a 2D canvas and the DOM doesn't come into play here. He then tried to find-and-replace portions of the Javascript file in the HTML file. Since the search text did not exist uniquely in that file, the operation failed. He noticed this, and attemted to just **remove** the rendering code completely in what I sincerely hoped was a first step of a multi-step plan. But this failed as well.
 
--         slider.on('input', function() {
-+         select.on('change', function() {
-              updateSliderLabel($(this), format);
-              if (format === 'ns') {
-                  // Update limit label when window changes
-                  var row = $(this).closest('tr');
--                 updateSliderLabel(row.find('input[type="range"]:eq(0)'), 'n/s');
-+                 updateSliderLabel(row.find('select:eq(0)'), 'n/s');
-              }
-              validateConfig();
-          });
-          return cell;
-      }
+He had realized something was wrong. He took a step back and requested an updated version of the file, which was re-added to the context. Then he make two more failed edit attempts, requested the file two more times, make another failed edit attempt, and then just claimed that he was successful and summarized a bunch of actions he never successfull performed.
 
--     row.append(createSliderCell(limit, 1, 100, 1, 'n/s'));
--     row.append(createSliderCell(window, 1, 600, 1, 'ns'));
--     row.append(createSliderCell(active, 1, 600, 1, 'ns'));
--     row.append(createSliderCell(cooldown, 0, 600, 1, 'ns')); // Changed min value to 0 for cooldown
-+     var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-+     var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
+**Like I wouldn't notice??** I was watching him the entire time!
 
-+     row.append(createSliderCell(limit, limitValues, 'n/s'));
-+     row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
-+     row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
-+     row.append(createSliderCell(cooldown, timeValues, 'ns'); // include 0
-+
-      $('#tiers tbody').append(row);
-      row.find('input[type="range"]').each(function() {
-          updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
-      });
-      updateTierNumbers();
-      validateConfig();
-  }
+Fortunately, the summary of the actions he _thought_ he performed was surprisingly accurate. I asked him again to edit the file and hoped that he would follow his own plan.
 
-- function updateSliderLabel(slider, format) {
--     var value = parseInt(slider.val());
--     var label = slider.siblings('.label-wrapper').find('.slider-label');
-+ function updateSliderLabel(select, format) {
-+     var value = parseInt(select.val());
-+     var label = select.siblings('.label-wrapper').find('.slider-label');
-      if (format === 'n/s') {
--         var row = slider.closest('tr');
--         var windowValue = parseInt(row.find('input[type="range"]:eq(1)').val());
-+         var row = select.closest('tr');
-+         var windowValue = parseInt(row.find('select:eq(1)').val());
-          label.text(value + ' per ' + formatTime(windowValue));
-      } else {
-          label.text(formatTime(value));
-      }
-  }
-```
+And he did, after another failed attempt. But it was only a partial solution. He added a function definition to draw text with a background but did not actually invoke it anywhere. I'll chalk this up to a failure of the reprompting agent in [aidev](https://github.com/efritz/aidev), which tries to keep the ball in the assistant's court as long as necessary. Mentioning that the function was unused added the the correct invocations.
 
-<span class="separator">@@ ... @@</span>
+The code looked mostly correct at a glance, but something was off visually. The labels were not fully highlighted and the text was still difficult to read. Simply mentioning a problem is sometimes enough context for my AI junior to figure out what is wrong. But in this particular cirumstance, he seemed to take it as invitation to [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) random parts of the code until I got off his back.
 
-```diff
-  }
+Not knowing how to more precisely guide him, I asked him to re-darken the text color. Then I could more clearly see with my tiny, imperfect human eyes what the issue is and describe it in sufficient detail. My AI junior isn't an idiot, he just doesn't have enough context. Despite how unsteadily this was going, I think this portion of the conversation illustrates a **killer** iterative workflow for LLMs (see <span style="color: red">⮕</span>).
 
-  function validateConfig() {
-      configs = [];
-      $('#tiers tbody tr').each(function(i, c) {
--         configs.push(new BTConfig(...$(c).find('input[type="range"]').map(function(i, v) {
-+         configs.push(new BTConfig(...$(c).find('select').map(function(i, v) {
-              return $(v).val();
-          })));
-      });
+I was then able to tell how each of the labels were misaligned with their backgrounds. My AI junior responded with this information by adding an additional offset to each label to realign it with its background. At this point the background and labels were correct relative to each other, but both elements have migrated away from the point in the canvas they were meant to label!
 
-      configUpdated();
-```
-</div>
-</div>
-</div>
+The iterative nature of and the multiple failures within the conversation may have loaded the context with too much junk, and it's possible that the AI junior lost sight of the original goal. After I added an additional constraint of keeping the text where it was and _only_ the new background (see <span style="color: blue">⮕</span>), the correct solution snapped into place.
 
-<div class="turn">
-<div class="user">Can we still format these as a range slider somehow?</div>
+_Whew._
 
-<div class="response">
-<div class="assistant">
-Certainly! We can create a custom range slider using jQuery UI that looks like a range slider but actually uses our custom values. This will give us the visual appearance of a slider while still maintaining the precise control over the values we want. Here's how we can modify the `simulator.js` file to achieve this:
-</div>
+The remainder of this conversation is a string of similar failures. I ask to move the rendering of the polar gridlines above the dots, which should be a simple solution of moving some rendering code from earlier in a function to later in the same function. But that task, in the confounding context that we created together, seemed too much to ask.
 
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-      function createSliderCell(value, values, format) {
-          var cell = $('<td />');
-          var wrapper = $('<p style="slider-wrapper"></p>');
-          var labelWrapper = $('<p style="label-wrapper"></p>');
-          var label = $('<span style="slider-label"></span>');
--         var select = $('<select></select>');
-+         var slider = $('<p style="custom-slider"></p>');
-+         var select = $('<select style="display:none;"></select>');
-
-          values.forEach(function(val) {
-              select.append($('<option></option>').attr('value', val).text(val));
-          });
-
-          select.val(value);
-          labelWrapper.append(label);
--         wrapper.append(labelWrapper).append(select);
-+         wrapper.append(labelWrapper).append(slider).append(select);
-          cell.append(wrapper);
-
-+         slider.slider({
-+             min: 0,
-+             max: values.length - 1,
-+             value: values.indexOf(parseInt(value)),
-+             step: 1,
-+             slide: function(event, ui) {
-+                 select.val(values[ui.value]).change();
-+             }
-+         });
-+
-          // Set initial label text
-          updateSliderLabel(select, format);
-
-          select.on('change', function() {
-              updateSliderLabel($(this), format);
-```
-
-<span class="separator">@@ ... @@</span>
-
-```diff
-  $(document).ready(function() {
-      $('#hit').click(applyHit);
-      $('#add').click(onAdd);
-      $('.delete').click(onDelete);
--     $('#tiers').on('input', 'input[type="range"]', validateConfig);
-+     $('#tiers').on('change', 'select', validateConfig);
-      updateAddButton(); // Call this to set the initial state of the button
-
-      // Add collapsible functionality
-      $('.collapsible-header').click(function() {
-          $(this).next('.collapsible-content').slideToggle();
-```
-</div>
-</div>
-</div>
-
-<div class="turn">
-<div class="user">Can we change the style a bit so that the range slider is round?</div>
-
-<div class="response">
-<div class="assistant">
-Certainly! We can modify the CSS to make the range slider round. We'll need to update the `styles.css` file to add custom styles for the jQuery UI slider. Here's how we can do that:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
-
-```diff
-  #min-hits-value,
-  #max-hits-value {
-      padding: 0 3px;
-  }
-
-+ /* Custom Slider Styles */
-+ .custom-slider {
-+     height: 10px;
-+     background: #e0e0e0;
-+     border-radius: 5px;
-+     border: 1px solid #ccc;
-+     margin: 10px 0;
-+ }
-+
-+ .custom-slider .ui-slider-handle {
-+     width: 20px;
-+     height: 20px;
-+     top: -6px;
-+     margin-left: -10px;
-+     border-radius: 50%;
-+     background: #007bff;
-+     border: none;
-+     cursor: pointer;
-+ }
-+
-+ .custom-slider .ui-slider-handle:focus {
-+     outline: none;
-+ }
-+
-+ .custom-slider .ui-slider-range {
-+     background: #007bff;
-+     border-radius: 5px;
-+ }
-+
-  /* Media queries */
-
-  @media (max-width: 860px) {
-      input[type="range"] {
-          width: 100%;
-```
-</div>
-
-<div class="assistant">
-These changes will make the custom sliders round and more visually appealing. The slider track will be a rounded rectangle, and the handle will be a circular button.
-<br /><br />
-Now, let's update the `simulator.js` file to ensure that the custom slider is properly initialized with the jQuery UI slider widget:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-          slider.slider({
-              min: 0,
-              max: values.length - 1,
-              value: values.indexOf(parseInt(value)),
-              step: 1,
-+             range: 'min',
-              slide: function(event, ui) {
-                  select.val(values[ui.value]).change();
-              }
-          });
-
-+         // Update the slider handle position when the select value changes
-+         select.on('change', function() {
-+             slider.slider('value', values.indexOf(parseInt($(this).val())));
-+         });
-+
-          // Set initial label text
-          updateSliderLabel(select, format);
-
-          select.on('change', function() {
-              updateSliderLabel($(this), format);
-```
-</div>
-</div>
-</div>
-
-<div class="turn">
-<div class="user">When the tier is first created the "5 per 10s" label has NaN. These values are loaded once I change any of the sliders. Can we fix this initial label text?</div>
-
-<div class="response">
-<div class="assistant">
-You're right, and I apologize for missing that. The issue occurs because the initial label text is not being set correctly when the row is first added. Let's fix this by updating the `addRow` function in the `simulator.js` file. We'll ensure that the labels are properly initialized when the row is created.
-<br /><br />
-Here's how we can modify the `simulator.js` file to fix this issue:
-</div>
-
-<div class="filesystem">
-<span class="info">Proposed changes to file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-      deleter.click(onDelete);
-      tierWrapper.append(tierNumber).append(deleter);
-      tierCell.append(tierWrapper);
-      row.append(tierCell);
-
-+     var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
-+     var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
-+
-+     row.append(createSliderCell(limit, limitValues, 'n/s'));
-+     row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
-+     row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
-+     row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
-+
-+     $('#tiers tbody').append(row);
-+
-+     // Update labels after appending the row
-+     row.find('select').each(function(index) {
-+         var format = index === 0 ? 'n/s' : 'ns';
-+         updateSliderLabel($(this), format);
-+     });
-+
-+     updateTierNumbers();
-+     validateConfig();
-+ }
-+     var row = $('<tr />');
-+     var tierCell = $('<td style="tier-number"></td>');
-+     var tierWrapper = $('<p style="tier-wrapper"></p>');
-+     var tierNumber = $('<span style="tier-text"></span>');
-+     var deleter = $('<span style="delete fa fa-trash"></span>');
-+     deleter.click(onDelete);
-+     tierWrapper.append(tierNumber).append(deleter);
-+     tierCell.append(tierWrapper);
-+     row.append(tierCell);
-+
-      function createSliderCell(value, values, format) {
-+     var cell = $('<td />');
-+     var wrapper = $('<p style="slider-wrapper"></p>');
-+     var labelWrapper = $('<p style="label-wrapper"></p>');
-+     var label = $('<span style="slider-label"></span>');
-+     var slider = $('<p style="custom-slider"></p>');
-+     var select = $('<select style="display:none;"></select>');
-+
-+     values.forEach(function(val) {
-+         select.append($('<option></option>').attr('value', val).text(val));
-+     });
-+
-+     select.val(value);
-+     labelWrapper.append(label);
-+     wrapper.append(labelWrapper).append(slider).append(select);
-+     cell.append(wrapper);
-+
-+     slider.slider({
-+         min: 0,
-+         max: values.length - 1,
-+         value: values.indexOf(parseInt(value)),
-+         step: 1,
-+         range: 'min',
-+         slide: function(event, ui) {
-+             select.val(values[ui.value]).change();
-+         }
-+     });
-+
-+     // Update the slider handle position when the select value changes
-+     select.on('change', function() {
-+         slider.slider('value', values.indexOf(parseInt($(this).val())));
-+         updateSliderLabel($(this), format);
-+     });
-+
-+     return cell;
-+ }
-          var cell = $('<td />');
-          var wrapper = $('<p style="slider-wrapper"></p>');
-          var labelWrapper = $('<p style="label-wrapper"></p>');
-          var label = $('<span style="slider-label"></span>');
-          var slider = $('<p style="custom-slider"></p>');
-```
-
-<span class="info">No file was written.</span>
-</div>
-</div>
-</div>
-
-<div class="turn">
-<div class="user">That suggestion doesn't seem correct - all this code already exists</div>
-
-<div class="response">
-<div class="assistant">
-I apologize for the confusion. You're right, and I thank you for pointing that out. It seems the issue is still present despite the existing code. Let's focus on fixing the initial label text problem.
-<br /><br />
-The issue is likely occurring because the `updateSliderLabel` function is not being called correctly when the row is first added. Let's modify the `addRow` function to ensure that the labels are properly initialized. Here's how we can fix it:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-      row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
-      row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
-      row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
-
-      $('#tiers tbody').append(row);
--     row.find('input[type="range"]').each(function() {
--         updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
-+     row.find('select').each(function(index) {
-+         var format = index === 0 ? 'n/s' : 'ns';
-+         updateSliderLabel($(this), format);
-      });
-      updateTierNumbers();
-      validateConfig();
-  }
-```
-</div>
-
-<div class="assistant">
-This change ensures that `updateSliderLabel` is called for each select element in the new row, using the correct format ('n/s' for the first column, 'ns' for the others). This should fix the initial label text issue.
-<br /><br />
-Additionally, let's make sure the `updateSliderLabel` function is correctly handling the 'n/s' format. Let's update it:
-</div>
-
-<div class="filesystem">
-<span class="info">Proposed changes to file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-      var value = parseInt(select.val());
-      var label = select.siblings('.label-wrapper').find('.slider-label');
-      if (format === 'n/s') {
-          var row = select.closest('tr');
-          var windowValue = parseInt(row.find('select:eq(1)').val());
--         label.text(value + ' per ' + formatTime(windowValue));
-+         if (!isNaN(windowValue)) {
-+             label.text(value + ' per ' + formatTime(windowValue));
-+         } else {
-+             label.text(value + ' per window');
-+         }
-      } else {
-          label.text(formatTime(value));
-      }
-  }
-```
-
-<span class="info">No file was written.</span>
-</div>
-</div>
-</div>
-
-<div class="turn">
-<div class="user">Great! Can we add a bit of horizontal padding on the slider so that the round control doesn't extend into the parent?</div>
-
-<div class="response">
-<div class="assistant">
-Certainly! We can add some horizontal padding to the custom slider to prevent the round control from extending into the parent container. We'll need to modify the CSS for the custom slider. Let's update the `styles.css` file to add this padding:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
-
-```diff
-      height: 10px;
-      background: #e0e0e0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      margin: 10px 0;
-+     padding: 0 10px;  /* Add horizontal padding */
-  }
-
-+ /* Adjust the slider width to account for the padding */
-+ .custom-slider .ui-slider-range {
-+     margin: 0 -10px;
-+     width: calc(100% + 20px);
-+ }
-+
-  .custom-slider .ui-slider-handle {
-      width: 20px;
-      height: 20px;
-      top: -6px;
-      margin-left: -10px;
-```
-</div>
-
-<div class="assistant">
-These changes will add 10 pixels of padding on both the left and right sides of the custom slider. The `ui-slider-range` is adjusted to maintain the full width of the slider.
-<br /><br />
-Additionally, we should adjust the position of the slider handle to account for this new padding. Let's update the JavaScript to adjust the handle position:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
-
-```diff
-              range: 'min',
-              slide: function(event, ui) {
-                  select.val(values[ui.value]).change();
-              }
-          });
-+
-+         // Adjust handle position for padding
-+         slider.on('slidechange', function(event, ui) {
-+             var handle = $(this).find('.ui-slider-handle');
-+             var handlePosition = parseFloat(handle.css('left'));
-+             handle.css('left', handlePosition + 10 + 'px');
-+         });
-
-          // Update the slider handle position when the select value changes
-          select.on('change', function() {
-              slider.slider('value', values.indexOf(parseInt($(this).val())));
-          });
-```
-</div>
-
-<div class="assistant">
-These changes should add the horizontal padding to the slider and ensure that the round control doesn't extend into the parent container. The slider handle position is also adjusted to account for the new padding.
-</div>
-</div>
-</div>
-
-<div class="turn">
-<div class="user">Actually, let's undo those changes and just add a margin to the custom-slider style.</div>
-
-<div class="response">
-<div class="assistant">
-Certainly! Let's revert the changes we made and simply add a margin to the `custom-slider` style. This will provide some space around the slider without needing to adjust the handle position. Here's how we can modify the `styles.css` file:
-</div>
-
-<div class="filesystem">
-<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
-
-```diff
-  .custom-slider {
-      height: 10px;
-      background: #e0e0e0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
--     margin: 10px 0;
--     padding: 0 10px;  /* Add horizontal padding */
-+     margin: 10px 10px;  /* Add horizontal margin */
-  }
-
-- /* Adjust the slider width to account for the padding */
-- .custom-slider .ui-slider-range {
--     margin: 0 -10px;
--     width: calc(100% + 20px);
-- }
--
-  .custom-slider .ui-slider-handle {
-      width: 20px;
-      height: 20px;
-      top: -6px;
-      margin-left: -10px;
-```
-</div>
-</div>
-</div>
-</div>
-
-TODO
-
-#### Strokes
-
-TODO
-
+<span class="conversation-header"></span>
 <div class="conversation">
 <div class="context">
 <span class="info">Added <span class="red">"styles.css"</span> into context.</span>
@@ -3866,13 +3443,13 @@ I apologize for the error. It seems that the file content is too large to make t
         ctx.fillText('θ =', labelX, 25);
 &nbsp;
         ctx.textAlign = 'left';
-        ctx.fillText(`${rFormula}`, formulaX, 10);
-        ctx.fillText(`${thetaFormula}`, formulaX, 25);
+        ctx.fillText(`\${rFormula}`, formulaX, 10);
+        ctx.fillText(`\${thetaFormula}`, formulaX, 25);
 &nbsp;
         // Align the values
         ctx.textAlign = 'left';
-        ctx.fillText(`= ${r.toFixed(2)}`, valueX, 10);
-        ctx.fillText(`= ${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
+        ctx.fillText(`= \${r.toFixed(2)}`, valueX, 10);
+        ctx.fillText(`= \${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
 </div>
 
 <div class="assistant">
@@ -3908,13 +3485,13 @@ Now that we have the content of the script.js file, let's locate the section whe
     ctx.fillText('θ =', labelX, 25);
 &nbsp;
     ctx.textAlign = 'left';
-    ctx.fillText(`${rFormula}`, formulaX, 10);
-    ctx.fillText(`${thetaFormula}`, formulaX, 25);
+    ctx.fillText(`\${rFormula}`, formulaX, 10);
+    ctx.fillText(`\${thetaFormula}`, formulaX, 25);
 &nbsp;
     // Align the values
     ctx.textAlign = 'left';
-    ctx.fillText(`= ${r.toFixed(2)}`, valueX, 10);
-    ctx.fillText(`= ${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
+    ctx.fillText(`= \${r.toFixed(2)}`, valueX, 10);
+    ctx.fillText(`= \${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
 </div>
 
 <div class="assistant">
@@ -3968,13 +3545,13 @@ Thank you for providing the index.html file. Now that we can see the content, le
     ctx.fillText('θ =', labelX, 25);
 &nbsp;
     ctx.textAlign = 'left';
-    ctx.fillText(`${rFormula}`, formulaX, 10);
-    ctx.fillText(`${thetaFormula}`, formulaX, 25);
+    ctx.fillText(`\${rFormula}`, formulaX, 10);
+    ctx.fillText(`\${thetaFormula}`, formulaX, 25);
 &nbsp;
     // Align the values
     ctx.textAlign = 'left';
-    ctx.fillText(`= ${r.toFixed(2)}`, valueX, 10);
-    ctx.fillText(`= ${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
+    ctx.fillText(`= \${r.toFixed(2)}`, valueX, 10);
+    ctx.fillText(`= \${theta.toFixed(2)}`, valueX, 25);" must appear exactly once in the file.
 </div>
 
 <div class="assistant">
@@ -4005,8 +3582,8 @@ Certainly! I'd be happy to edit the file for you. To make the polar coordinates 
 <div class="system-error">Error: The search string "    // Add background to polar coordinates text
     if (userDot) {
         const { r, theta } = valuesForDot(userDot, rChoice, thetaChoice, nChoice);
-        const rText = `r = ${r.toFixed(2)}`;
-        const thetaText = `θ = ${theta.toFixed(2)}`;
+        const rText = `r = \${r.toFixed(2)}`;
+        const thetaText = `θ = \${theta.toFixed(2)}`;
 &nbsp;
         ctx.font = '11px Arial';
         const rWidth = ctx.measureText(rText).width;
@@ -4298,7 +3875,7 @@ I apologize for the oversight. The issue is likely due to the text alignment and
 </div>
 
 <div class="turn">
-<div class="user">Can we make the text black so I can better help debug?</div>
+<div class="user"><span class="important">Can we make the text black so I can better help debug?</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -4366,7 +3943,7 @@ Thank you for the detailed feedback. It seems the issue is with the positioning 
 </div>
 
 <div class="turn">
-<div class="user">I'd like the text to be written in their original positions. Try to move the background instead.</div>
+<div class="user"><span class="important blue">I'd like the text to be written in their original positions. Try to move the background instead.</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -4753,12 +4330,575 @@ I apologize for the confusion. You're absolutely right. Let's move the gridline 
 </div>
 </div>
 
-TODO
+<span class="conversation-footer"></span>
 
-#### Hallucinations
+After rejecting three edit proposals, I cut the conversation short and started over with a less blemished context. We eventually got it all working.
 
-TODO
+<!--
+#### Nudging the AI
 
+<span class="conversation-header"></span>
+<div class="conversation">
+<div class="context">
+<span class="info">Added <span class="red">"static/charon-simulator/styles.css"</span> into context.</span>
+<span class="info">Added <span class="red">"static/charon-simulator/simulator.js"</span> into context.</span>
+<span class="info">Added <span class="red">"static/charon-simulator/render.js"</span> into context.</span>
+<span class="info">Added <span class="red">"static/charon-simulator/log.js"</span> into context.</span>
+<span class="info">Added <span class="red">"static/charon-simulator/index.html"</span> into context.</span>
+</div>
+
+<div class="turn">
+<div class="user">I'd like to change the range inputs to have more customized min/max/step sizes. Limit should be 1-50 in intervals of 5 (1, 5, 10, 15, 20, ..., 45, 50). Window and active time should be [1, 2, 3, 4, 5, 10, 15, 20, 25, 30]. Cooldown should be the same but include 0.</div>
+
+<div class="response">
+<div class="assistant">
+Certainly! I'll modify the `addRow` function in the `simulator.js` file to implement these custom ranges for the sliders. Here's how we can do it:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+      deleter.click(onDelete);
+      tierWrapper.append(tierNumber).append(deleter);
+      tierCell.append(tierWrapper);
+      row.append(tierCell);
+
+-     function createSliderCell(value, min, max, step, format) {
++     function createSliderCell(value, values, format) {
+          var cell = $('<td />');
+          var wrapper = $('<p style="slider-wrapper"></p>');
+          var labelWrapper = $('<p style="label-wrapper"></p>');
+          var label = $('<span style="slider-label"></span>');
+-         var slider = $('<input type="range" min="' + min + '" max="' + max + '" step="' + step + '" value="' + value + '">');
++         var select = $('<select></select>');
++
++         values.forEach(function(val) {
++             select.append($('<option></option>').attr('value', val).text(val));
++         });
++
++         select.val(value);
+          labelWrapper.append(label);
+-         wrapper.append(labelWrapper).append(slider);
++         wrapper.append(labelWrapper).append(select);
+          cell.append(wrapper);
+
+          // Set initial label text
+-         updateSliderLabel(slider, format);
++         updateSliderLabel(select, format);
+
+-         slider.on('input', function() {
++         select.on('change', function() {
+              updateSliderLabel($(this), format);
+              if (format === 'ns') {
+                  // Update limit label when window changes
+                  var row = $(this).closest('tr');
+-                 updateSliderLabel(row.find('input[type="range"]:eq(0)'), 'n/s');
++                 updateSliderLabel(row.find('select:eq(0)'), 'n/s');
+              }
+              validateConfig();
+          });
+          return cell;
+      }
+
+-     row.append(createSliderCell(limit, 1, 100, 1, 'n/s'));
+-     row.append(createSliderCell(window, 1, 600, 1, 'ns'));
+-     row.append(createSliderCell(active, 1, 600, 1, 'ns'));
+-     row.append(createSliderCell(cooldown, 0, 600, 1, 'ns')); // Changed min value to 0 for cooldown
++     var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
++     var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
+
++     row.append(createSliderCell(limit, limitValues, 'n/s'));
++     row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
++     row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
++     row.append(createSliderCell(cooldown, timeValues, 'ns'); // include 0
++
+      $('#tiers tbody').append(row);
+      row.find('input[type="range"]').each(function() {
+          updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
+      });
+      updateTierNumbers();
+      validateConfig();
+  }
+
+- function updateSliderLabel(slider, format) {
+-     var value = parseInt(slider.val());
+-     var label = slider.siblings('.label-wrapper').find('.slider-label');
++ function updateSliderLabel(select, format) {
++     var value = parseInt(select.val());
++     var label = select.siblings('.label-wrapper').find('.slider-label');
+      if (format === 'n/s') {
+-         var row = slider.closest('tr');
+-         var windowValue = parseInt(row.find('input[type="range"]:eq(1)').val());
++         var row = select.closest('tr');
++         var windowValue = parseInt(row.find('select:eq(1)').val());
+          label.text(value + ' per ' + formatTime(windowValue));
+      } else {
+          label.text(formatTime(value));
+      }
+  }
+```
+
+<span class="separator">@@ ... @@</span>
+
+```diff
+  }
+
+  function validateConfig() {
+      configs = [];
+      $('#tiers tbody tr').each(function(i, c) {
+-         configs.push(new BTConfig(...$(c).find('input[type="range"]').map(function(i, v) {
++         configs.push(new BTConfig(...$(c).find('select').map(function(i, v) {
+              return $(v).val();
+          })));
+      });
+
+      configUpdated();
+```
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user"><span class="important">Can we still format these as a range slider somehow?</span></div>
+
+<div class="response">
+<div class="assistant">
+Certainly! We can create a custom range slider using jQuery UI that looks like a range slider but actually uses our custom values. This will give us the visual appearance of a slider while still maintaining the precise control over the values we want. Here's how we can modify the `simulator.js` file to achieve this:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+      function createSliderCell(value, values, format) {
+          var cell = $('<td />');
+          var wrapper = $('<p style="slider-wrapper"></p>');
+          var labelWrapper = $('<p style="label-wrapper"></p>');
+          var label = $('<span style="slider-label"></span>');
+-         var select = $('<select></select>');
++         var slider = $('<p style="custom-slider"></p>');
++         var select = $('<select style="display:none;"></select>');
+
+          values.forEach(function(val) {
+              select.append($('<option></option>').attr('value', val).text(val));
+          });
+
+          select.val(value);
+          labelWrapper.append(label);
+-         wrapper.append(labelWrapper).append(select);
++         wrapper.append(labelWrapper).append(slider).append(select);
+          cell.append(wrapper);
+
++         slider.slider({
++             min: 0,
++             max: values.length - 1,
++             value: values.indexOf(parseInt(value)),
++             step: 1,
++             slide: function(event, ui) {
++                 select.val(values[ui.value]).change();
++             }
++         });
++
+          // Set initial label text
+          updateSliderLabel(select, format);
+
+          select.on('change', function() {
+              updateSliderLabel($(this), format);
+```
+
+<span class="separator">@@ ... @@</span>
+
+```diff
+  $(document).ready(function() {
+      $('#hit').click(applyHit);
+      $('#add').click(onAdd);
+      $('.delete').click(onDelete);
+-     $('#tiers').on('input', 'input[type="range"]', validateConfig);
++     $('#tiers').on('change', 'select', validateConfig);
+      updateAddButton(); // Call this to set the initial state of the button
+
+      // Add collapsible functionality
+      $('.collapsible-header').click(function() {
+          $(this).next('.collapsible-content').slideToggle();
+```
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user">Can we change the style a bit so that the range slider is round?</div>
+
+<div class="response">
+<div class="assistant">
+Certainly! We can modify the CSS to make the range slider round. We'll need to update the `styles.css` file to add custom styles for the jQuery UI slider. Here's how we can do that:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
+
+```diff
+  #min-hits-value,
+  #max-hits-value {
+      padding: 0 3px;
+  }
+
++ /* Custom Slider Styles */
++ .custom-slider {
++     height: 10px;
++     background: #e0e0e0;
++     border-radius: 5px;
++     border: 1px solid #ccc;
++     margin: 10px 0;
++ }
++
++ .custom-slider .ui-slider-handle {
++     width: 20px;
++     height: 20px;
++     top: -6px;
++     margin-left: -10px;
++     border-radius: 50%;
++     background: #007bff;
++     border: none;
++     cursor: pointer;
++ }
++
++ .custom-slider .ui-slider-handle:focus {
++     outline: none;
++ }
++
++ .custom-slider .ui-slider-range {
++     background: #007bff;
++     border-radius: 5px;
++ }
++
+  /* Media queries */
+
+  @media (max-width: 860px) {
+      input[type="range"] {
+          width: 100%;
+```
+</div>
+
+<div class="assistant">
+These changes will make the custom sliders round and more visually appealing. The slider track will be a rounded rectangle, and the handle will be a circular button.
+<br /><br />
+Now, let's update the `simulator.js` file to ensure that the custom slider is properly initialized with the jQuery UI slider widget:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+          slider.slider({
+              min: 0,
+              max: values.length - 1,
+              value: values.indexOf(parseInt(value)),
+              step: 1,
++             range: 'min',
+              slide: function(event, ui) {
+                  select.val(values[ui.value]).change();
+              }
+          });
+
++         // Update the slider handle position when the select value changes
++         select.on('change', function() {
++             slider.slider('value', values.indexOf(parseInt($(this).val())));
++         });
++
+          // Set initial label text
+          updateSliderLabel(select, format);
+
+          select.on('change', function() {
+              updateSliderLabel($(this), format);
+```
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user">When the tier is first created the "5 per 10s" label has NaN. These values are loaded once I change any of the sliders. Can we fix this initial label text?</div>
+
+<div class="response">
+<div class="assistant">
+You're right, and I apologize for missing that. The issue occurs because the initial label text is not being set correctly when the row is first added. Let's fix this by updating the `addRow` function in the `simulator.js` file. We'll ensure that the labels are properly initialized when the row is created.
+<br /><br />
+Here's how we can modify the `simulator.js` file to fix this issue:
+</div>
+
+<div class="filesystem">
+<span class="info">Proposed changes to file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+      deleter.click(onDelete);
+      tierWrapper.append(tierNumber).append(deleter);
+      tierCell.append(tierWrapper);
+      row.append(tierCell);
+
++     var limitValues = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
++     var timeValues = [0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 30];
++
++     row.append(createSliderCell(limit, limitValues, 'n/s'));
++     row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
++     row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
++     row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
++
++     $('#tiers tbody').append(row);
++
++     // Update labels after appending the row
++     row.find('select').each(function(index) {
++         var format = index === 0 ? 'n/s' : 'ns';
++         updateSliderLabel($(this), format);
++     });
++
++     updateTierNumbers();
++     validateConfig();
++ }
++     var row = $('<tr />');
++     var tierCell = $('<td style="tier-number"></td>');
++     var tierWrapper = $('<p style="tier-wrapper"></p>');
++     var tierNumber = $('<span style="tier-text"></span>');
++     var deleter = $('<span style="delete fa fa-trash"></span>');
++     deleter.click(onDelete);
++     tierWrapper.append(tierNumber).append(deleter);
++     tierCell.append(tierWrapper);
++     row.append(tierCell);
++
+      function createSliderCell(value, values, format) {
++     var cell = $('<td />');
++     var wrapper = $('<p style="slider-wrapper"></p>');
++     var labelWrapper = $('<p style="label-wrapper"></p>');
++     var label = $('<span style="slider-label"></span>');
++     var slider = $('<p style="custom-slider"></p>');
++     var select = $('<select style="display:none;"></select>');
++
++     values.forEach(function(val) {
++         select.append($('<option></option>').attr('value', val).text(val));
++     });
++
++     select.val(value);
++     labelWrapper.append(label);
++     wrapper.append(labelWrapper).append(slider).append(select);
++     cell.append(wrapper);
++
++     slider.slider({
++         min: 0,
++         max: values.length - 1,
++         value: values.indexOf(parseInt(value)),
++         step: 1,
++         range: 'min',
++         slide: function(event, ui) {
++             select.val(values[ui.value]).change();
++         }
++     });
++
++     // Update the slider handle position when the select value changes
++     select.on('change', function() {
++         slider.slider('value', values.indexOf(parseInt($(this).val())));
++         updateSliderLabel($(this), format);
++     });
++
++     return cell;
++ }
+          var cell = $('<td />');
+          var wrapper = $('<p style="slider-wrapper"></p>');
+          var labelWrapper = $('<p style="label-wrapper"></p>');
+          var label = $('<span style="slider-label"></span>');
+          var slider = $('<p style="custom-slider"></p>');
+```
+
+<span class="info">No file was written.</span>
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user"><span class="important">That suggestion doesn't seem correct - all this code already exists</span></div>
+
+<div class="response">
+<div class="assistant">
+I apologize for the confusion. You're right, and I thank you for pointing that out. It seems the issue is still present despite the existing code. Let's focus on fixing the initial label text problem.
+<br /><br />
+The issue is likely occurring because the `updateSliderLabel` function is not being called correctly when the row is first added. Let's modify the `addRow` function to ensure that the labels are properly initialized. Here's how we can fix it:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+      row.append(createSliderCell(window, timeValues.slice(1), 'ns')); // exclude 0
+      row.append(createSliderCell(active, timeValues.slice(1), 'ns')); // exclude 0
+      row.append(createSliderCell(cooldown, timeValues, 'ns')); // include 0
+
+      $('#tiers tbody').append(row);
+-     row.find('input[type="range"]').each(function() {
+-         updateSliderLabel($(this), $(this).closest('td').index() === 1 ? 'n/s' : 'ns');
++     row.find('select').each(function(index) {
++         var format = index === 0 ? 'n/s' : 'ns';
++         updateSliderLabel($(this), format);
+      });
+      updateTierNumbers();
+      validateConfig();
+  }
+```
+</div>
+
+<div class="assistant">
+This change ensures that `updateSliderLabel` is called for each select element in the new row, using the correct format ('n/s' for the first column, 'ns' for the others). This should fix the initial label text issue.
+<br /><br />
+Additionally, let's make sure the `updateSliderLabel` function is correctly handling the 'n/s' format. Let's update it:
+</div>
+
+<div class="filesystem">
+<span class="info">Proposed changes to file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+      var value = parseInt(select.val());
+      var label = select.siblings('.label-wrapper').find('.slider-label');
+      if (format === 'n/s') {
+          var row = select.closest('tr');
+          var windowValue = parseInt(row.find('select:eq(1)').val());
+-         label.text(value + ' per ' + formatTime(windowValue));
++         if (!isNaN(windowValue)) {
++             label.text(value + ' per ' + formatTime(windowValue));
++         } else {
++             label.text(value + ' per window');
++         }
+      } else {
+          label.text(formatTime(value));
+      }
+  }
+```
+
+<span class="info">No file was written.</span>
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user">Great! Can we add a bit of horizontal padding on the slider so that the round control doesn't extend into the parent?</div>
+
+<div class="response">
+<div class="assistant">
+Certainly! We can add some horizontal padding to the custom slider to prevent the round control from extending into the parent container. We'll need to modify the CSS for the custom slider. Let's update the `styles.css` file to add this padding:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
+
+```diff
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin: 10px 0;
++     padding: 0 10px;  /* Add horizontal padding */
+  }
+
++ /* Adjust the slider width to account for the padding */
++ .custom-slider .ui-slider-range {
++     margin: 0 -10px;
++     width: calc(100% + 20px);
++ }
++
+  .custom-slider .ui-slider-handle {
+      width: 20px;
+      height: 20px;
+      top: -6px;
+      margin-left: -10px;
+```
+</div>
+
+<div class="assistant">
+These changes will add 10 pixels of padding on both the left and right sides of the custom slider. The `ui-slider-range` is adjusted to maintain the full width of the slider.
+<br /><br />
+Additionally, we should adjust the position of the slider handle to account for this new padding. Let's update the JavaScript to adjust the handle position:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/simulator.js"</span>:</span>
+
+```diff
+              range: 'min',
+              slide: function(event, ui) {
+                  select.val(values[ui.value]).change();
+              }
+          });
++
++         // Adjust handle position for padding
++         slider.on('slidechange', function(event, ui) {
++             var handle = $(this).find('.ui-slider-handle');
++             var handlePosition = parseFloat(handle.css('left'));
++             handle.css('left', handlePosition + 10 + 'px');
++         });
+
+          // Update the slider handle position when the select value changes
+          select.on('change', function() {
+              slider.slider('value', values.indexOf(parseInt($(this).val())));
+          });
+```
+</div>
+
+<div class="assistant">
+These changes should add the horizontal padding to the slider and ensure that the round control doesn't extend into the parent container. The slider handle position is also adjusted to account for the new padding.
+</div>
+</div>
+</div>
+
+<div class="turn">
+<div class="user">Actually, let's undo those changes and just add a margin to the custom-slider style.</div>
+
+<div class="response">
+<div class="assistant">
+Certainly! Let's revert the changes we made and simply add a margin to the `custom-slider` style. This will provide some space around the slider without needing to adjust the handle position. Here's how we can modify the `styles.css` file:
+</div>
+
+<div class="filesystem">
+<span class="info">Wrote file <span class="red">"static/charon-simulator/styles.css"</span>:</span>
+
+```diff
+  .custom-slider {
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+-     margin: 10px 0;
+-     padding: 0 10px;  /* Add horizontal padding */
++     margin: 10px 10px;  /* Add horizontal margin */
+  }
+
+- /* Adjust the slider width to account for the padding */
+- .custom-slider .ui-slider-range {
+-     margin: 0 -10px;
+-     width: calc(100% + 20px);
+- }
+-
+  .custom-slider .ui-slider-handle {
+      width: 20px;
+      height: 20px;
+      top: -6px;
+      margin-left: -10px;
+```
+</div>
+</div>
+</div>
+</div>
+
+<span class="conversation-footer"></span>
+
+--->
+
+#### Where the @$#% am I?
+
+This last example is a riot and a bit meta. The `2024-10-25-using-ai.md` file included in the context is actually an early version of this very article, which included the contents of the other four conversations. I was trying to use my AI junior to help me with the collapse feature on each "turn" (which consists of a user message and all following assistant responses).
+
+It was going very well. I was making small suggestions and things were getting done. I complained vaguely about DOM elements intersecting each other, and the relevant CSS was miraculously altered and the offending styling was no longer an issue.
+
+Then I asked it to lower the collapse button a tiny bit more and it shoots out a Bash script to run ffmpeg. [_What?_](https://www.youtube.com/watch?v=c4LVyN6hgNE)
+
+I guess there was just so much _stuff_ packed into the context that asking to simply "lower it" caused the model to attend to portions of the [ffmpeg conversion conversation](#figure-out-how-to-run-an-external-tool), rather than to the conversation that we were currently having.
+
+<span class="conversation-header"></span>
 <div class="conversation">
 <div class="context">
 <span class="info">Added <span class="red">"2024-10-25-using-ai.md"</span> into context.</span>
@@ -4989,7 +5129,7 @@ I'll help you adjust the CSS for the collapse button to make it smaller and alig
 </div>
 
 <div class="turn">
-<div class="user">Can we lower it a bit more still?</div>
+<div class="user"><span class="important">Can we lower it a bit more still?</span></div>
 
 <div class="response">
 <div class="assistant">
@@ -5020,7 +5160,7 @@ Without a specific height mentioned, let me suggest lowering it to 300 pixels, w
 </div>
 
 <div class="turn">
-<div class="user"><span class="important">Dude, you just started talking about ffmpeg stuff.</span></div>
+<div class="user">Dude, you just started talking about ffmpeg stuff.</div>
 
 <div class="response">
 <div class="assistant">
@@ -5086,9 +5226,33 @@ I'll help you adjust the top position of the collapse button to 0.5em:
 </div>
 </div>
 
-TODO
+<span class="conversation-footer"></span>
+
+This is a negative anecdote for general conversational coherency, but on the bright side you could swing this as a positive one for needle in the haystack testing.
+
+### Looking forward
+
+If you meticulously read these conversations you are likely to find an error with the prompter or the harness rather than the model. There are times in the conversation where I didn't use the "modern" prompt engineering techniques and got a sub-par response. I was insufficiently detailed in my request to get a meaningful response from the model. There's likely bugs in the [aidev](https://github.com/efritz/aidev) harness, or the description of tools available to the model are missing that One Simple Trick.
+
+But it doesn't need to be perfect. It's already shown its utility. And it will get better and the rough edges will get smoothed down. As time marches on, I will expect:
+
+1. An increasing number of models to become available, and models to become increasingly intelligent. The things that seem brittle now will, release after release, become more and more robust.
+1. The wrinkles in my harness and the tools available to the model will slowly get ironed out. They'll then get new rinkles with the release of a new, more capable model worth adopting. Ad infinitum, or until the point where all useful models converge (if ever).
+1. My own intuition for the best way to interact with a particular model on a particular task will sharpen with practice. I postulate some of the more potent "social" tricks will continue to apply to LLMs for a signficant amount time.
 
 <style type="text/css">
+    .conversation-header {
+        width: 100%;
+        display: block;
+        border-top: 1px dashed #666666;
+    }
+
+    .conversation-footer {
+        width: 100%;
+        display: block;
+        border-bottom: 1px dashed #666666;
+    }
+
     .conversation {
         text-align: left;
         font-family: "Source Code Pro", monospace;
@@ -5207,6 +5371,14 @@ TODO
         position: absolute;
         left: -3.5rem;
         top: 0.5rem;
+    }
+
+    .user .important.blue:before {
+        color: blue;
+    }
+
+    .user .important.green:before {
+        color: green;
     }
 
     /* Outline tool use */
