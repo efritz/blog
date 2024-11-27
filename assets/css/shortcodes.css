@@ -15,6 +15,12 @@ figure {
   width: 49%;
 }
 
+.thumbnail.small {
+  width: 60%;
+  margin: 0 auto;
+  display: block;
+}
+
 .lightbox {
   display: none;
   position: fixed;
