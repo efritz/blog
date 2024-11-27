@@ -28,8 +28,8 @@ There's a lot of nuance in this phenomenon, and the best way I've found to expla
 
 Visualize a set of tasks you need to perform plotted in 3D space. This space has axes representing the task's complexity, your familiarity with the task, and the friction you would experience while performing the task. Then, visualize a surface cutting through the friction dimension that partitions the tasks into two groups:
 
-1. Tasks below this surface you'd be willing to perform, or at least not drag your feet on them indefinitely. Relative to the task's complexity and familiarity, its friction is low _enough_ that you would have no major reservations in picking it up. It could be easy or challenging, something you've done before or something exciting and new, but it's most likely always _interesting_.
-1. Tasks above this surface you avoid. They might be too hard or too unfamiliar. They might be easy and completely within your skill set, but so mind-numbing that you would prefer dental work when given a choice. They're simply tasks that you would consider not worth the effort.
+1. Tasks below this surface you'd be willing to perform, or at least not drag your feet on indefinitely. Relative to the task's complexity and familiarity, its friction is low _enough_ that you would have no major reservations in picking it up. It could be easy or challenging, something you've done before or something exciting and new, but it's most likely always _interesting_.
+1. Tasks above this surface you avoid. They might be too hard or too unfamiliar. They might be easy and completely within your skill set, but so mind-numbing that you would prefer dental work if given a choice. They're simply tasks that you would consider not worth the effort.
 
 My own friction-cutting surface looks something like this:
 
@@ -72,7 +72,7 @@ I'm treating [aidev](https://github.com/efritz/aidev) as a junior coworker with 
 
 Ethan Mollick suggests treating AI like [an infinitely patient but amnesiac coworker](https://www.oneusefulthing.org/p/getting-started-with-ai-good-enough). Steve Yegge has described a similar development paradigm he calls [chat-oriented programming](https://sourcegraph.com/blog/chat-oriented-programming-in-action). I'm just treating it as a pairing session between two dorks who keep their cameras switched off.
 
-So what have these pairing sessions gotten me? Well, I work in infrastructure at my day job and I haven't typed a kubectl by hand in months [^2]. I also haven't technically _written_ any Bash, although I have probably _produced_ more (working) Bash in this time frame than in any other segment of my career. 
+So what have these pairing sessions gotten me? Well, I work in infrastructure at my day job and I haven't typed a kubectl by hand in months [^2]. I also haven't technically _written_ any Bash, although I have probably _produced_ more (working) Bash in this time frame than in any other time of my career. 
 
 [^2]: Not to be read as me being a ghost employee.
 
@@ -112,7 +112,7 @@ I don't have an easy way to embed videos into my blog [^3], so I needed to conve
 - They have a very low "free" limit, which hamstrings iteration on settings
 - They contain watermarks
 
-[^3]: This may change in the near future, as I bet this would be a fairly task easy to delegate to my AI junior.
+[^3]: This may change in the near future, as I bet this would be a fairly easy task to delegate to my AI junior.
 
 All the while, ffmpeg is sitting **right there** - but hell if I know how to invoke it properly.
 
