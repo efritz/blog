@@ -6,36 +6,37 @@ tags = []
 showpagemeta = true
 +++
 
-<!--
-The past two years has seen a phenomenal stoking of hype around AI and, in particular, its use in programming. At the start of this trend, I was ready to dismiss the utility of AI coding assistance entirely. Sourcegraph, my employer at the time, was jumping head-first onto the bandwagon (and, to my chagrin, what seemed to be at the expense of everything else). I didn't quite get it. GitHub Copilot was a net negative on my productivity because the scope and quality of its completions were, in the earlier days, poor and inconsistent. It helped a _bit_ with boilerplate, but I was already adept with multicursor juggling, so it bought me very little.
+The past two years has been a constant and exhausting barrage of AI hype.
 
+At the beginning, I was ready to dismiss the utility of AI coding assistance entirely. My employer at the time threw all available energy chasing this trend. It sucked all the air out of the room and extinguished all existing efforts. I didn't understand why.
 
-Steve Yegge is calling this method of developing software [chat-oriented programming](https://sourcegraph.com/blog/chat-oriented-programming-in-action).
+Back then, GitHub Copilot was the state-of-the-art AI assistant, but my experience with it was a net negative on my productivity. Its completions were, in the early days, poor and inconsistent. It helped a _bit_ with boilerplate, but I was already adept with multi-cursor juggling and it added very little to my toolbox. In problems of any non-trivial complexity, completions simply got in the way. Often, I would experience the "Copilot pause", after which I would necessarily throw out the suggestion and begin to pick up my broken thoughts from the floor.
 
-Just today, Anthropic released the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol)
--->
+Around March I started paying more attention to this space. Something had changed, and the threshold where I could no longer ignore these tools was crossed. Since then, I've been getting much more serious about this technology. I've seen models improve and workflow patterns emerge (and some die). I've been following the rise of new AI-based IDEs such as [Cursor](https://www.cursor.com/) and [Windsurf](https://codeium.com/windsurf), editor extensions such as [Cody](https://sourcegraph.com/demo/cody), terminal-based tools such as [Aider](https://aider.chat/) and software development "agents" such as [Devin](https://devin.ai/) [^1] and [Copilot Workspaces](https://githubnext.com/projects/copilot-workspace).
 
-Since around May, I've been getting much more serious about this technology. I've been developing a personal LLM-powered coding assistant, [aidev](https://github.com/efritz/aidev).
+[^1]: [Fuck you, Devin](https://x.com/trashh_dev/status/1767599077565538744).
 
-.
-..
-...
-....
-.....
+But I'm not happy just _using_ tools. I'm driven to create them. To build my own foundational understanding. In order to explore the [jagged frontier](https://www.oneusefulthing.org/p/centaurs-and-cyborgs-on-the-jagged?utm_source=publication-search) of model capabilities and learn what these things are _actually_ good at, I've been developing my own personal LLM-powered coding assistant, [aidev](https://github.com/efritz/aidev).
 
-There is **absolutely** utility in these tools, but it requires developing a specific intuition that seems unlike all other the tools in the field. And this utility is not uniform - there's a very jagged edge to where these tools are effective, and that edge is shaped differently for everyone.
+He's become my AI junior and he's been rapidly growing on me.
 
-I've had a lot of false starts trying to explain the nuance in this. I think the best illustration I've come up with so far is to first visualize a set of tasks to perform plotted in 3D space. This space has axes representing the task's complexity, your familiarity with the task, and the friction you would experience while performing the task. Then, visualize a surface cutting through the friction dimension that partitions the tasks into two groups:
+### The utility of AI assistance
 
-1. Tasks below this surface you'd be willing to perform. Relative to the task's complexity and familiarity, its friction is low _enough_ that you would have no major issue working on it. It could be easy or challenging, something you've done before or something exciting and new, but it's most likely always _interesting_.
-1. Tasks above this surface, you would tend to avoid. They might be too hard or too unfamiliar. They might be easy and within your skill set, but so mind-numbing that you would prefer dental work when given a choice. They're simply tasks that you would consider not worth the effort.
+I'll now admit that there is **absolutely** utility in these tools, but it requires developing a specific intuition that seems unlike all the other tools in the field. This utility is also not uniform - there's a very jagged edge to where these tools are effective, and that edge takes on a different shape for everyone.
 
-My own friction-cutting surface looks something like this.
+There's a lot of nuance in this phenomenon, and the best way I've found to explain it is with ... geometry? I've had a lot of false starts with these analogies - just bear with me for a bit.
+
+Visualize a set of tasks you need to perform plotted in 3D space. This space has axes representing the task's complexity, your familiarity with the task, and the friction you would experience while performing the task. Then, visualize a surface cutting through the friction dimension that partitions the tasks into two groups:
+
+1. Tasks below this surface you'd be willing to perform, or at least not drag your feet on them indefinitely. Relative to the task's complexity and familiarity, its friction is low _enough_ that you would have no major reservations in picking it up. It could be easy or challenging, something you've done before or something exciting and new, but it's most likely always _interesting_.
+1. Tasks above this surface you avoid. They might be too hard or too unfamiliar. They might be easy and completely within your skill set, but so mind-numbing that you would prefer dental work when given a choice. They're simply tasks that you would consider not worth the effort.
+
+My own friction-cutting surface looks something like this:
 
 {{< lightbox src="/images/my-ai-junior/1-before.png" anchor="1-before" half="true" >}}
 {{< lightbox src="/images/my-ai-junior/2-before.png" anchor="2-before" half="true" >}}
 
-This surface has a number of interpretations:
+This surface is a reflection of my own skill set, interests, and personality, and has a number of interpretations:
 
 - I have less patience for tasks that are both easy and very familiar (e.g., boring).
 - I'll accept higher friction if a task is both familiar as well as moderately challenging (e.g., fun).
@@ -44,49 +45,59 @@ This surface has a number of interpretations:
 
 **The utility of AI assistants is a modification of this surface.**
 
-TODO
+But it doesn't modify the surface _everywhere_. The models do not possess sufficient intelligence to solve all physics from a simple prompt like "finish what Einstein started". The models do, however, possess sufficient intelligence to solve a large set of well-scoped tasks with verifiable goal state. Unfortunately this requires that the user know how to verify the goal state, and have the ability to sufficiently scope the task in the first place.
+
+When accounting for assistance from my AI junior, my friction-cutting surface looks something like this:
 
 {{< lightbox src="/images/my-ai-junior/1-after.png" anchor="1-after" half="true" >}}
 {{< lightbox src="/images/my-ai-junior/2-after.png" anchor="2-after" half="true" >}}
 
-TODO
+While the surface's general shape stays the same, there are some significant differences.
 
-{{< lightbox src="/images/my-ai-junior/3-after.png" anchor="3-after" small="true" >}}
+- I'll withstand **much** more friction for tasks that are both easy and very familiar. These are tasks I can easily delegate to my AI junior, which would allow me to skip most of the drudgery I was trying to avoid in the first place. I just say what easy task needs to be done and it's instantly off of the todo list.
+- I'll withstand additional friction for tasks that are both familiar and moderately challenging. These are tasks where I can lean on the AI to help with ideation and execution of mechanical subtasks.
+- My patience still decays with the unfamiliarity of a task, but it decays slightly less rapidly. These are tasks that I _basically_ know how to solve but lies _just_ outside my comfort zone. My AI junior can help bridge the slight unfamiliarity gap here (e.g., look up the proper way to invoke ffmpeg for me). Highly unfamiliar tasks are still off the table, as I wouldn't know how to form a proper prompt, nor judge the output effectively.
 
-TODO
+If you were to believe the AI hype from people that are also forecasting AGI in 2024/ASI in 2025, the sudden proliferation of utility foam nanomachines curing all diseases and giving us super strength, and the wide adoption of FDVR indistinguishable from - nay, *better than* - reality, you might expect the surface to be significantly higher.
 
+{{< lightbox src="/images/my-ai-junior/3-after.png" anchor="3-after" small="true" caption="Computer: Please solve P = NP, then go and fold my laundry. Thanks." >}}
 
-> The economist William Stanley Jevons spotted this pattern in 1865. He saw that better coal efficiency led to more coal use, not less. New technology doesn't just save resources – it opens new possibilities that increase total activity.
+At least as of today, this is not the case.
 
+AI isn't giving me super-developer powers (anymore than I already had). But it is vastly widening the set of things that I'm choosing to do. And that's quite something.
 
+### Re-routing all friction to the AI junior
 
-- [aidev](https://github.com/efritz/aidev)
-- junior engineer; would delegate same tasks to huamns if I could nerdsnipe them into doing it
-- junior engineer that refuses mentorship (after the current session is over)
-- [good enough prompting](https://www.oneusefulthing.org/p/getting-started-with-ai-good-enough)
-[o1-preview chat](https://chatgpt.com/share/67441234-7ee0-800e-891a-85eb8da8621b)
+I'm treating [aidev](https://github.com/efritz/aidev) as a junior coworker with some caveats. He's the kind of developer who will knock an unambiguous two-story-point Jira ticket out of the park without talking back. But he otherwise just sits blankly, dead behind the eyes, between daily standups. And he completely refuses mentorship. Well, he does well with feedback _during_ a pairing session, but the next day it's like he just goes back to his default settings.
 
+Ethan Mollick suggests treating AI like [an infinitely patient but amnesiac coworker](https://www.oneusefulthing.org/p/getting-started-with-ai-good-enough). Steve Yegge has described a similar development paradigm he calls [chat-oriented programming](https://sourcegraph.com/blog/chat-oriented-programming-in-action). I'm just treating it as a pairing session between two dorks who keep their cameras switched off.
 
+So what have these pairing sessions gotten me? Well, I work in infrastructure at my day job and I haven't typed a kubectl by hand in months [^2]. I also haven't technically _written_ any Bash, although I have probably _produced_ more (working) Bash in this time frame than in any other segment of my career. 
 
+[^2]: Not to be read as me being a ghost employee.
 
+A heap of software that wouldn't have otherwise existed has also fallen out of me. Some of them created on an absolute whim. An incomplete list would include:
 
+- The linkable header, article progress, and table of contents features on this blog.
+- The images earlier in this blog post (produced by a small script using numpy and matplotlib).
+- An [interactive visualizer](/box-muller) for a [blog post](/articles/box-muller) about generating random numbers (more on this below).
+- An interactive app that visualizes B-tree insertions and deletions (for a future blog post).
+- An updated [interactive rate limiting simulator](/charon-simulator) referenced by an older [blog post](/articles/charon-simulator) (to keep things fresh).
+- A "hacking" interface so I could feel like I was in NCIS.
+- A Treesitter grammar playground to help debug a bug for a CODEOWNERS grammar.
+- An **extremely** customized financial projection application.
 
+{{< lightbox src="/images/my-ai-junior/retirement-planner.png" anchor="retirement-planner" caption="My AI junior helped me write a program to show me that if I retire at 45 I starve at 76." >}}
 
-- Added table of contents to my blog articles
-- Added linkabe/copyable headers to my blog articles
-- Box-Muller visualizer
-- Updated Charon visualizer
-- English is now my kubectl
-- 
+I could continue listing things I've made this way all day, but I accidentally just reminded myself the fleeting nature of life and how oppressive our capitalistic society can be and I need a second to center myself.
 
+...
 
-{{< lightbox src="/images/my-ai-junior/retirement-planner.png" anchor="retirement-planner" caption="Claude helped me write a program to show me that if I retire at 45 I starve at 76." >}}
+Ok, I'm good.
 
-TODO
+### Conversation examples
 
-### Conversation highlights
-
-TODO
+To show more directly _how_ these pairing sessions work, I've selected five fragments of actual conversations. Some of these pairing sessions produce results that absolutely slap. Some of them don't really accomplish anything (but that absolutely happens in "real" pairing sessions between two human engineers as well). Keep in mind that these paradigms are pretty new, the technology is nascent, and skill sets are developing from zero.
 
 #### Figure out how to run an external tool
 
@@ -94,14 +105,14 @@ When writing [A visual intuition for the Box-Muller transform](/articles/box-mul
 
 {{< lightbox src="/images/box-muller/ln_u1.gif" anchor="box-muller" caption="Yummy math wiggling aboutst your screen." >}}
 
-I don't have an easy way to embed videos into my blog [^1], so I needed to convert these MOV artifacts into GIFs. A cursory glance failed to show a way to get either QuickTime Player or VLC to export to a GIF. There are plenty of online services that can do this for free, but they have at least one of the following downsides:
+I don't have an easy way to embed videos into my blog [^3], so I needed to convert these MOV artifacts into GIFs. A cursory glance failed to show a way to get either QuickTime Player or VLC to export to a GIF. There are plenty of online services that can do this for free, but they have at least one of the following downsides:
 
 - They produce a poor quality artifact
 - They do not allow you to change things like framerate
 - They have a very low "free" limit, which hamstrings iteration on settings
 - They contain watermarks
 
-[^1]: This may change in the near future, as I bet this would be a fairly task easy to delegate to my AI junior.
+[^3]: This may change in the near future, as I bet this would be a fairly task easy to delegate to my AI junior.
 
 All the while, ffmpeg is sitting **right there** - but hell if I know how to invoke it properly.
 
@@ -111,13 +122,13 @@ I ask my AI junior to "Convert these mov files into gifs". I give no other conte
 
 And he freakin' does.
 
-He first checks to see if ffmpeg is actually installed; it's not, so he installs it via homebrew. He then looks for whatever MOV files I might be vaguely referencing and gets a list of candidates. Then, he creates a Bash script that invokes ffmpeg in a loop using flags I've never heard of - including `lanczos`, which I can only assume from a cursory Google search is his choice of [resampling method](https://en.wikipedia.org/wiki/Lanczos_resampling). Finally, he runs the script and I'm presented with seven converted GIF files.
+He first checks to see if ffmpeg is actually installed; it's not, so he installs it via homebrew. He then looks for whatever MOV files I might be vaguely referencing and gets a list of candidates. Then, he creates a Bash script that invokes ffmpeg in a loop using flags I've never heard of - including `lanczos`, which I can only assume from a cursory Google search that is his choice of [resampling method](https://en.wikipedia.org/wiki/Lanczos_resampling). Finally, he runs the script and I'm presented with seven converted GIF files.
 
 Dude one-shotted my task without asking for clarification.
 
 I now have a working MOV-to-GIF conversion pipeline that can be iterated on. The initial output was too small, which is no fault of my junior. I didn't specify anything about output constraints except "be a GIF", and in that circumstance I'd consider all choices (within reason) to be valid.
 
-I asked for him to increase the size of the output. He modifies and re-runs the Bash script, quickly plopping out a set of updated artifacts. Interestingly, when we increased the size, he ardently batched in some other changes that increased the image quality. He increased the frame-rate to make the animation smoother, ensured that it looped indefinitely instead of just playing once and freezing on the last frame. He also performed a bit of color palette manipulation. Nice touch.
+I asked for him to increase the size of the output. He modified and re-runs the Bash script, quickly plopping out a set of updated artifacts. Interestingly, when we increased the size, he ardently batched in some other changes that increased the image quality. He increased the frame-rate to make the animation smoother, ensured that it looped indefinitely instead of just playing once and freezing on the last frame. He also performed a bit of color palette manipulation. Nice touch.
 
 The output was larger, but not large enough. I asked for larger images once again, and he obliged. Again, he took the liberty of updating additional quality settings that probably only matter once the image gets large enough to notice such details.
 
@@ -656,7 +667,7 @@ The entire conversation is too long to walk through in full, but there are some 
     - "Zoom out a bit more" (zoom out _WHAT?_ )
 - The pairing session was _collaborative_. I also had the code open in my own editor and sometimes made independent edits if they were lower effort than specifying what should be done. In this conversation, I only opted to do this once (see <span style="color: red">⮕</span>). After the `#cartesian` element was (correctly) removed by the AI junior, I removed a few other blocks of dead code that were left in-place. [aidev](https://github.com/efritz/aidev) ensures that these concurrent changes are reflected automatically in the context of the next turn of the conversation.
 - Amazingly, I could simply describe a problem about the current implementation and my AI junior would instinctively understand the issue and just ... go and correct it. For example, I asked him to add labels to the polar coordinates, but they initially came out a bit offset from the grid lines. I simply mentioned that "these don't seem to line up". From that, he fiddles with math in three different spots and changes text alignment and baselines. And it's instantly just **better** (see <span style="color: blue">⮕</span>). A lesser example of this behavior is the silent correction of my reference to `transofrm.js` in skeleton HTML file, which doesn't exist, during his first edit of the conversation.
-- Coding output tends to do the right thing a lot of the time, but the result is not always the most maintainable. Edits will more likely make similar changes in multiple places in the code rather than first refactoring to make the change once. This is often fine, possibly even preferred when the goal is quick iteration, but can make the code at the end of the session fairly tangled. As more knots form, and more code is unnecessarily repeated, incomplete solutions tend to get more frequent. I would sometimes refactor the gnarlier parts of the code bewteen sessions to decrease the confusion of my AI junior when starting a new conversation. I had also heavily refactored the end artifact (both Javascript and CSS) prior to publication, though I'm sure I could direct my AI junior to do the same refactorings with sufficient direction.
+- Coding output tends to do the right thing a lot of the time, but the result is not always the most maintainable. Edits will more likely make similar changes in multiple places in the code rather than first refactoring to make the change once. This is often fine, possibly even preferred when the goal is quick iteration, but it can make the code at the end of the session fairly tangled. As more knots form and more code is unnecessarily repeated, incomplete solutions tend to become more frequent. I would sometimes refactor the gnarlier parts of the code between sessions to decrease the confusion of my AI junior when starting a new conversation. I had also heavily refactored the end artifact (both Javascript and CSS) prior to publication, though I'm sure I could direct my AI junior to do the same refactorings with sufficient direction.
 - Apart from general maintanability, some code choices can simply be _odd_. For example, when I asked my AI junior to draw gridlines on all three canvases, he created the following function:
     ```javascript
     function drawGridlines(ctx, width, height, isPolar = false) {
@@ -674,7 +685,7 @@ The entire conversation is too long to walk through in full, but there are some 
 
     Similarly, when I asked for an update of a panel title, he chose to add an identifier to the element and do it dynamically in Javascript, as a side effect of the unrelated `generateAndDrawDots` function, rather than just updating the existing text in the HTML (see <span style="color: green">⮕</span>).
 
-    Some of these choices weren't sufficiently explained in the surrounding expository text. Because these are not reasoning models equipped with temporal consistency and deep introspection, asking them why they did something would just give you a plausible but ungrounded explanation for the original answer. That's not a fault of the model - [humans do the same thing](https://www.youtube.com/watch?v=Of01gO_fC1M). But unlike most humans, the model would likey reply to such a question with a sycophantic "You're absolutely right!" followed by a suggestion to do a complete 180.
+    Some of these choices weren't sufficiently explained in the surrounding expository text. Because these are not reasoning models equipped with temporal consistency and deep introspection, asking them why they did something would just give you a plausible but ungrounded explanation for the original answer. That's not a fault of the model - [humans do the same thing](https://www.youtube.com/watch?v=Of01gO_fC1M). But unlike most humans, the model would likely reply to such a question with a sycophantic "You're absolutely right!" followed by a suggestion to do a complete 180.
 
 Take a peek at the full initial conversation below.
 
@@ -3382,7 +3393,7 @@ I apologize for the confusion. Let's try to update the file again, focusing on t
 
 <span class="conversation-footer"></span>
 
-This was just the **first** conversation I had iterating on this visualizer. I had many more, basically invoked in a chain. The output of the previous conversation was fed as the input of the next. Some conversations were more fruitful than others. Some of my requests were more trivially implementable, and some were a bit more difficult for me to explain exactly what I wanted to add or change.
+This was just the **first** conversation I had iterating on this visualizer. I had many more, basically invoking them in a chain. The output of the previous conversation was fed as the input of the next. Some conversations were more fruitful than others. Some of my requests were more trivially implementable, and some were a bit more difficult for me to explain exactly what I wanted to add or change.
 
 But overall it was a great success, and produced something that likely wouldn't exist if I had to write it all myself.
 
@@ -3390,7 +3401,7 @@ But overall it was a great success, and produced something that likely wouldn't 
 
 As a greenfield project grows in size and scope you might discover that the field isn't perfectly level and there's weird lumps and bumps that you need to engineer around. The grass isn't as green as you remember. You may have placed a few structures in the wrong place, but moving them just reveals patches of dirt where there was previously lush and untouched nature.
 
-After playing around with the visualizer for a while, I realized that certain combinations of inputs produce distributions of dots that make the polar coordinate labels extremely difficult to read. A solution to this problem I was particularly keen on involved rendering a small translucent background behind the label text to increase the contrast.
+After playing around with the visualizer for a while, I realized that certain combinations of inputs produce distributions of dots which made the polar coordinate labels extremely difficult to read. A solution to this problem I was particularly keen on involved rendering a small translucent background behind the label text to increase the contrast.
 
 Here's a before and after:
 
@@ -3399,23 +3410,23 @@ Here's a before and after:
 
 My AI junior was doing such a great job setting up this project, I assumed he'd also be up for small feature requests like this. Unfortunately this task didn't go as smoothly as some of the others.
 
-I handed him the current project files and briefly described what I wanted. He merrily went to work, and immediately proposed _[wrapping] the polar coordinates text in a new span element_. This seemed wrong, since all of the labels are drawn directly on a 2D canvas and the DOM doesn't come into play here. He then tried to find-and-replace portions of the Javascript file in the HTML file. Since the search text did not exist uniquely in that file, the operation failed. He noticed this, and attemted to just **remove** the rendering code completely in what I sincerely hoped was a first step of a multi-step plan. But this failed as well.
+I handed him the current project files and briefly described what I wanted. He merrily went to work, and immediately proposed _[wrapping] the polar coordinates text in a new span element_. This seemed wrong, since all of the labels are drawn directly on a 2D canvas and the DOM doesn't come into play here. He then tried to find-and-replace portions of the Javascript file in the HTML file. Since the search text did not exist uniquely in that file, the operation failed. He noticed this, and attempted to just **remove** the rendering code completely, in what I sincerely hoped was a first step of a multi-step plan. But this failed as well.
 
-He had realized something was wrong. He took a step back and requested an updated version of the file, which was re-added to the context. Then he make two more failed edit attempts, requested the file two more times, make another failed edit attempt, and then just claimed that he was successful and summarized a bunch of actions he never successfull performed.
+He had realized something was wrong. He took a step back and requested an updated version of the file, which was re-added to the context. Then he made two more failed edit attempts, requested the file two more times, make another failed edit attempt, and then just claimed that he was successful and summarized a bunch of actions he never successfully performed.
 
 **Like I wouldn't notice??** I was watching him the entire time!
 
 Fortunately, the summary of the actions he _thought_ he performed was surprisingly accurate. I asked him again to edit the file and hoped that he would follow his own plan.
 
-And he did, after another failed attempt. But it was only a partial solution. He added a function definition to draw text with a background but did not actually invoke it anywhere. I'll chalk this up to a failure of the reprompting agent in [aidev](https://github.com/efritz/aidev), which tries to keep the ball in the assistant's court as long as necessary. Mentioning that the function was unused added the the correct invocations.
+And he did, after another failed attempt. But it was only a partial solution. He added a function definition to draw text with a background but did not actually invoke it anywhere. I'll chalk this up to a failure of the reprompting agent in [aidev](https://github.com/efritz/aidev), which tries to keep the ball in the assistant's court as long as necessary. Mentioning that the function was unused caused him to add the correct invocations.
 
-The code looked mostly correct at a glance, but something was off visually. The labels were not fully highlighted and the text was still difficult to read. Simply mentioning a problem is sometimes enough context for my AI junior to figure out what is wrong. But in this particular cirumstance, he seemed to take it as an invitation to [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) random parts of the code until I got off his back.
+The code looked mostly correct at a glance, but something was off visually. The labels were not fully highlighted and the text was still difficult to read. Simply mentioning a problem is sometimes enough context for my AI junior to figure out what is wrong. But in this particular circumstance, he seemed to take it as an invitation to [Tower of Hanoi](https://en.wikipedia.org/wiki/Tower_of_Hanoi) random parts of the code until I got off his back.
 
-Not knowing how to more precisely guide him, I asked him to re-darken the text color. Then I could more clearly see with my tiny, imperfect human eyes what the issue was and describe it in sufficient detail. My AI junior isn't an idiot, he just doesn't have enough context. Despite how unsteadily this was going, I think this portion of the conversation illustrates a **killer** iterative workflow for LLMs (see <span style="color: red">⮕</span>).
+Not knowing how to more guide him more precisely, I asked him to re-darken the text color. Then I could more clearly see with my tiny, imperfect human eyes what the issue was and describe it in sufficient detail. My AI junior isn't an idiot, he just doesn't have enough context. Despite how unsteadily things were going, I think this portion of the conversation illustrates a **killer** iterative workflow for LLMs (see <span style="color: red">⮕</span>).
 
 I was then able to tell how each of the labels was misaligned with their backgrounds. My AI junior responded with this information by adding an additional offset to each label to realign it with its background. At this point the background and labels were correct relative to each other, but both elements had migrated away from the point in the canvas they were meant to label!
 
-The iterative nature of and the multiple failures within the conversation may have loaded the context with too much junk, and it's possible that the AI junior lost sight of the original goal. After I added an additional constraint of keeping the text where it was and _only_ the new background (see <span style="color: blue">⮕</span>), the correct solution snapped into place.
+The conversation was long and contained multiple failures. It may have been loaded with too much junk. It's possible that the AI junior lost sight of the original goal. After I added an additional constraint of keeping the text where it was and _only_ repositioning the new background (see <span style="color: blue">⮕</span>), the correct solution snapped into place.
 
 _Whew._
 
@@ -5144,7 +5155,7 @@ I'll help you update the collapse button text to use bracketed plus and minus si
 </div>
 
 <div class="turn">
-<div class="user">Let's make the text size smaller and lower it a bit so that it's aligned with the text of the suer</div>
+<div class="user">Let's make the text size smaller and lower it a bit so that it's aligned with the text of the user</div>
 
 <div class="response">
 <div class="assistant">
@@ -5284,13 +5295,15 @@ This is a negative anecdote for general conversational coherency, but on the bri
 
 ### Looking forward
 
-If you meticulously read these conversations you are likely to find an error with the prompter or the harness rather than the model. There are times in the conversation where I didn't use the "modern" prompt engineering techniques and got a sub-par response. I was insufficiently detailed in my request to get a meaningful response from the model. There are likely bugs in the [aidev](https://github.com/efritz/aidev) harness, or the description of tools available to the model are missing that One Simple Trick.
+If you meticulously read these conversations you are likely to find an error with my prompts or a deficiency in my harness rather than an incapability of the model. There are times in the conversation where I didn't use the "modern" prompt engineering techniques and received a sub-par response. I was insufficiently detailed, was ambiguous, or didn't provide the necessary context. There are likely bugs in the [aidev](https://github.com/efritz/aidev) harness, or the description of tools available to the model are missing that One Simple Trick.
 
 But it doesn't need to be perfect. It's already shown its utility. And it will get better and the rough edges will get smoothed down. As time marches on, I will expect:
 
 1. An increasing number of models to become available, and models to become increasingly intelligent. The things that seem brittle now will, release after release, become more and more robust.
 1. The wrinkles in my harness and the tools available to the model will slowly get ironed out. They'll then get new wrinkles with the release of a new, more capable model worth adopting. Ad infinitum, or until the point where all useful models converge (if ever).
-1. My own intuition for the best way to interact with a particular model on a particular task will sharpen with practice. I postulate some of the more potent "social" tricks will continue to apply to LLMs for a signficant amount of time.
+1. My own intuition for the best way to interact with a particular model on a particular task will sharpen with practice. I postulate some of the more potent "social" tricks will continue to apply to LLMs for a significant amount of time.
+
+Just yesterday, Anthropic released a specification for the [Model Context Protocol](https://www.anthropic.com/news/model-context-protocol). In the next few days, I'll be working to integrate that into my workflow and see how it feels.
 
 <style type="text/css">
     .conversation-header {
