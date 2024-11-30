@@ -268,7 +268,7 @@ code {
   right: 15px;
   padding: 2px 10px;
   background-color: #4c98b2;
-  z-index: 100; /* always above hero content */
+  z-index: 1000; /* always above other content */
 }
 
 #logo a:hover {
