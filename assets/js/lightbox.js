@@ -1,9 +1,18 @@
+function toggleBodyScroll(disable) {
+    document.body.style.overflow = disable ? 'hidden' : '';
+}
+
+window.addEventListener('hashchange', function() {
+    toggleBodyScroll(window.location.hash.startsWith('#img-'));
+});
+
 // Unload the lightbox when the user hits escape
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
         let openModal = document.querySelector('.lightbox:target');
         if (openModal) {
             window.location.href = '#_';
+            toggleBodyScroll(false);
         }
     }
 });
