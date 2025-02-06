@@ -14,8 +14,17 @@ A more concise <a href="/assets/papers/Fritz%20-%20Resume.pdf">printable version
 ### Work History
 
 {{< content
+    title="![atlassian](/assets/images/logos/atlassian.png) Atlassian"
+    meta="From 2025"
+    >}}
+
+Coming soon!
+
+{{< /content >}}
+
+{{< content
     title="![render](/assets/images/logos/render.png) Render"
-    meta="From 2023"
+    meta="2023 to 2025"
     >}}
 
 Render is building a powerful, easy-to-use cloud platform to host anything online, from simple static sites to complex applications with dozens of microservices. I'm an engineer on the Datastores team, which delivers managed Postgres and Redis databases. My team is focused on building powerful, flexible tools that scale with our customers' needs with little effort from them. Render's Datastore products provide our customers optimization insights and advanced workflows when it becomes appropriate for them, without having to hire a DBA or operations team.

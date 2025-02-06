@@ -555,6 +555,7 @@ html, body {
 /* Miscellaneous Styles
 * --------------------------------------------*/
 
+img[alt=atlassian],
 img[alt=render],
 img[alt=sourcegraph],
 img[alt=mitel] {
