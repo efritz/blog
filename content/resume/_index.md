@@ -27,9 +27,9 @@ Coming soon!
     meta="2023 to 2025"
     >}}
 
-Render is building a powerful, easy-to-use cloud platform to host anything online, from simple static sites to complex applications with dozens of microservices. I'm an engineer on the Datastores team, which delivers managed Postgres and Redis databases. My team is focused on building powerful, flexible tools that scale with our customers' needs with little effort from them. Render's Datastore products provide our customers optimization insights and advanced workflows when it becomes appropriate for them, without having to hire a DBA or operations team.
+Render is building a powerful, easy-to-use cloud platform to host anything online, from simple static sites to complex applications with dozens of microservices. I'm an engineer on the Datastores team, which delivers managed Postgres and Redis databases. The Datastores team was focused on building powerful, flexible tools that scale with our customers' needs with little effort from them. Render's Datastore products provide our customers optimization insights and advanced workflows when it becomes appropriate for them, without having to hire a DBA or operations team.
 
-My impact on the Datastores team (so far) includes:
+My impact on the Datastores team includes:
 
 - **Dynamic configuration**: I introduced a system to apply Postgres configuration dynamically and individually to each user database instance. Previously, all configurations were static, regardless of plan size or usage patterns. Dynamic configuration allows the Postgres process to use the available CPU, memory, and disk resources more intelligently, enabling applications to utilize the instance more fully. Dynamic configuration also provides a foundation for Render employees to set instance-specific specific configuration. Additionally, the Render platform can automatically change configuration based on instance-specific usage.
 
