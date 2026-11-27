@@ -4,7 +4,6 @@
   <title>{{ .Title }}{{ if eq .IsHome false }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ .Site.Params.site_description }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
 
   {{ hugo.Generator }}
 
@@ -18,6 +17,18 @@
       (resources.Get "css/shortcodes.css")
     | resources.Concat "assets/css/bundle.css" | minify | fingerprint
   }}
+
+  {{/* Runs before the stylesheet loads so the saved theme applies without a flash. */}}
+  <script>
+    (function () {
+      var theme;
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 
   <link rel="preload" href="/assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" type="text/css" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous">

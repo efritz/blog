@@ -37,7 +37,7 @@
 * --------------------------------------------*/
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 
   --font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
@@ -62,22 +62,24 @@
   --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15191c;
-    --surface: #1c2226;
-    --text: #d5dade;
-    --heading: #f1f4f6;
-    --muted: #8d979f;
-    --border: #2d353b;
-    --link: #70bad4;
-    --link-hover: #f1f4f6;
-    --row-hover: #1e2c33;
-    --code-bg: #262d32;
-    --alert-text: #f3b7bd;
-    --alert-bg: #4a1d22;
-    --shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-  }
+/* The theme is set on <html> by an inline script in the page head, from the
+ * visitor's saved choice or, failing that, their system preference. */
+:root[data-theme=dark] {
+  color-scheme: dark;
+
+  --bg: #15191c;
+  --surface: #1c2226;
+  --text: #d5dade;
+  --heading: #f1f4f6;
+  --muted: #8d979f;
+  --border: #2d353b;
+  --link: #70bad4;
+  --link-hover: #f1f4f6;
+  --row-hover: #1e2c33;
+  --code-bg: #262d32;
+  --alert-text: #f3b7bd;
+  --alert-bg: #4a1d22;
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* Base
@@ -270,6 +272,41 @@ header nav {
   content: '\00b7';
   margin: 0 0.5em;
   color: var(--muted);
+}
+
+/* The toggle needs JavaScript, so it stays hidden until the theme script has run. */
+#site-header .theme-toggle-item,
+:root:not([data-theme]) #site-header li:nth-last-child(2)::after {
+  display: none;
+}
+
+:root[data-theme] #site-header .theme-toggle-item {
+  display: block;
+}
+
+#theme-toggle {
+  padding: 0;
+  color: var(--heading);
+  font-size: 1.1em;
+  line-height: 1;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.15s linear;
+}
+
+#theme-toggle:hover {
+  color: var(--link);
+}
+
+/* Show the icon for the theme a click switches to. */
+#theme-toggle .icon-sun,
+[data-theme=dark] #theme-toggle .icon-moon {
+  display: none;
+}
+
+[data-theme=dark] #theme-toggle .icon-sun {
+  display: inline;
 }
 
 #logo {
@@ -809,18 +846,16 @@ pre code {
 /* Dark mode adjustments
 * --------------------------------------------*/
 
-@media (prefers-color-scheme: dark) {
-  /* Diagrams and screenshots with transparent backgrounds assume a light page. */
-  .thumbnail,
-  img.centered,
-  .article-content p > img {
-    background-color: #fff;
-    border-radius: 4px;
-  }
+/* Diagrams and screenshots with transparent backgrounds assume a light page. */
+[data-theme=dark] .thumbnail,
+[data-theme=dark] img.centered,
+[data-theme=dark] .article-content p > img {
+  background-color: #fff;
+  border-radius: 4px;
+}
 
-  /* Monochrome black logos. */
-  img[alt=render],
-  .logo-render {
-    filter: invert(1);
-  }
+/* Monochrome black logos. */
+[data-theme=dark] img[alt=render],
+[data-theme=dark] .logo-render {
+  filter: invert(1);
 }

@@ -13,6 +13,12 @@
       {{ range sort .Site.Menus.main }}
       <li><a href="{{ .URL }}">{{ .Name | upper }}</a></li>
       {{ end }}
+      <li class="theme-toggle-item">
+        <button id="theme-toggle" type="button" aria-label="Switch between light and dark mode" title="Switch between light and dark mode">
+          {{- partial "icon.html" (dict "name" "moon") -}}
+          {{- partial "icon.html" (dict "name" "sun") -}}
+        </button>
+      </li>
     </ul>
     {{ end }}
   </nav>
