@@ -5454,9 +5454,9 @@ Just yesterday, Anthropic released a specification for the [Model Context Protoc
 
     /* Colors */
 
-    .conversation .user         { color: #000000; }
+    .conversation .user         { color: inherit; }
     .conversation .assistant    { color: #00b4b6; }
-    .conversation .system-error { background-color: #ffe6e6; }
+    .conversation .system-error { background-color: var(--alert-bg); }
     .conversation .command      { color: #c51b00; }
     .conversation .stdout       { color: #00b4b6; }
     .conversation .error        { color: #c51b00; }
@@ -5483,7 +5483,7 @@ Just yesterday, Anthropic released a specification for the [Model Context Protoc
     .conversation .command::before {
         content: '>';
         padding-right: 0.5rem;
-        color: #000000;
+        color: inherit;
     }
 
     .conversation .success::before {

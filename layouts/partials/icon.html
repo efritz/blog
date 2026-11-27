@@ -1,0 +1,8 @@
+{{- /* Renders an inline SVG icon from assets/icons. Usage: partial "icon.html" (dict "name" "rss" "class" "extra") */ -}}
+{{- $name := .name -}}
+{{- $class := printf "icon icon-%s %s" $name (.class | default "") | strings.TrimSpace -}}
+{{- with resources.Get (printf "icons/%s.svg" $name) -}}
+  {{- replace (.Content | strings.TrimSpace) "<svg " (printf "<svg class=%q aria-hidden=\"true\" " $class) 1 | safeHTML -}}
+{{- else -}}
+  {{- errorf "unknown icon %q" $name -}}
+{{- end -}}

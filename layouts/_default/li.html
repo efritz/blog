@@ -1,25 +1,21 @@
-<article>
-  <div class="row">
-    <div class="left">
-      <h3 class="list-item">
-        {{ if .Params.Icon }}
-          <i class="fa fa-{{ .Params.Icon }} class-icon li-icon"></i>
-        {{ end }}
+<article class="list-row">
+  <h3 class="list-item">
+    {{ if .Params.Icon }}
+      <i class="logo logo-{{ .Params.Icon }}"></i>
+    {{ end }}
 
-        {{ if .Params.Mirror }}
-          <span class="mirror">
-            <a href="/articles/{{ .Params.Mirror }}">{{ .Title }} (original date)</a>
-          </span>
-        {{ else if and (.Params.External) (not .Params.Slug) }}
-          <a href="{{ .Params.External }}">{{ .Title }} <i class="fa fa-external-link external-link"></i></a>
-        {{ else }}
-          <a href="{{ .Permalink }}">{{ .Title }}</a>
-        {{ end }}
-      </h3>
-    </div>
+    {{ if .Params.Mirror }}
+      <span class="mirror">
+        <a href="/articles/{{ .Params.Mirror }}">{{ .Title }} (original date)</a>
+      </span>
+    {{ else if and (.Params.External) (not .Params.Slug) }}
+      <a href="{{ .Params.External }}">{{ .Title }} {{ partial "icon.html" (dict "name" "external-link" "class" "external-link") }}</a>
+    {{ else }}
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+    {{ end }}
+  </h3>
 
-    <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="right">
-      {{ .Date.Format .Site.Params.dateformat }}
-    </time>
-  </div>
+  <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="muted">
+    {{ .Date.Format .Site.Params.dateformat }}
+  </time>
 </article>

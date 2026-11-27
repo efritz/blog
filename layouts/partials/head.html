@@ -4,6 +4,7 @@
   <title>{{ .Title }}{{ if eq .IsHome false }} | {{ .Site.Title }}{{ end }}</title>
   <meta name="description" content="{{ .Site.Params.site_description }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
 
   {{ hugo.Generator }}
 
@@ -12,13 +13,12 @@
 
   {{
     $styles := slice
-      (resources.Get "css/normalize.css")
       (resources.Get "css/main.css")
+      (resources.Get "css/syntax.css")
       (resources.Get "css/shortcodes.css")
     | resources.Concat "assets/css/bundle.css" | minify | fingerprint
   }}
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="preload" href="/assets/fonts/lato-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" type="text/css" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous">
 </head>

@@ -7,6 +7,11 @@ figure {
   display: inline;
 }
 
+figcaption {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
 .thumbnail {
   width: 100%;
 }
@@ -41,7 +46,7 @@ figure {
   right: 0;
   bottom: 0;
   background: #fff;
-  box-shadow: 0px 0px 1px 1px #ccc;
+  box-shadow: 0 0 1px 1px #ccc;
   max-height: 90%;
   max-width: 90%;
 }
@@ -59,12 +64,10 @@ figure {
 }
 
 .class-icon {
-  color: #2a7ae2;
+  color: var(--link);
 }
 
 .resume-icon {
-  /* float: right;
-  margin-top: 5px; */
   margin-right: 5px;
 }
 
@@ -96,16 +99,14 @@ figure {
  * --------------------------------------------*/
 
 .attachments ul {
-  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
   padding: 0;
-}
-
-.attachments li {
-  display: inline-block;
+  list-style: none;
 }
 
 .attachments li:not(:last-child)::after {
   content: '\00b7';
-  margin-left: .25em;
-  margin-right: .25em;
+  margin: 0 0.5em;
+  color: var(--muted);
 }

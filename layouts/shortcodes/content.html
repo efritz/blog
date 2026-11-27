@@ -1,16 +1,16 @@
-<article>
-  <div class="row">
-    <div class="left">
+<article class="entry">
+  <header class="entry-header">
+    <div>
       <h4 class="list-item" {{ with .Get "anchor" }}id="{{ . }}"{{ end }}>{{ .Get "title" | markdownify }}</h4>
       {{ if .Get "sub" }}
         <div class="sub muted">{{ .Get "sub" | markdownify }}</div>
       {{ end }}
     </div>
-    <div class="right">{{ .Get "meta" }}</div>
+    <div class="entry-meta muted">{{ .Get "meta" }}</div>
+  </header>
 
-    <div class="clear">
-      {{ $opts := dict "display" "block" }}
-      {{ .Inner | .Page.RenderString $opts }}
-    </div>
+  <div class="entry-body">
+    {{ $opts := dict "display" "block" }}
+    {{ .Inner | .Page.RenderString $opts }}
   </div>
 </article>
