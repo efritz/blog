@@ -1,16 +1,14 @@
 <header class="article-header">
   <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
 
-  <div class="float-container">
-    <div class="left">
-      <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="muted">
-        {{ .Date.Format .Site.Params.dateformat }}
-      </time>
-    </div>
+  <div class="article-meta">
+    <time datetime="{{ .Date.Format "2006-01-02" | safeHTML }}" class="muted">
+      {{ .Date.Format .Site.Params.dateformat }}
+    </time>
 
     {{ with .Params.tags }}
-    <div class="right">
-      <i class="fa fa-tags"></i>
+    <div class="tags">
+      {{ partial "icon.html" (dict "name" "tags") }}
 
       {{ range $tag := . }}
       <a href="/tags/{{ $tag | urlize }}/">{{ $tag }}</a>
@@ -21,7 +19,7 @@
 
   {{ if .Params.External }}
     <div class="notice">
-      <i>This article was originally <a href="{{ .Params.External }}">published externally <i class="fa fa-external-link external-link"></i></a>,
+      <i>This article was originally <a href="{{ .Params.External }}">published externally {{ partial "icon.html" (dict "name" "external-link" "class" "external-link") }}</a>,
       but has been re-published here for consistency and long-term availability.</i>
     </div>
   {{ end }}

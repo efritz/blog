@@ -6,15 +6,16 @@
     </span>
 
     <div class="social">
-      <a href="{{ .Site.BaseURL }}/index.xml"><i class="fa fa-rss"></i></a>
-      <a href="mailto:{{.Site.Params.social.email}}"><i class="fa fa-envelope-square" aria-hidden="true"></i></a>
-      <a href="https://github.com/{{.Site.Params.social.github}}"><i class="fa fa-github-square" aria-hidden="true"></i></a>
+      <a href="{{ .Site.BaseURL }}/index.xml" aria-label="RSS feed">{{ partial "icon.html" (dict "name" "rss") }}</a>
+      <a href="mailto:{{.Site.Params.social.email}}" aria-label="Email">{{ partial "icon.html" (dict "name" "mail") }}</a>
+      <a href="https://github.com/{{.Site.Params.social.github}}" aria-label="GitHub">{{ partial "icon.html" (dict "name" "github") }}</a>
     </div>
   </div>
 </footer>
 
 {{
   $scripts := slice
+    (resources.Get "js/theme.js")
     (resources.Get "js/links.js")
     (resources.Get "js/scroll.js")
     (resources.Get "js/lightbox.js")

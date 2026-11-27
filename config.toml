@@ -16,7 +16,7 @@ paginate = 1000
     codeFences = true
     style = "github"
     lineNos = true
-    noClasses = true
+    noClasses = false
 
 [params]
   author = 'Eric Fritz'

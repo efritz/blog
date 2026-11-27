@@ -213,14 +213,14 @@ The following table shows a complete timeline of the experimental pull request `
   #git-epic-git-graph tbody tr:hover { background-color: #4c98b2; }
 
   /* Draw lines between non-overlapping PR runs */
-  #git-epic-git-graph tbody tr.break td { border-top: 2px solid black; }
+  #git-epic-git-graph tbody tr.break td { border-top: 2px solid currentColor; }
   #git-epic-git-graph tbody tr.break td.experiment { border: inherit; }
 
 
   #git-epic-git-graph tbody tr th {
     position: sticky;
     left: 0;
-    background-color: #fff;
+    background-color: var(--bg);
     padding-right: 0.5em;
   }
 

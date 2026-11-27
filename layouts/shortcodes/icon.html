@@ -1,1 +1,2 @@
-<i class="fa fa-{{ .Get 0 }} class-icon"></i>
+{{- $parts := split (replaceRE `\s+` " " (.Get 0 | strings.TrimSpace)) " " -}}
+{{- partial "icon.html" (dict "name" (index $parts 0) "class" (printf "class-icon %s" (delimit (after 1 $parts) " "))) -}}
