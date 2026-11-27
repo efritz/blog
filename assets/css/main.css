@@ -33,13 +33,45 @@
   src: url('/assets/fonts/lato-latin-700-italic.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'Latin Modern';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/latin-modern-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Latin Modern';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/assets/fonts/latin-modern-400-italic.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Latin Modern';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/latin-modern-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Latin Modern';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/assets/fonts/latin-modern-700-italic.woff2') format('woff2');
+}
+
 /* Theme
 * --------------------------------------------*/
 
 :root {
   color-scheme: light;
 
-  --font-body: 'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Latin Modern', 'Latin Modern Roman', 'CMU Serif', Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 
   --content-width: 770px;
@@ -99,9 +131,12 @@ body {
   color: var(--text);
   background-color: var(--bg);
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -562,7 +597,7 @@ kbd,
 samp,
 pre {
   font-family: var(--font-mono);
-  font-size: 0.875em;
+  font-size: 0.8em;
 }
 
 code {
@@ -705,7 +740,7 @@ pre code {
   box-sizing: border-box;
   padding: 10px;
   overflow-y: auto;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.5;
   background-color: var(--bg);
   border: 1px solid var(--border);
